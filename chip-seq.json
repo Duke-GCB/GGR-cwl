@@ -1,0 +1,6 @@
+{
+  "input_fastq_file": {
+    "class": "File",
+    "path": "/Users/dcl9/ggr-data/trimmed/AMD16-2-7_CAGATC_L004_R1_001.fastq.gz"
+  }
+}
