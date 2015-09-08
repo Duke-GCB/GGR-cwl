@@ -1,3 +1,2 @@
 class: ExpressionEngineRequirement
-engineCommand: python-engine.py
-
+engineCommand: python-engine/python-engine.py
