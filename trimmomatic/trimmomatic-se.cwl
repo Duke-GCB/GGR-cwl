@@ -53,4 +53,5 @@ outputs:
     outputBinding:
       glob: "*trimmed.fastq"
 
-baseCommand: TrimmomaticSE
+baseCommand: /home/dcl9/bin/TrimmomaticSE
+

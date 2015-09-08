@@ -32,4 +32,5 @@ outputs:
     outputBinding:
       glob: "*_fastqc.zip"
 
-baseCommand: fastqc
+baseCommand: /data/reddylab/software/FastQC/fastqc
+
