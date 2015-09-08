@@ -10,6 +10,12 @@ inputs:
   - id: "#input_adapters_file"
     type: File
     description: "Adapters for trimming"
+  - id: "#bowtie_index_dir"
+    type: File
+    description: "Directory containing bowtie index files"
+  - id: "#bowtie_index_prefix"
+    type: string
+    description: "Index filename prefix (minus trailing .X.bt2)."
 
 outputs:
   - id: "#output_qc_report_file"
@@ -20,6 +26,14 @@ outputs:
     type: File
     description: "Output Trimmed file"
     source: "#trimmomatic.output_trimmed_file"
+  - id: "#output_aligned_file"
+    type: File
+    description: "Output Aligned file"
+    source: "#bowtie2.output_aligned_file"
+  - id: "#output_alignment_metrics_file"
+    type: File
+    description: "Output Alignment Metrics file"
+    source: "#bowtie2.output_alignment_metrics_file"
 
 steps:
   - id: "#fastqc"
@@ -34,6 +48,13 @@ steps:
     - { id: "#trimmomatic.input_fastq_file", source: "#input_fastq_file" }
     - { id: "#trimmomatic.input_adapters_file", source: "#input_adapters_file" }
     outputs:
-    - { id: "#trimmomatic.output_trimmed_file", source: "#output_trimmed_file" }
-
-# bowtie2
+    - { id: "#trimmomatic.output_trimmed_file" }
+  - id: "#bowtie2"
+    run: { import: bowtie2/bowtie2.cwl }
+    inputs:
+    - { id: "#bowtie2.input_fastq_file", source: "#trimmomatic.output_trimmed_file" }
+    - { id: "#bowtie2.index_dir", source: "#bowtie_index_dir" }
+    - { id: "#bowtie2.index_prefix", source: "#bowtie_index_prefix" }
+    outputs:
+    - { id: "#bowtie2.output_aligned_file" }
+    - { id: "#bowtie2.output_alignment_metrics_file" }

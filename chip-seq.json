@@ -6,5 +6,10 @@
   "input_adapters_file": {
     "class": "File",
     "path": "/Users/dcl9/Downloads/Trimmomatic-0.33/adapters/TruSeq3-SE.fa"
+  },
+  "bowtie_index_prefix": "hg19",
+  "bowtie_index_dir": {
+    "class": "File",
+    "path": ""
   }
 }
