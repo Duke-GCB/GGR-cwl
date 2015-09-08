@@ -2,10 +2,12 @@
 
 class: CommandLineTool
 
+hints:
+  - class: DockerRequirement
+    dockerImageId: 'dukegcb/trimmomatic'
+
 requirements:
-#   - class: DockerRequirement
-#     dockerImageId: 'dukegcb/trimmomatic'
-  - import: python-engine.cwl
+  - import: ../py-expr-engine/py-expr-engine.cwl
 
 inputs:
   - id: "#threads"
@@ -36,8 +38,9 @@ inputs:
     inputBinding:
       position: 5
       valueFrom:
-        engine: python-engine.cwl
-        script: "'ILLUMINACLIP:{}:2:30:15'.format(job['input_adapters_file']['path'])"
+        engine: ../py-expr-engine/py-expr-engine.cwl
+        script: |
+          'ILLUMINACLIP:{}:2:30:15'.format(self.job['input_adapters_file']['path'])
   - id: "#additional_steps"
     type: string
     default: "LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:10"
@@ -50,4 +53,4 @@ outputs:
     outputBinding:
       glob: "*trimmed.fastq"
 
-baseCommand: echo
+baseCommand: TrimmomaticSE

@@ -12,22 +12,22 @@ inputs:
     description: "Adapters for trimming"
 
 outputs:
-#  - id: "#output_qc_report_file"
-#    type: File
-#    description: "Output FastQC Report file"
-#    source: "#fastqc.output_qc_report_file"
+  - id: "#output_qc_report_file"
+    type: File
+    description: "Output FastQC Report file"
+    source: "#fastqc.output_qc_report_file"
   - id: "#output_trimmed_file"
     type: File
     description: "Output Trimmed file"
     source: "#trimmomatic.output_trimmed_file"
 
 steps:
-#  - id: "#fastqc"
-#    run: { import: fastqc/fastqc.cwl }
-#    inputs:
-#    - { id: "#fastqc.input_fastq_file", source: "#input_fastq_file" }
-#    outputs:
-#    - { id: "#fastqc.output_qc_report_file" }
+  - id: "#fastqc"
+    run: { import: fastqc/fastqc.cwl }
+    inputs:
+    - { id: "#fastqc.input_fastq_file", source: "#input_fastq_file" }
+    outputs:
+    - { id: "#fastqc.output_qc_report_file" }
   - id: "#trimmomatic"
     run: { import: trimmomatic/trimmomatic-se.cwl }
     inputs:
@@ -36,5 +36,4 @@ steps:
     outputs:
     - { id: "#trimmomatic.output_trimmed_file", source: "#output_trimmed_file" }
 
-# trimmomatic se
 # bowtie2
