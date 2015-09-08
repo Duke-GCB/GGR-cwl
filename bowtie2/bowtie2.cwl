@@ -53,5 +53,5 @@ outputs:
     outputBinding:
       glob: "metrics.txt"
 
-baseCommand: bowtie2
+baseCommand: /usr/local/bin/bowtie2
 stdout: metrics.txt
