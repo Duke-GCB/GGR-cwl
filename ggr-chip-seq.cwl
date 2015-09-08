@@ -22,10 +22,10 @@ outputs:
     type: File
     description: "Output FastQC Report file"
     source: "#fastqc.output_qc_report_file"
-  - id: "#output_trimmed_file"
-    type: File
-    description: "Output Trimmed file"
-    source: "#trimmomatic.output_trimmed_file"
+#   - id: "#output_trimmed_file"
+#     type: File
+#     description: "Output Trimmed file"
+#     source: "#trimmomatic.output_trimmed_file"
   - id: "#output_aligned_file"
     type: File
     description: "Output Aligned file"
