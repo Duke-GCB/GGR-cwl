@@ -1,15 +1,15 @@
 {
   "input_fastq_file": {
     "class": "File",
-    "path": "/data/reddylab/Flowcells/TonyDippolito/Project_DIPPOLITO_1720_140825B1/Sample_AMD16-2-7/AMD16-2-7_CAGATC_L004_R1_001.fastq.gz"
+    "path": "/Users/dcl9/ggr-data/trimmed/AMD16-2-7_CAGATC_L004_R1_001.fastq.gz"
   },
   "input_adapters_file": {
     "class": "File",
-    "path": "/data/reddylab/projects/GGR/pipeline_tests/adapters.fa"
+    "path": "/Users/dcl9/Downloads/Trimmomatic-0.33/adapters/TruSeq3-SE.fa"
   },
   "bowtie_index_prefix": "hg19",
   "bowtie_index_dir": {
     "class": "File",
-    "path": "/data/reddylab/Reference_Data/Bowtie2/hg19/"
+    "path": ""
   }
 }
