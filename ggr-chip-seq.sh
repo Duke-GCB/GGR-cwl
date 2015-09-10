@@ -6,4 +6,5 @@
 #SBATCH --mail-type=FAIL
 
 source ~/env-cwl/bin/activate
+export PATH="$PATH:/data/reddylab/software/FastQC/:/home/dcl9/bin/:/usr/local/bin/"
 srun cwltool --outdir ~/ggr-cwl-data --no-container ~/ggr-cwl/ggr-chip-seq.cwl ~/ggr-cwl/chip-seq.json

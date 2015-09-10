@@ -5,14 +5,6 @@ class: CommandLineTool
 hints:
   - class: DockerRequirement
     dockerImageId: 'dukegcb/fastqc'
-requirements:
-  - import: ../py-expr-engine/py-expr-engine.cwl
-  - class: EnvVarRequirement
-    envDef:
-      - envName: PATH
-        envValue:
-          engine: ../py-expr-engine/py-expr-engine.cwl
-          script: self.job['fastqc_tool_path'] if 'fastqc_tool_path' in self.job else '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
 inputs:
   - id: "#input_fastq_file"

@@ -11,8 +11,5 @@
   "bowtie_index_dir": {
     "class": "File",
     "path": "/data/reddylab/Reference_Data/Bowtie2/hg19/"
-  },
-  "fastqc_tool_path": "/data/reddylab/software/FastQC/",
-  "trimmomatic_tool_path": "/home/dcl9/bin/",
-  "bowtie2_tool_path": "/usr/local/bin/",
+  }
 }

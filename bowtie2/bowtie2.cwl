@@ -8,12 +8,6 @@ hints:
 
 requirements:
   - import: ../py-expr-engine/py-expr-engine.cwl
-  - class: EnvVarRequirement
-    envDef:
-      - envName: PATH
-        envValue:
-          engine: ../py-expr-engine/py-expr-engine.cwl
-          script: self.job['bowtie2_tool_path'] if 'bowtie2_tool_path' in self.job else '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
 inputs:
   - id: "#threads"
