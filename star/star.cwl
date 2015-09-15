@@ -55,4 +55,4 @@ outputs:
     outputBinding:
       glob: "Aligned.out.sam"
 
-baseCommand: star
+baseCommand: STAR
