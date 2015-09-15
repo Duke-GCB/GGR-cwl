@@ -1,0 +1,18 @@
+{
+  "input_read1_fastq_file": {
+    "class": "File",
+    "path": "/data/reddylab/Flowcells/Project_Vockley_743_131102/CV19-1_S1_L001_R1_001.fastq"
+  },
+  "input_read2_fastq_file": {
+    "class": "File",
+    "path": "/data/reddylab/Flowcells/Project_Vockley_743_131102/CV19-1_S1_L001_R2_001.fastq"
+  },
+  "input_adapters_file": {
+    "class": "File",
+    "path": "/data/reddylab/projects/GGR/pipeline_tests/adapters.fa"
+  },
+  "star_genome_dir": {
+    "class": "File",
+    "path": "/data/common/star"
+  }
+}
