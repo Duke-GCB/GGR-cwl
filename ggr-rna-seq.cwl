@@ -13,9 +13,9 @@ inputs:
   - id: "#input_adapters_file"
     type: File
     description: "Adapters for trimming"
-#   - id: "#star_genome_dir"
-#     type: File
-#     description: "Directory containing STAR-formatted Genome"
+  - id: "#input_star_genome_dir"
+    type: File
+    description: "Directory containing STAR-formatted Genome"
 
 outputs:
   - id: "#output_read1_qc_report_file"
@@ -26,10 +26,10 @@ outputs:
     type: File
     description: "Output FastQC Report file - Read 2"
     source: "#fastqc2.output_qc_report_file"
-#   - id: "#output_aligned_file"
-#     type: File
-#     description: "Output Aligned file"
-#     source: "#star.output_aligned_file"
+  - id: "#output_aligned_file"
+    type: File
+    description: "Output Aligned file"
+    source: "#star.output_aligned_file"
 
 steps:
   - id: "#fastqc1"
@@ -55,3 +55,11 @@ steps:
     - { id: "#trimmomatic.output_read1_trimmed_unpaired_file" }
     - { id: "#trimmomatic.output_read2_trimmed_paired_file" }
     - { id: "#trimmomatic.output_read2_trimmed_unpaired_file" }
+  - id: "#star"
+    run: { import: star/star.cwl }
+    inputs:
+    - { id: "#star.input_read1_fastq_file", source: "#input_read1_fastq_file" }
+    - { id: "#star.input_read2_fastq_file", source: "#input_read2_fastq_file" }
+    - { id: "#star.input_genome_dir", source: "#input_star_genome_dir" }
+    outputs:
+    - { id: "#star.output_aligned_file" }
