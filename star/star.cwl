@@ -8,13 +8,14 @@ hints:
 
 inputs:
   - id: "#out_file_name_prefix"
-    type: File
+    type: string
+    default: ""
     inputBinding:
       position: 1
       prefix: "--outFileNamePrefix"
       valueFrom:
         engine: cwl:JsonPointer
-        script: "outdir"
+        script: "outdir/path"
   - id: "#threads"
     type: int
     default: 4
