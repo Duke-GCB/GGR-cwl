@@ -15,7 +15,7 @@ inputs:
       prefix: "--outFileNamePrefix"
       valueFrom:
         engine: cwl:JsonPointer
-        script: "outdir/path"
+        script: "outdir"
   - id: "#threads"
     type: int
     default: 4
