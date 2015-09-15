@@ -29,22 +29,22 @@ inputs:
     type: File
     inputBinding:
       position: 4
-  - id: "input_read1_trimmed_paired_file_name"
+  - id: "#input_read1_trimmed_paired_file_name"
     type: string
     default: "read1_trimmed_paired.fastq"
     inputBinding:
       position: 5
-  - id: "input_read1_trimmed_unpaired_file_name"
+  - id: "#input_read1_trimmed_unpaired_file_name"
     type: string
     default: "read1_trimmed_unpaired.fastq"
     inputBinding:
       position: 6
-  - id: "input_read2_trimmed_paired_file_name"
+  - id: "#input_read2_trimmed_paired_file_name"
     type: string
     default: "read2_trimmed_paired.fastq"
     inputBinding:
       position: 7
-  - id: "input_read2_trimmed_unpaired_file_name"
+  - id: "#input_read2_trimmed_unpaired_file_name"
     type: string
     default: "read2_trimmed_unpaired.fastq"
     inputBinding:
