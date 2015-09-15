@@ -53,4 +53,3 @@ steps:
     - { id: "#bowtie2.index_prefix", source: "#bowtie_index_prefix" }
     outputs:
     - { id: "#bowtie2.output_aligned_file" }
-    - { id: "#bowtie2.output_alignment_metrics_file" }
