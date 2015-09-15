@@ -13,9 +13,9 @@ inputs:
   - id: "#input_adapters_file"
     type: File
     description: "Adapters for trimming"
-  - id: "#star_genome_dir"
-    type: File
-    description: "Directory containing STAR-formatted Genome"
+#   - id: "#star_genome_dir"
+#     type: File
+#     description: "Directory containing STAR-formatted Genome"
 
 outputs:
   - id: "#output_read1_qc_report_file"
@@ -26,10 +26,10 @@ outputs:
     type: File
     description: "Output FastQC Report file - Read 2"
     source: "#fastqc2.output_qc_report_file"
-  - id: "#output_aligned_file"
-    type: File
-    description: "Output Aligned file"
-    source: "#star.output_aligned_file"
+#   - id: "#output_aligned_file"
+#     type: File
+#     description: "Output Aligned file"
+#     source: "#star.output_aligned_file"
 
 steps:
   - id: "#fastqc1"
