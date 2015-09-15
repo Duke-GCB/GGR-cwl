@@ -58,8 +58,8 @@ steps:
   - id: "#star"
     run: { import: star/star.cwl }
     inputs:
-    - { id: "#star.input_read1_fastq_file", source: "#input_read1_fastq_file" }
-    - { id: "#star.input_read2_fastq_file", source: "#input_read2_fastq_file" }
+    - { id: "#star.input_read1_fastq_file", source: "#trimmomatic.output_read1_trimmed_paired_file" }
+    - { id: "#star.input_read2_fastq_file", source: "#trimmomatic.output_read2_trimmed_paired_file" }
     - { id: "#star.input_genome_dir", source: "#input_star_genome_dir" }
     outputs:
     - { id: "#star.output_aligned_file" }
