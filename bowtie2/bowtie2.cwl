@@ -48,10 +48,5 @@ outputs:
       glob:
         engine: "cwl:JsonPointer"
         script: "job/output_aligned_file_name"
-  - id: "#output_alignment_metrics_file"
-    type: File
-    outputBinding:
-      glob: "metrics.txt"
 
 baseCommand: bowtie2
-stdout: metrics.txt
