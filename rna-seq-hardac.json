@@ -11,7 +11,7 @@
     "class": "File",
     "path": "/data/reddylab/projects/GGR/pipeline_tests/adapters.fa"
   },
-  "star_genome_dir": {
+  "input_star_genome_dir": {
     "class": "File",
     "path": "/data/common/star"
   }
