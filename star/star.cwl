@@ -21,7 +21,7 @@ inputs:
     inputBinding:
       position: 2
       prefix: "--runThreadN"
-  - id: "input_genome_dir"
+  - id: "#input_genome_dir"
     type: File
     inputBinding:
       position: 3
@@ -41,7 +41,7 @@ inputs:
     inputBinding:
       position: 6
       prefix: "--outSAMattributes"
-  - id: "filter_intron_motifs"
+  - id: "#filter_intron_motifs"
     type: string
     default: "RemoveNoncanonical"
     inputBinding:
