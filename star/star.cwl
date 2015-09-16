@@ -41,7 +41,7 @@ inputs:
       position: 5
   - id: "#sam_attributes"
     type: string
-    default: "NH HI AS NM MD"
+    default: NH HI AS NM MD
     inputBinding:
       position: 6
       prefix: "--outSAMattributes"
