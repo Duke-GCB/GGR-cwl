@@ -2,6 +2,7 @@
 #
 #SBATCH --job-name=GGR_RNA-seq
 #SBATCH --output=ggr-rna-seq.out
+#SBATCH --mem=30000
 #SBATCH --mail-user=dan.leehr@duke.edu
 #SBATCH --mail-type=FAIL
 
