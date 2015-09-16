@@ -40,8 +40,11 @@ inputs:
     inputBinding:
       position: 5
   - id: "#sam_attributes"
-    type: string
-    default: NH HI AS NM MD
+    type:
+      - "null"
+      - type: array
+        items: string
+    default: ["NH","HI","AS","NM","MD"]
     inputBinding:
       position: 6
       prefix: "--outSAMattributes"
