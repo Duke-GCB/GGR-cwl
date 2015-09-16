@@ -8,4 +8,4 @@
 
 source ~/env-cwl/bin/activate
 export PATH="/data/reddylab/software/FastQC:/home/dcl9/bin:/data/reddylab/software/STAR_2.4.2a/STAR-STAR_2.4.2a/bin/Linux_x86_64_static:/usr/local/bin:$PATH"
-srun cwltool --debug --preserve-environment PATH --outdir ~/ggr-cwl-data --no-container ~/ggr-cwl/ggr-rna-seq.cwl ~/ggr-cwl/rna-seq-hardac.json
+cwltool --debug --preserve-environment PATH --outdir ~/ggr-cwl-data --no-container ~/ggr-cwl/ggr-rna-seq.cwl ~/ggr-cwl/rna-seq-hardac.json
