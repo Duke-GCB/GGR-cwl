@@ -6,6 +6,9 @@ hints:
   - class: DockerRequirement
     dockerImageId: 'dukegcb/star'
 
+requirements:
+  - import: ../py-expr-engine/py-expr-engine.cwl
+
 inputs:
   - id: "#out_file_name_prefix"
     type: string
@@ -14,8 +17,8 @@ inputs:
       position: 1
       prefix: "--outFileNamePrefix"
       valueFrom:
-        engine: cwl:JsonPointer
-        script: "outdir"
+        engine: ../py-expr-engine/py-expr-engine.cwl
+        script: self.outdir + '/'
   - id: "#threads"
     type: int
     default: 4
