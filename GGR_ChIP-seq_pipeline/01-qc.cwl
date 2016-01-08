@@ -14,6 +14,9 @@ inputs:
   - id: "#default_adapters_file"
     type: File
     description: "Adapters file"
+  - id: "#se_or_pe"
+    description: "Single ended or paired end read"
+    type: string
 
 outputs:
   - id: "#output_fastqc_report_files"
@@ -53,5 +56,7 @@ steps:
         source: "#extract_fastqc_data.output_fastqc_data_file"
       - id: "#overrepresented_sequence_extract.default_adapters_file"
         source: "#default_adapters_file"
+      - id: "#overrepresented_sequence_extract.se_or_pe"
+        source: "#se_or_pe"
     outputs:
       - id: "#overrepresented_sequence_extract.output_custom_adapters"

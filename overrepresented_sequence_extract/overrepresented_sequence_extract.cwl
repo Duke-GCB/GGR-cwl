@@ -14,12 +14,7 @@ inputs:
       position: 1
   - id: "#se_or_pe"
     description: "Single ended or paired end read"
-    type:
-      name: "Endedness"
-      type: enum
-      symbols:
-        - "pe"
-        - "se"
+    type: string
     inputBinding:
       position: 2
   - id: "#default_adapters_file"
