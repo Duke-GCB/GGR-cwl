@@ -25,6 +25,11 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#output_fastqc_data_file"
+    source: "#extract_fastqc_data.output_fastqc_data_file"
+    type:
+      type: array
+      items: File
   - id: "#output_custom_adapters"
     source: "#overrepresented_sequence_extract.output_custom_adapters"
     type:
