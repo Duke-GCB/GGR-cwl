@@ -38,6 +38,15 @@ inputs:
     inputBinding:
       position: 4
       prefix: "--threads"
+  - id: "#tmpdir"
+    type: string
+    default: null
+    inputBinding:
+      position: 5
+      prefix: "--dir"
+      valueFrom:
+        engine: "cwl:JsonPointer"
+        script: "tmpdir"
 
 outputs:
   - id: "#output_qc_report_file"
