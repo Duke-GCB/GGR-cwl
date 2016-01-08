@@ -27,8 +27,7 @@ inputs:
     type: File
     default: null # Even though we're providing a valueFrom, workflow won't run unless there's a value
     inputBinding:
-      position: 1
-      prefix: -o
+      position: 4
       valueFrom:
         engine: "cwl:JsonPointer"
         script: "outdir"
