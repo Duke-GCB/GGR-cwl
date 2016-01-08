@@ -3,6 +3,10 @@
 class: CommandLineTool
 description: "Unzips a zipped fastqc report and returns the fastqc_data.txt file. Unzips the file to pipe and uses redirection"
 
+hints:
+  - class: DockerRequirement
+    dockerImageId: 'dukegcb/fastqc' # Just so that unzip is installed
+
 inputs:
   - id: "#pipe"
     type: boolean
