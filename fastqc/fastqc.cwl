@@ -10,21 +10,43 @@ inputs:
   - id: "#input_fastq_file"
     type: File
     inputBinding:
-      position: 1
+      position: 4
   - id: "#outdir"
     type: File
     default: null # Even though we're providing a valueFrom, workflow won't run unless there's a value
     inputBinding:
-      position: 2
+      position: 1
       prefix: -o
       valueFrom:
         engine: "cwl:JsonPointer"
         script: "outdir"
-  - id: "#arguments"
+  - id: "#noeextract"
+    type: boolean
+    default: true
+    inputBinding:
+      prefix: "--noextract"
+      position: 2
+  - id: "#format"
     type: string
-    default: "--noextract"
+    default: "fastq"
     inputBinding:
       position: 3
+      prefix: "--format"
+  - id: "#threads"
+    type: int
+    default: 1
+    inputBinding:
+      position: 4
+      prefix: "--threads"
+  - id: "#tmpdir"
+    type: string
+    default: null
+    inputBinding:
+      position: 5
+      prefix: "--dir"
+      valueFrom:
+        engine: "cwl:JsonPointer"
+        script: "tmpdir"
 
 outputs:
   - id: "#output_qc_report_file"
@@ -33,4 +55,3 @@ outputs:
       glob: "*_fastqc.zip"
 
 baseCommand: fastqc
-
