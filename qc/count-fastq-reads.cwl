@@ -1,5 +1,11 @@
 #!/usr/bin/env cwl-runner
 
+# To generate the output file name, we use some inline javascript
+# Unfortunately this is duplicated for stdout and for output globbing
+# Would be nice to run this expression in one place and use it for both
+# but I couldn't get that working as a string input with valueFrom in a binding
+# like I did in draft 2 with py-expr-engine
+
 class: CommandLineTool
 description: "Counts reads in a fastq file"
 
