@@ -12,12 +12,11 @@ inputs:
     type: File
     inputBinding:
       position: 1
-
 outputs:
   - id: "#output_read_count"
     type: File
     outputBinding:
-      glob: "read_count.txt"
+      glob: $(inputs.input_fastq_file.path.split('/').slice(-1) + '.read_count.txt')
 
 baseCommand: count-fastq-reads.sh
-stdout: read_count.txt
+stdout: $(inputs.input_fastq_file.path.split('/').slice(-1) + '.read_count.txt')
