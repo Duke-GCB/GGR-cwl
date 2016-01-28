@@ -38,7 +38,7 @@ outputs:
 
 steps:
   - id: "#fastqc"
-    run: {import: "../fastqc/fastqc.cwl" }
+    run: {import: "../qc/fastqc.cwl" }
     scatter: "#fastqc.input_fastq_file"
     inputs:
       - id: "#fastqc.input_fastq_file"
@@ -46,7 +46,7 @@ steps:
     outputs:
       - id: "#fastqc.output_qc_report_file"
   - id: "#extract_fastqc_data"
-    run: {import: "../fastqc/extract_fastqc_data.cwl" }
+    run: {import: "../qc/extract_fastqc_data.cwl" }
     scatter: "#extract_fastqc_data.input_qc_report_file"
     inputs:
       - id: "#extract_fastqc_data.input_qc_report_file"
@@ -54,7 +54,7 @@ steps:
     outputs:
       - id: "#extract_fastqc_data.output_fastqc_data_file"
   - id: "#overrepresented_sequence_extract"
-    run: {import: "../overrepresented_sequence_extract/overrepresented_sequence_extract.cwl" }
+    run: {import: "../qc/overrepresented_sequence_extract.cwl" }
     scatter: "#overrepresented_sequence_extract.input_fastqc_data"
     inputs:
       - id: "#overrepresented_sequence_extract.input_fastqc_data"
