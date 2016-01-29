@@ -80,6 +80,4 @@ steps:
         source: "#se_or_pe"
     outputs:
       - id: "#overrepresented_sequence_extract.output_custom_adapters"
-  - id: "#extract_fastqc_read_counts"
-    run: {import: "../qc/overrepresented_sequence_extract.cwl" }
 
