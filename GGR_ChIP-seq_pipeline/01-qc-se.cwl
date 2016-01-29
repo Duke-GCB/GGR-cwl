@@ -16,9 +16,15 @@ inputs:
     description: "Adapters file"
 
 outputs:
-  - id: "#output_read_counts"
+  - id: "#output_raw_read_counts"
     source: "#count_raw_reads.output_read_count"
     description: "Raw read counts of fastq files"
+    type:
+      type: array
+      items: File
+  - id: "#output_fastqc_read_counts"
+    source: "#count_fastqc_reads.output_fastqc_read_count"
+    description: "Read counts of fastq files from FastQC"
     type:
       type: array
       items: File
@@ -42,7 +48,7 @@ outputs:
 steps:
   - id: "#extract_basename"
     run: {import: "../qc/extract-basename.cwl" }
-    scatter:"#extract_basename.input_file"
+    scatter: "#extract_basename.input_file"
     inputs:
       - id: "#extract_basename.input_file"
         source: "#input_fastq_files"
@@ -63,7 +69,7 @@ steps:
       - id: "#count_raw_reads.output_read_count"
   - id: "#fastqc"
     run: {import: "../qc/fastqc.cwl" }
-    scatter:"#fastqc.input_fastq_file"
+    scatter: "#fastqc.input_fastq_file"
     inputs:
       - id: "#fastqc.input_fastq_file"
         source: "#input_fastq_files"
@@ -97,3 +103,16 @@ steps:
         source: "#extract_basename.output_basename"
     outputs:
       - id: "#overrepresented_sequence_extract.output_custom_adapters"
+  - id: "#count_fastqc_reads"
+    run: {import: "../qc/count-fastqc-reads.cwl" }
+    scatter:
+      - "#count_fastqc_reads.input_fastqc_data"
+      - "#count_fastqc_reads.input_basename"
+    scatterMethod: dotproduct
+    inputs:
+      - id: "#count_fastqc_reads.input_fastqc_data"
+        source: "#extract_fastqc_data.output_fastqc_data_file"
+      - id: "#count_fastqc_reads.input_basename"
+        source: "#extract_basename.output_basename"
+    outputs:
+      - id: "#count_fastqc_reads.output_fastqc_read_count"
