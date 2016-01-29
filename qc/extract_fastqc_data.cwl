@@ -18,6 +18,8 @@ inputs:
     type: File
     inputBinding:
       position: 2
+  - id: "#input_basename"
+    type: string
   - id: "#extract_pattern"
     type: string
     default: "*/fastqc_data.txt"
@@ -28,7 +30,7 @@ outputs:
   - id: "#output_fastqc_data_file"
     type: File
     outputBinding:
-      glob: $(inputs.input_qc_report_file.path.split('/').slice(-1)[0] + '.fastqc_data.txt')
+      glob: $(inputs.input_basename + '.fastqc_data.txt')
 
 baseCommand: unzip
-stdout: $(inputs.input_qc_report_file.path.split('/').slice(-1)[0] + '.fastqc_data.txt')
+stdout: $(inputs.input_basename + '.fastqc_data.txt')
