@@ -10,12 +10,13 @@
 TMP_OUTDIR_PREFIX=$HOME/cwl/out
 TMPDIR_PREFIX=$HOME/cwl/tmp
 
-FASTQ_FILE1=/Users/dcl9/Data/ggr-chip_seq/processed_raw_reads/TEST.t00_rep1.fastq
-FASTQ_FILE2=/Users/dcl9/Data/ggr-chip_seq/processed_raw_reads/TEST.t05_rep1.fastq
-DEFAULT_ADAPTERS_FILE=/Users/dcl9/Data/ggr-chip_seq/default_adapters/default_adapters.fasta
+FASTQ_FILE1=/Users/abarrera/data/TEST.t00_rep1.fastq
+FASTQ_FILE2=/Users/abarrera/data/TEST.t05_rep1.fastq
+DEFAULT_ADAPTERS_FILE=/Users/abarrera/data/adapters.fa
 
 cwl-runner \
   --debug \
+  --outdir=$HOME/data/output \
   --tmp-outdir-prefix=$TMP_OUTDIR_PREFIX \
   --tmpdir-prefix=$TMPDIR_PREFIX \
   GGR_ChIP-seq_pipeline/01-qc.cwl \
