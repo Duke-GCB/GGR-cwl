@@ -116,3 +116,16 @@ steps:
         source: "#extract_basename.output_basename"
     outputs:
       - id: "#count_fastqc_reads.output_fastqc_read_count"
+  - id: "#compare_read_counts"
+    run: {import: "../qc/diff.cwl" }
+    scatter:
+      - "#compare_read_counts.file1"
+      - "#compare_read_counts.file2"
+    scatterMethod: dotproduct
+    inputs:
+      - id: "#compare_read_counts.file1"
+        source: "#count_raw_reads.output_read_count"
+      - id: "#compare_read_counts.file2"
+        source: "#count_fastqc_reads.output_fastqc_read_count"
+    outputs:
+      - id: "#compare_read_counts.result"
