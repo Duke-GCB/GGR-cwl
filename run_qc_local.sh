@@ -19,7 +19,7 @@ cwl-runner \
   --outdir=$HOME/data/output \
   --tmp-outdir-prefix=$TMP_OUTDIR_PREFIX \
   --tmpdir-prefix=$TMPDIR_PREFIX \
-  GGR_ChIP-seq_pipeline/01-qc.cwl \
+  GGR_ChIP-seq_pipeline/01-qc-se.cwl \
   --input_fastq_files $FASTQ_FILE1 \
   --input_fastq_files $FASTQ_FILE2 \
   --default_adapters_file $DEFAULT_ADAPTERS_FILE \

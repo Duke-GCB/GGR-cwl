@@ -12,30 +12,22 @@ inputs:
     type: File
     inputBinding:
       position: 1
-#  - id: "#se_or_pe"
-#    description: "Single ended or paired end read"
-#    type: string
-#    inputBinding:
-#      position: 2
+ - id: "#input_basename"
+    type: string
+    description: "Name of the sample - used as a base name for generating output files"
   - id: "#default_adapters_file"
     description: "Adapters file in fasta format"
     type: File
     inputBinding:
       position: 2
-  - id: "#adapters_out_dir"
-    description: "Output directory for custom adapters"
-    type: File
-    default: null # Even though we're providing a valueFrom, workflow won't run unless there's a value
-    inputBinding:
-      position: 3
-      valueFrom:
-        engine: "cwl:JsonPointer"
-        script: "outdir"
 
 outputs:
   - id: "#output_custom_adapters"
     type: File
     outputBinding:
-      glob: "custom_adapters.fasta"
+      glob: $(inputs.input_basename + '.custom_adapters.fasta')
 
 baseCommand: overrepresented_sequence_extract.py
+arguments:
+  - valueFrom: $(inputs.input_basename + '.custom_adapters.fasta')
+    position: 3
