@@ -28,7 +28,7 @@ outputs:
   - id: "#output_fastqc_data_file"
     type: File
     outputBinding:
-      glob: "fastqc_data.txt"
+      glob: $(inputs.input_qc_report_file.path.split('/').slice(-1)[0] + '.fastqc_data.txt')
 
 baseCommand: unzip
-stdout: fastqc_data.txt
+stdout: $(inputs.input_qc_report_file.path.split('/').slice(-1)[0] + '.fastqc_data.txt')

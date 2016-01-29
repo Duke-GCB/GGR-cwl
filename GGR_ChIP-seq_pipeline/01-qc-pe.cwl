@@ -17,7 +17,6 @@ inputs:
   - id: "#se_or_pe"
     description: "Single ended or paired end read"
     type: string
-    default: "pe"
 
 outputs:
   - id: "#output_read_counts"
