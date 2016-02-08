@@ -19,4 +19,3 @@ outputs:
       outputEval: $(inputs.input_file.path.substr(inputs.input_file.path.lastIndexOf('/') + 1, inputs.input_file.path.lastIndexOf('.') - (inputs.input_file.path.lastIndexOf('/') + 1)))
 
 baseCommand: echo
-

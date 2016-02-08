@@ -6,13 +6,10 @@ hints:
   - class: DockerRequirement
     dockerImageId: 'dukegcb/bowtie2'
 
-requirements:
-  - import: ../py-expr-engine/py-expr-engine.cwl
-
 inputs:
   - id: "#threads"
     type: int
-    default: 8
+    default: 1
     inputBinding:
       position: 1
       prefix: --threads
@@ -50,3 +47,10 @@ outputs:
         script: "job/output_aligned_file_name"
 
 baseCommand: bowtie2
+
+
+#      /data/reddylab/software/bowtie-0.12.9/bowtie -t -m 1 -v 2 --best --strata --sam --threads $THREADS -X 2000 \
+#      -q $GENOME_REF \
+#      ${DATA_DIR}/${SAMPLE}.trimmed.fastq \
+#      ${SAMPLE}.sam \
+#      2> bowtie.${SAMPLE}.stats.txt

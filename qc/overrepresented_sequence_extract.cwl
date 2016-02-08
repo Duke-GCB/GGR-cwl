@@ -12,7 +12,7 @@ inputs:
     type: File
     inputBinding:
       position: 1
- - id: "#input_basename"
+  - id: "#input_basename"
     type: string
     description: "Name of the sample - used as a base name for generating output files"
   - id: "#default_adapters_file"

@@ -34,7 +34,7 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#output_fastqc_data_file"
+  - id: "#output_fastqc_data_files"
     source: "#extract_fastqc_data.output_fastqc_data_file"
     type:
       type: array
@@ -47,7 +47,7 @@ outputs:
 
 steps:
   - id: "#extract_basename"
-    run: {import: "../qc/extract-basename.cwl" }
+    run: {import: "../utils/extract-basename.cwl" }
     scatter: "#extract_basename.input_file"
     inputs:
       - id: "#extract_basename.input_file"
@@ -55,7 +55,7 @@ steps:
     outputs:
       - id: "#extract_basename.output_basename"
   - id: "#count_raw_reads"
-    run: {import: "../qc/count-fastq-reads.cwl" }
+    run: {import: "../utils/count-fastq-reads.cwl" }
     scatter:
       - "#count_raw_reads.input_fastq_file"
       - "#count_raw_reads.input_basename"
