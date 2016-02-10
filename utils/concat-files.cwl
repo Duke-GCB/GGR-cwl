@@ -3,10 +3,6 @@
 class: CommandLineTool
 description: "Counts reads in a fastq file"
 
-hints:
-  - class: DockerRequirement
-    dockerImageId: 'dukegcb/workflow-utils'
-
 inputs:
   - id: "#input_file1"
     type: File
@@ -22,5 +18,5 @@ outputs:
     outputBinding:
       glob: $(inputs.input_file1.path.replace(/.*\/|\.[^.]*$/g, "") + "-" + inputs.input_file2.path.replace(/.*\/|\.[^.]*$/g, ""))
 
-baseCommand: concat-files.sh
+baseCommand: cat
 stdout: $(inputs.input_file1.path.replace(/.*\/|\.[^.]*$/g, "") + "-" + inputs.input_file2.path.replace(/.*\/|\.[^.]*$/g, ""))
