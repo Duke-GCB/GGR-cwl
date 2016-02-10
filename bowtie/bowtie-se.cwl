@@ -8,6 +8,7 @@ hints:
 
 requirements:
   - class: InlineJavascriptRequirement
+  - class: ShellCommandRequirement
 
 inputs:
   - id: "#t"
@@ -86,11 +87,11 @@ outputs:
     outputBinding:
       glob: "*.sam"
       outputEval: $(self[0])
-#  - id: "#output_bowtie_log"  #TODO: not working
-#    type: File
-#    outputBinding:
-#      glob: "*.log"
-#      outputEval: $(self[0])
+  - id: "#output_bowtie_log"
+    type: File
+    outputBinding:
+      glob: $(inputs.output_filename + '.log')
+      outputEval: $(self[0])
 
 baseCommand: bowtie
 arguments:
@@ -98,4 +99,6 @@ arguments:
     position: 9
   - valueFrom: $(inputs.output_filename + '.sam')
     position: 11
-#stderr: $(inputs.output_filename.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.bowtie.log')  #TODO: not working
+  - valueFrom: $('2> ' + inputs.output_filename + '.log')
+    position: 100000
+    shellQuote: false
