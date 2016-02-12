@@ -26,6 +26,9 @@ inputs:
   - id: "#genome_sizes_file"
     type: File
     description: "Genome sizes tab-delimited file (used in samtools)"
+  - id: "#ENCODE_blacklist_bedfile"
+    type: File
+    description: "Bedfile containing ENCODE consensus blacklist regions to be excluded."
   - id: "#nthreads_mapping"
     type: int
     default: 1
@@ -170,13 +173,26 @@ steps:
     outputs:
       - id: "#remove_duplicates.output_metrics_file"
       - id: "#remove_duplicates.output_dedup_bam_file"
+  - id: "#remove_encode_blacklist"
+    run: {import: "../map/bedtools-intersect.cwl"}
+    scatter:
+      - "#remove_encode_blacklist.a"
+    inputs:
+      - id: "#remove_encode_blacklist.v"
+        default: true
+      - id: "#remove_encode_blacklist.a"
+        source: "#remove_duplicates.output_dedup_bam_file"
+      - id: "#remove_encode_blacklist.b"
+        source: "#ENCODE_blacklist_bedfile"
+    outputs:
+      - id: "#remove_encode_blacklist.file_wo_blacklist_regions"
   - id: "#sort_dedup_bams"
     run: {import: "../map/samtools-sort.cwl"}
     scatter:
       - "#sort_dedup_bams.input_file"
     inputs:
       - id: "#sort_dedup_bams.input_file"
-        source: "#remove_duplicates.output_dedup_bam_file"
+        source: "#remove_encode_blacklist.file_wo_blacklist_regions"
     outputs:
       - id: "#sort_dedup_bams.sorted_file"
   - id: "#index_dedup_bams"
