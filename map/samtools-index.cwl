@@ -17,12 +17,13 @@ inputs:
       position: 1
 
 outputs:
-  - id: "#sorted_file"
+  - id: "#index_file"
     type: File
-    description: "Sorted aligned file"
+    description: "Index aligned file"
     outputBinding:
-      glob: "*.sorted"
-      outputEval: $(self[0])
+      glob: $(inputs.input_file.path.split('/').slice(-1)[0] + '.bai')
 
-baseCommand: ["samtools", "sort"]
-stdout: $(inputs.input_file.path.split('/').slice(-1)[0] + '.sorted')
+baseCommand: ["samtools", "index"]
+arguments:
+  - valueFrom: $(inputs.input_file.path.split('/').slice(-1)[0] + '.bai')
+    position: 2
