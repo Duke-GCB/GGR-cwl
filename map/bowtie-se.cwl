@@ -60,7 +60,7 @@ inputs:
     inputBinding:
       position: 2
       prefix: "--sam"
-  - id: "#threads"
+  - id: "#nthreads"
     type: int
     default: 1
     description: "<int> number of alignment threads to launch (default: 1)"
@@ -90,7 +90,7 @@ outputs:
   - id: "#output_bowtie_log"
     type: File
     outputBinding:
-      glob: $(inputs.output_filename + '.log')
+      glob: $(inputs.output_filename + '.bowtie.log')
       outputEval: $(self[0])
 
 baseCommand: bowtie
@@ -99,6 +99,6 @@ arguments:
     position: 9
   - valueFrom: $(inputs.output_filename + '.sam')
     position: 11
-  - valueFrom: $('2> ' + inputs.output_filename + '.log')
+  - valueFrom: $('2> ' + inputs.output_filename + '.bowtie.log')
     position: 100000
     shellQuote: false
