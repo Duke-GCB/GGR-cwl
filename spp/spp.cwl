@@ -4,108 +4,54 @@ class: CommandLineTool
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/bowtie'
+    dockerImageId: 'dukegcb/spp'
 
 requirements:
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement
 
 inputs:
-  - id: "#t"
-    type: boolean
-    default: true
-    description: "Print wall-clock time taken by search phases"
+  - id: "#absolute_path_to_run_spp_script"
+    type: string
+    description: 'Absolute path to the run_spp.R script (Required for compatibility with docker)'
     inputBinding:
       position: 1
-      prefix: "-t"
-  - id: "#m"
-    type: int
-    default: 1
-    description: "Suppress all alignments if > <int> exist (def: 1)"
-    inputBinding:
-      position: 7
-      prefix: "-m"
-  - id: "#v"
-    type: int
-    default: 2
-    description: "Report end-to-end hits w/ <=v mismatches; ignore qualities"
-    inputBindng:
-      position: 3
-      prefix: "-v"
-  - id: "#X"
-    type: int
-    default: 2000
-    description: "maximum insert size for paired-end alignment (default: 2000)"
-    inputBinding:
-      position: 4
-      prefix: "-X"
-  - id: "#best"
-    type: boolean
-    default: true
-    description: "Hits guaranteed best stratum; ties broken by quality"
-    inputBinding:
-      position: 5
-      prefix: "--best"
-  - id: "#strata"
-    type: boolean
-    default: true
-    description: "Hits in sub-optimal strata aren't reported (requires --best)"
-    inputBinding:
-      position: 6
-      prefix: "--strata"
-  - id: "#sam"
-    type: boolean
-    default: true
-    description: "Write hits in SAM format (default: BAM)"
+  - id: savp
+    type:
+      - 'null'
+      - boolean
+    description: "\t save cross-correlation plot\n"
     inputBinding:
       position: 2
-      prefix: "--sam"
-  - id: "#nthreads"
-    type: int
-    default: 1
-    description: "<int> number of alignment threads to launch (default: 1)"
+      valueFrom: $('-savp=' + inputs.c.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.pdf')
+  - id: c
+    type: File
+    description: "<ChIP_alignFile>, full path and name (or URL) of tagAlign/BAM file (can be gzipped)(FILE EXTENSION MUST BE tagAlign.gz, tagAlign, bam or bam.gz)"
     inputBinding:
-      position: 8
-      prefix: "--threads"
-  - id: "#genome_ref_index_files"
-    description: "Bowtie index files for the reference genome"
+      position: 2
+      valueFrom: $('-c=' + self.path)
+  - id: rf
     type:
-      type: array
-      items: File
-  - id: "#input_fastq_read1_file"
-    description: "Query input FASTQ file."
-    type: File
+      - 'null'
+      - boolean
+    description: "\t overwrite (force remove) output files in case they exist \n"
     inputBinding:
-      position: 10
-      prefix: "-1"
-  - id: "#input_fastq_read2_file"
-    description: "Query input FASTQ file."
-    type: File
-    inputBinding:
-      position: 11
-      prefix: "-2"
-  - id: "#output_filename"
-    type: string
-
+      position: 2
+      prefix: "-rf"
 outputs:
-  - id: "#output_aligned_file"
+  - id: "#output_spp_cross_corr"
     type: File
-    description: "Aligned bowtie file in [SAM|BAM] format."
+    description: "peakshift/phantomPeak results file"
     outputBinding:
-      glob: "*.sam"
-      outputEval: $(self[0])
-  - id: "#output_bowtie_log"
+      glob: $(inputs.c.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.txt')
+  - id: "#output_spp_cross_corr_plot"
     type: File
+    description: "peakshift/phantomPeak results file plot"
     outputBinding:
-      glob: $(inputs.output_filename + '.bowtie.log')
-      outputEval: $(self[0])
+      glob: $(inputs.c.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.pdf')
 
-baseCommand: bowtie
+baseCommand: Rscript
+
 arguments:
-  - valueFrom: $(inputs.genome_ref_index_files[0].path.split('.').splice(0,inputs.genome_ref_index_files[0].path.split('.').length-2).join("."))
-    position: 9
-  - valueFrom: $(inputs.output_filename + '.sam')
-    position: 12
-  - valueFrom: $('2> ' + inputs.output_filename + '.bowtie.log')
-    position: 100000
-    shellQuote: false
+  - valueFrom: $('-out=' + inputs.c.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.txt')
+    position: 2

@@ -30,6 +30,12 @@ inputs:
     inputBinding:
       position: 2
       valueFrom: $('-c=' + self.path)
+  - id: i
+    type: File
+    description: "\tMandatory for PEAK CALLING\n\t-i=<Input_alignFile>, full path and name (or URL) of tagAlign/BAM file (can be gzipped) (FILE EXTENSION MUST BE tagAlign.gz, tagAlign, bam or bam.gz)"
+    inputBinding:
+      position: 2
+      valueFrom: $('-i=' + self.path)
 
 outputs:
   - id: "#output_spp_cross_corr"
@@ -43,9 +49,7 @@ outputs:
     outputBinding:
       glob: $(inputs.c.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.pdf')
 
-baseCommand:
-  - Rscript
-
+baseCommand: Rscript
 arguments:
   - valueFrom: $('-out=' + inputs.c.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.txt')
     position: 2
