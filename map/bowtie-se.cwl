@@ -85,13 +85,11 @@ outputs:
     type: File
     description: "Aligned bowtie file in [SAM|BAM] format."
     outputBinding:
-      glob: "*.sam"
-      outputEval: $(self[0])
+      glob: $(inputs.output_filename + '.sam')
   - id: "#output_bowtie_log"
     type: File
     outputBinding:
       glob: $(inputs.output_filename + '.bowtie.log')
-      outputEval: $(self[0])
 
 baseCommand: bowtie
 arguments:
