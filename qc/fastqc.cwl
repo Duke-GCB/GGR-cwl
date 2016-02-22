@@ -36,13 +36,13 @@ inputs:
     type: int
     default: 1
     inputBinding:
-      position: 4
+      position: 5
       prefix: "--threads"
   - id: "#tmpdir"
     type: string
     default: null
     inputBinding:
-      position: 5
+      position: 6
       prefix: "--dir"
       valueFrom:
         engine: "cwl:JsonPointer"
