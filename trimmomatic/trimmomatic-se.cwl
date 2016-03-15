@@ -7,7 +7,7 @@ hints:
     dockerImageId: 'dukegcb/trimmomatic'
 
 inputs:
-  - id: "#threads"
+  - id: "#nthreads"
     type: int
     default: 1
     inputBinding:
@@ -30,8 +30,7 @@ outputs:
   - id: "#output_trimmed_file"
     type: File
     outputBinding:
-      glob: "*.trimmed.fastq"
-      outputEval: $(self[0])  # Note that glob expression will return always an array
+      glob: $(inputs.input_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.trimmed.fastq')
 
 baseCommand: TrimmomaticSE
 arguments:
@@ -41,11 +40,3 @@ arguments:
     position: 5
   - valueFrom: $("LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:10")
     position: 6
-
-#    java -jar /data/reddylab/software/Trimmomatic-0.32/trimmomatic-0.32.jar SE \
-#    -threads $THREADS -phred33 \
-#    ${DATA_DIR}/${SAMPLE}.fastq \
-#    ${OUT_DIR}/${SAMPLE}.trimmed.fastq \
-#    ILLUMINACLIP:${ADAPTERS_DIR}/${SAMPLE}_custom_adapters.fasta:2:30:15 \
-#    LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:${MINLEN} \
-#    2>${JOB_LOGS_DIR}/${JOB}_err/${ITER_NUM}/${SAMPLE}.err.txt
