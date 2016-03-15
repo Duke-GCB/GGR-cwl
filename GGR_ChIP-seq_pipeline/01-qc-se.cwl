@@ -14,6 +14,8 @@ inputs:
   - id: "#default_adapters_file"
     type: File
     description: "Adapters file"
+  - id: "#nthreads_qc"
+    type: int
 
 outputs:
   - id: "#output_raw_read_counts"
