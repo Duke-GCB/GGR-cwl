@@ -19,6 +19,9 @@ inputs:
   - id: "#default_adapters_file"
     type: File
     description: "Adapters file"
+  - id: "#nthreads"
+    description: "Number of threads."
+    type: int
 
 outputs:
   - id: "#output_fastqc_report_files_read1"
@@ -55,6 +58,26 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#output_count_raw_reads_read1"
+    source: "#count_raw_reads_read1.output_read_count"
+    type:
+      type: array
+      items: File
+  - id: "#output_count_raw_reads_read2"
+    source: "#count_raw_reads_read2.output_read_count"
+    type:
+      type: array
+      items: File
+  - id: "#output_diff_counts_read1"
+    source: "#compare_read_counts_read1.result"
+    type:
+      type: array
+      items: File
+  - id: "#output_diff_counts_read2"
+    source: "#compare_read_counts_read2.result"
+    type:
+      type: array
+      items: File
 steps:
   - id: "#extract_basename_read1"
     run: {import: "../utils/extract-basename.cwl" }
@@ -73,7 +96,6 @@ steps:
     outputs:
       - id: "#extract_basename_read2.output_basename"
 
-
   - id: "#count_raw_reads_read1"
     run: {import: "../utils/count-fastq-reads.cwl" }
     scatter:
@@ -87,8 +109,6 @@ steps:
         source: "#extract_basename_read1.output_basename"
     outputs:
       - id: "#count_raw_reads_read1.output_read_count"
-
-
 
   - id: "#count_raw_reads_read2"
     run: {import: "../utils/count-fastq-reads.cwl" }
@@ -110,6 +130,8 @@ steps:
     inputs:
       - id: "#fastqc_read1.input_fastq_file"
         source: "#input_read1_fastq_files"
+      - id: "#fastqc.threads"
+        source: "#nthreads"
     outputs:
       - id: "#fastqc_read1.output_qc_report_file"
   - id: "#fastqc_read2"
@@ -118,6 +140,8 @@ steps:
     inputs:
       - id: "#fastqc_read2.input_fastq_file"
         source: "#input_read2_fastq_files"
+      - id: "#fastqc.threads"
+        source: "#nthreads"
     outputs:
       - id: "#fastqc_read2.output_qc_report_file"
 
