@@ -22,7 +22,7 @@ inputs:
   - id: "#ENCODE_blacklist_bedfile"
     type: File
     description: "Bedfile containing ENCODE consensus blacklist regions to be excluded."
-  - id: "#nthreads_mapping"
+  - id: "#nthreads"
     type: int
     default: 1
 
@@ -107,7 +107,7 @@ steps:
       - id: "#bowtie-se.genome_ref_first_index_file"
         source: "#genome_ref_first_index_file"
       - id: "bowtie-se.nthreads"
-        source: "#nthreads_mapping"
+        source: "#nthreads"
     outputs:
       - id: "#bowtie-se.output_aligned_file"
       - id: "#bowtie-se.output_bowtie_log"
@@ -127,6 +127,8 @@ steps:
     inputs:
       - id: "#sort_bams.input_file"
         source: "#sam2bam.bam_file"
+      - id: "#sort_bams.nthreads"
+        source: "#nthreads"
     outputs:
       - id: "#sort_bams.sorted_file"
   - id: "#filter-unmapped"
@@ -149,6 +151,8 @@ steps:
     inputs:
       - id: "#filtered2sorted.input_file"
         source: "#filter-unmapped.filtered_file"
+      - id: "#filtered2sorted.nthreads"
+        source: "#nthreads"
     outputs:
       - id: "#filtered2sorted.sorted_file"
   - id: "#preseq-c-curve"
@@ -230,6 +234,8 @@ steps:
     inputs:
       - id: "#sort_dedup_bams.input_file"
         source: "#remove_encode_blacklist.file_wo_blacklist_regions"
+      - id: "#sort_dedup_bams.nthreads"
+        source: "#nthreads"
     outputs:
       - id: "#sort_dedup_bams.sorted_file"
   - id: "#index_dedup_bams"
