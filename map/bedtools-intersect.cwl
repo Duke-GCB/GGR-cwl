@@ -299,12 +299,15 @@ inputs:
     inputBinding:
       position: 1
       prefix: '-iobuf'
+  - id: "#output_basename_file"
+    type: string
+
 outputs:
   - id: '#file_wo_blacklist_regions'
     type: File
     outputBinding:
-      glob: $(inputs.a.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.filtered.bam')
-stdout: $(inputs.a.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.filtered.bam')
+      glob: $(inputs.output_basename_file + '.dedup_filtered.bam')
+stdout: $(inputs.output_basename_file + '.dedup_filtered.bam')
 baseCommand:
   - bedtools
   - intersect

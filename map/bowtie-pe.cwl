@@ -67,11 +67,18 @@ inputs:
     inputBinding:
       position: 8
       prefix: "--threads"
-  - id: "#genome_ref_index_files"
-    description: "Bowtie index files for the reference genome"
-    type:
-      type: array
-      items: File
+  - id: "#genome_ref_first_index_file"
+    description: "First file (extension .1.ebwt) of the Bowtie index files generated for the reference genome (see http://bowtie-bio.sourceforge.net/tutorial.shtml#newi)"
+    type: File
+    secondaryFiles:
+      - "^^.2.ebwt"
+      - "^^.3.ebwt"
+      - "^^.4.ebwt"
+      - "^^.rev.1.ebwt"
+      - "^^.rev.2.ebwt"
+    inputBinding:
+      position: 9
+      valueFrom: $(self.path.split('.').splice(0,self.path.split('.').length-2).join("."))
   - id: "#input_fastq_read1_file"
     description: "Query input FASTQ file."
     type: File
@@ -100,8 +107,6 @@ outputs:
 
 baseCommand: bowtie
 arguments:
-  - valueFrom: $(inputs.genome_ref_index_files[0].path.split('.').splice(0,inputs.genome_ref_index_files[0].path.split('.').length-2).join("."))
-    position: 9
   - valueFrom: $(inputs.output_filename + '.sam')
     position: 12
   - valueFrom: $('2> ' + inputs.output_filename + '.bowtie.log')

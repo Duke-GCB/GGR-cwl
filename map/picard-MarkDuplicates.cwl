@@ -19,7 +19,10 @@ inputs:
       position: 4
       valueFrom: $('INPUT=' + self.path)
       shellQuote: false
-
+  - id: "#output_filename"
+    type: string
+    description: "Output filename used as basename"
+      
   - id: "#java_Xms"
     type: string
     description: "Starting memory allocation pool for a Java Virtual Machine (JVM)"
@@ -58,26 +61,19 @@ outputs:
   - id: '#output_metrics_file'
     type: File
     outputBinding:
-      glob: $(inputs.input_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.' + inputs.metrics_suffix)
+      glob: $(inputs.output_filename + '.' + inputs.metrics_suffix)
   - id: '#output_dedup_bam_file'
     type: File
     outputBinding:
-      glob: $(inputs.input_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.')  + '.' + inputs.output_suffix)
+      glob: $(inputs.output_filename  + '.' + inputs.output_suffix)
 
 baseCommand: ["java"]
 arguments:
   - valueFrom: "MarkDuplicates"
     position: 3
-  - valueFrom: $('OUTPUT=' + inputs.input_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.' + inputs.output_suffix)
+  - valueFrom: $('OUTPUT=' + inputs.output_filename + '.' + inputs.output_suffix)
     position: 5
     shellQuote: false
-  - valueFrom: $('METRICS_FILE='+inputs.input_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.' + inputs.metrics_suffix)
+  - valueFrom: $('METRICS_FILE='+inputs.output_filename + '.' + inputs.metrics_suffix)
     position: 5
     shellQuote: false
-
-# remove duplicates
-#java -Xms12000m -Xmx12000m -jar /data/reddylab/software/picard/dist/picard.jar MarkDuplicates \
-#INPUT=${SAMPLE}.accepted_hits.bam \
-#OUTPUT=${SAMPLE}.dedup.bam \
-#METRICS_FILE=picard.${SAMPLE}_dedup_metrics.txt \
-#REMOVE_DUPLICATES=TRUE CREATE_INDEX=TRUE
