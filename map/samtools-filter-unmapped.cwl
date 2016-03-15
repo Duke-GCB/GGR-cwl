@@ -14,13 +14,13 @@ inputs:
     type: File
     description: "Aligned file to be sorted with samtools"
     inputBinding:
-      position: 1
+      position: 1000
   - id: "#nthreads"
     type: int
     default: 1
     description: "Number of threads used in sorting"
     inputBinding:
-      position: 2
+      position: 1
       prefix: "-@"
   - id: "#output_filename"
     type: string
