@@ -33,33 +33,29 @@ outputs:
   - id: "#output_read1_trimmed_paired_file"
     type: File
     outputBinding:
-      glob: "*R1.paired.trimmed.fastq"
-      outputEval: $(self[0])
+      glob: $(inputs.input_read1_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.paired.trimmed.fastq')
   - id: "#output_read1_trimmed_unpaired_file"
     type: File
     outputBinding:
-      glob: "*R1.unpaired.trimmed.fastq"
-      outputEval: $(self[0])
+      glob: $(inputs.input_read1_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.unpaired.trimmed.fastq')
   - id: "#output_read2_trimmed_paired_file"
     type: File
     outputBinding:
-      glob: "*R2.paired.trimmed.fastq"
-      outputEval: $(self[0])
+      glob: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.paired.trimmed.fastq')
   - id: "#output_read2_trimmed_unpaired_file"
     type: File
     outputBinding:
-      glob: "*R2.unpaired.trimmed.fastq"
-      outputEval: $(self[0])
+      glob: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.unpaired.trimmed.fastq')
 
 baseCommand: TrimmomaticPE
 arguments:
-  - valueFrom: $(inputs.input_read1_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.R1.paired.trimmed.fastq')
+  - valueFrom: $(inputs.input_read1_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.paired.trimmed.fastq')
     position: 5
-  - valueFrom: $(inputs.input_read1_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.R1.unpaired.trimmed.fastq')
+  - valueFrom: $(inputs.input_read1_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.unpaired.trimmed.fastq')
     position: 6
-  - valueFrom: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.R2.paired.trimmed.fastq')
+  - valueFrom: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.paired.trimmed.fastq')
     position: 7
-  - valueFrom: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.R2.unpaired.trimmed.fastq')
+  - valueFrom: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.unpaired.trimmed.fastq')
     position: 8
   - valueFrom: $("ILLUMINACLIP:" + inputs.input_adapters_file.path + ":2:30:15")
     position: 9
