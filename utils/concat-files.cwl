@@ -1,7 +1,11 @@
 #!/usr/bin/env cwl-runner
 
 class: CommandLineTool
-description: "Counts reads in a fastq file"
+description: "Concat file1 and file2 into output_file."
+
+hints:
+  - class: DockerRequirement
+    dockerImageId: 'dukegcb/workflow-utils'
 
 inputs:
   - id: "#input_file1"
@@ -16,7 +20,7 @@ outputs:
   - id: "#output_file"
     type: File
     outputBinding:
-      glob: $(inputs.input_file1.path.replace(/.*\/|\.[^.]*$/g, "") + "-" + inputs.input_file2.path.replace(/.*\/|\.[^.]*$/g, ""))
+      glob: $(inputs.input_file1.path.replace(/.*\/|\.[^.]*$/g, "") + "_" + inputs.input_file2.path.replace(/.*\/|\.[^.]*$/g, "") + ".joined")
 
 baseCommand: cat
-stdout: $(inputs.input_file1.path.replace(/.*\/|\.[^.]*$/g, "") + "-" + inputs.input_file2.path.replace(/.*\/|\.[^.]*$/g, ""))
+stdout: $(inputs.input_file1.path.replace(/.*\/|\.[^.]*$/g, "") + "_" + inputs.input_file2.path.replace(/.*\/|\.[^.]*$/g, "") + ".joined")
