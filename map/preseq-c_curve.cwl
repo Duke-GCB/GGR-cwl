@@ -10,7 +10,7 @@ requirements:
   - class: InlineJavascriptRequirement
 
 inputs:
-  - id: output_filename
+  - id: output_file_basename
     type: string
   - id: input_sorted_file
     type: File
@@ -32,9 +32,10 @@ inputs:
     inputBinding:
       position: 1
       prefix: '-v'
-  - id: P
-    type: boolean
-    default: false
+  - id: pe
+    type:
+      - 'null'
+      - boolean
     description: "-pe       input is paired end read file \n"
     inputBinding:
       position: 1
@@ -74,8 +75,8 @@ outputs:
   - id: '#output_file'
     type: File
     outputBinding:
-      glob: $(inputs.output_filename)
-stdout: $(inputs.output_filename)
+      glob: $(inputs.output_file_basename + '.preseq_c_curve.txt')
+stdout: $(inputs.output_file_basename + '.preseq_c_curve.txt')
 baseCommand:
   - preseq
   - c_curve
