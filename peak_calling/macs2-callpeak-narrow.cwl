@@ -17,12 +17,6 @@ inputs:
     inputBinding:
       position: 1
       prefix: -t
-  - id: "#control_sample_file"
-    type: File
-    description: 'ChIP-seq control file. \n'
-    inputBinding:
-      position: 1
-      prefix: -c
   - id: "#nomodel"
     type:
       - 'null'
@@ -99,7 +93,6 @@ arguments:
 #    if [ $PEAKS_TYPE == "narrow" ]; then
 #        /data/reddylab/software/anaconda/bin/macs2 callpeak \
 #        -t ${MAPPED_DIR}/${TRT_SAMPLE}${SUFFIX} \
-#        -c ${MAPPED_DIR}/${CTRL_SAMPLE}${SUFFIX} \
 #        -n $TRT_SAMPLE \
 #        -f $ALN_FORMAT \
 #        --nomodel --extsize $EXTSIZE \

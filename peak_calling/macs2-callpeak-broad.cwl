@@ -17,12 +17,6 @@ inputs:
     inputBinding:
       position: 1
       prefix: -t
-  - id: "#control_sample_file"
-    type: File
-    description: 'ChIP-seq control file. \n'
-    inputBinding:
-      position: 1
-      prefix: -c
   - id: "#nomodel"
     type:
       - 'null'

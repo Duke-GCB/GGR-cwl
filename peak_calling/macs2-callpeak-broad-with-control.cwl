@@ -17,6 +17,12 @@ inputs:
     inputBinding:
       position: 1
       prefix: -t
+  - id: "#control_sample_file"
+    type: File
+    description: 'ChIP-seq control file. \n'
+    inputBinding:
+      position: 1
+      prefix: -c
   - id: "#nomodel"
     type:
       - 'null'
@@ -47,13 +53,14 @@ inputs:
     inputBinding:
       position: 2
       preix: '--extsize'
-  - id: "#q"
+  - id: "#broad_cutoff"
     type: float
-    description: "Minimum FDR (q-value) cutoff for peak detection. DEFAULT: 0.05. -q, and -p are mutually exclusive.\n"
-    default: 0.05
+    description: "Cutoff for broad region. If -p is set, this is a pvalue
+                        cutoff, otherwise, it's a qvalue cutoff. DEFAULT: 0.1 \n"
+    default: 0.1
     inputBinding:
       position: 3
-      prefix: '-q'
+      prefix: '--broad-cutoff'
   - id: "#p"
     type:
       - 'null'
@@ -77,24 +84,26 @@ inputs:
       prefix: '-g'
 
 outputs:
-  - id: "#output_narrowpeak_file"
+  - id: "#output_broadpeak_file"
     type: File
-    description: "Peak calling output file in narrowPeak format."
+    description: "Peak calling output file in broadPeak format."
     outputBinding:
-      glob: $(inputs.treatment_sample_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '_peaks.narrowPeak')
+      glob: $(inputs.treatment_sample_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '_peaks.broadPeak')
 
-baseCommand: ["macs2" , "callpeak"]
+baseCommand: ["macs2" , "callpeak", "--broad"]
 
 arguments:
   - valueFrom: $('-n=' + inputs.treatment_sample_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.'))
     position: 2
 
 
-#    if [ $PEAKS_TYPE == "narrow" ]; then
+
 #        /data/reddylab/software/anaconda/bin/macs2 callpeak \
 #        -t ${MAPPED_DIR}/${TRT_SAMPLE}${SUFFIX} \
+#        -c ${MAPPED_DIR}/${CTRL_SAMPLE}${SUFFIX} \
 #        -n $TRT_SAMPLE \
 #        -f $ALN_FORMAT \
 #        --nomodel --extsize $EXTSIZE \
 #        -g hs \
-#        -q 0.05
+#        --broad \
+#        --broad-cutoff 0.1
