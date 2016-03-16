@@ -57,12 +57,12 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#output_preseq_lc_extrap_files"
-    source: "#preseq-lc-extrap.output_file"
-    description: "Preseq lc_extrap output files."
-    type:
-      type: array
-      items: File
+#  - id: "#output_preseq_lc_extrap_files"
+#    source: "#preseq-lc-extrap.output_file"
+#    description: "Preseq lc_extrap output files."
+#    type:
+#      type: array
+#      items: File
   - id: "#output_pbc_files"
     source: "#execute_pcr_bottleneck_coef.pbc_file"
     description: "PCR Bottleneck Coeficient files."
@@ -168,21 +168,21 @@ steps:
         source: "#extract_basename_2.output_path"
     outputs:
       - id: "#preseq-c-curve.output_file"
-  - id: "#preseq-lc-extrap"
-    run: {import: "../map/preseq-lc_extrap.cwl"}
-    scatter:
-      - "#preseq-lc-extrap.input_sorted_file"
-      - "#preseq-lc-extrap.output_file_basename"
-    scatterMethod: dotproduct
-    inputs:
-      - id: "#preseq-lc-extrap.input_sorted_file"
-        source: "#filtered2sorted.sorted_file"
-      - id: "#preseq-lc-extrap.output_file_basename"
-        source: "#extract_basename_2.output_path"
-      - id: "#preseq-lc-extrap.s"
-        default: 100000
-    outputs:
-      - id: "#preseq-lc-extrap.output_file"
+#  - id: "#preseq-lc-extrap"
+#    run: {import: "../map/preseq-lc_extrap.cwl"}
+#    scatter:
+#      - "#preseq-lc-extrap.input_sorted_file"
+#      - "#preseq-lc-extrap.output_file_basename"
+#    scatterMethod: dotproduct
+#    inputs:
+#      - id: "#preseq-lc-extrap.input_sorted_file"
+#        source: "#filtered2sorted.sorted_file"
+#      - id: "#preseq-lc-extrap.output_file_basename"
+#        source: "#extract_basename_2.output_path"
+#      - id: "#preseq-lc-extrap.s"
+#        default: 100000
+#    outputs:
+#      - id: "#preseq-lc-extrap.output_file"
   - id: "#execute_pcr_bottleneck_coef"
     run: {import: "../map/pcr-bottleneck-coef.cwl"}
     inputs:
