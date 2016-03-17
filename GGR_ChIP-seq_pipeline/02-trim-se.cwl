@@ -19,11 +19,6 @@ inputs:
   - id: "#nthreads"
     type: int
     default: 1
-  - id: "#quality_score"
-    type: string
-    default: "-phred33"
-
-
 
 outputs:
   - id: "#output_data_fastq_trimmed_files"
@@ -51,6 +46,8 @@ steps:
         source: "#input_fastq_files"
       - id: "#trimmomatic-se.input_adapters_file"
         source: "#input_adapters_files"
+      - id: "#trimmomatic-se.nthreads"
+        source: "#nthreads"
     outputs:
       - id: "#trimmomatic-se.output_trimmed_file"
   - id: "#extract_basename"

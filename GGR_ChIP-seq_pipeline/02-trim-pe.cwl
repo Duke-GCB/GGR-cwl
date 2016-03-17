@@ -29,6 +29,7 @@ inputs:
   - id: "#nthreads"
     type: int
     default: 1
+    description: "Number of threads"
   - id: "#quality_score"
     type: string
     default: "-phred33"
@@ -59,7 +60,6 @@ outputs:
       type: array
       items: File
 
-
 steps:
   - id: "#concat_adapters"
     run: {import: "../utils/concat-files.cwl"}
@@ -88,6 +88,8 @@ steps:
         source: "#input_read2_fastq_files"
       - id: "#trimmomatic-pe.input_adapters_file"
         source: "#concat_adapters.output_file"
+      - id: "#trimmomatic-pe.nthreads"
+        source: "#nthreads"
     outputs:
       - id: "#trimmomatic-pe.output_read1_trimmed_paired_file"
 #      - id: "#trimmomatic-pe.output_read1_trimmed_unpaired_file"
