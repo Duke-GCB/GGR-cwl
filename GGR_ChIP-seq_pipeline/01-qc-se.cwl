@@ -14,6 +14,9 @@ inputs:
   - id: "#default_adapters_file"
     type: File
     description: "Adapters file"
+  - id: "#nthreads"
+    description: "Number of threads."
+    type: int
 
 outputs:
   - id: "#output_raw_read_counts"
@@ -73,6 +76,8 @@ steps:
     inputs:
       - id: "#fastqc.input_fastq_file"
         source: "#input_fastq_files"
+      - id: "#fastqc.threads"
+        source: "#nthreads"
     outputs:
       - id: "#fastqc.output_qc_report_file"
   - id: "#extract_fastqc_data"
