@@ -33,9 +33,3 @@ arguments:
     position: 3
 
 description: "Tool:   bedGraphToBigWig v 4 - Convert a bedGraph file to bigWig format."
-
-## convert bedgraph to bigwig (for visualization)
-#bedGraphToBigWig \
-#${SAMPLE}.raw.bdg \
-#/data/reddylab/projects/GGR/data/auxiliary/${GENOME}.sizes \
-#${SAMPLE}.raw.bw
