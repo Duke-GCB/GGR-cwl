@@ -11,6 +11,10 @@ inputs:
     type:
       type: array
       items: File
+  - id: "#input_output_filenames"
+    type:
+      type: array
+      items: string
   - id: "#genome_sizes"
     type: File
 
@@ -36,14 +40,14 @@ steps:
       - id: "#bedtools_genomecov.output_bedfile"
   - id: "#compute_pbc"
     run: {import: "compute-pbc.cwl"}
-    scatter: "#compute_pbc.bedgraph_file"
+    scatter:
+      - "#compute_pbc.bedgraph_file"
+      - "#compute_pbc.output_filename"
+    scatterMethod: dotproduct
     inputs:
       - id: "#compute_pbc.bedgraph_file"
         source: "#bedtools_genomecov.output_bedfile"
+      - id: "#compute_pbc.output_filename"
+        source: "#input_output_filenames"
     outputs:
       - id: "#compute_pbc.pbc"
-
-## compute PCR bottleneck coefficient
-#bedtools genomecov -bg -ibam ${SAMPLE}.sorted.bam -g $GENOME_SIZES > ${SAMPLE}.sorted.bdg
-#awk '$4==1 {N1 += $3 - $2 - 1}; $4>=1 {Nd += $3 - $2 - 1} END {print N1/Nd}' ${SAMPLE}.sorted.bdg > ${SAMPLE}.PBC.txt
-#rm ${SAMPLE}.sorted.bdg
