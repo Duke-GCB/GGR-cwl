@@ -75,6 +75,21 @@ inputs:
     inputBinding:
       position: 3
       prefix: '-g'
+  - id: "#format"
+    type:
+      - 'null'
+      - string
+    description: "-f {AUTO,BAM,SAM,BED,ELAND,ELANDMULTI,ELANDEXPORT,BOWTIE,BAMPE}, --format {AUTO,BAM,SAM,BED,ELAND,ELANDMULTI,ELANDEXPORT,BOWTIE,BAMPE}
+                        Format of tag file, \"AUTO\", \"BED\" or \"ELAND\" or
+                        \"ELANDMULTI\" or \"ELANDEXPORT\" or \"SAM\" or \"BAM\" or
+                        \"BOWTIE\" or \"BAMPE\". The default AUTO option will let
+                        MACS decide which format the file is. Please check the
+                        definition in README file if you choose
+                        ELAND/ELANDMULTI/ELANDEXPORT/SAM/BAM/BOWTIE. DEFAULT:
+                        \"AUTO\".\n"
+    inputBinding:
+      position: 3
+      prefix: '-f'
 
 outputs:
   - id: "#output_narrowpeak_file"
@@ -88,13 +103,3 @@ baseCommand: ["macs2" , "callpeak"]
 arguments:
   - valueFrom: $('-n=' + inputs.treatment_sample_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.'))
     position: 2
-
-
-#    if [ $PEAKS_TYPE == "narrow" ]; then
-#        /data/reddylab/software/anaconda/bin/macs2 callpeak \
-#        -t ${MAPPED_DIR}/${TRT_SAMPLE}${SUFFIX} \
-#        -n $TRT_SAMPLE \
-#        -f $ALN_FORMAT \
-#        --nomodel --extsize $EXTSIZE \
-#        -g hs \
-#        -q 0.05
