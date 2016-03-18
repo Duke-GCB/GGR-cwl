@@ -1,7 +1,7 @@
 #!/usr/bin/env cwl-runner
 
 class: Workflow
-description: "GGR_ChIP-seq - Compute strand correlation"
+description: "GGR_ChIP-seq - processing step 2 - Peak calling for narrow peaks (SE)"
 
 requirements:
   - class: ScatterFeatureRequirement
