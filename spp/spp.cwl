@@ -14,6 +14,7 @@ inputs:
   - id: "#absolute_path_to_run_spp_script"
     type: string
     description: 'Absolute path to the run_spp.R script (Required for compatibility with docker)'
+    default: "/usr/local/src/myscripts/run_spp.R"
     inputBinding:
       position: 1
   - id: savp
