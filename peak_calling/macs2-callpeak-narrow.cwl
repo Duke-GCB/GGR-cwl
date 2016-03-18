@@ -30,9 +30,7 @@ inputs:
       position: 3
       prefix: --nomodel
   - id: "#extsize"
-    type:
-      - 'null'
-      - float
+    type: float
     description: "The arbitrary extension size in bp. When nomodel is
                         \t true, MACS will use this value as fragment size to
                         \t extend each read towards 3' end, then pile them up.
@@ -46,7 +44,7 @@ inputs:
                         \t option.\n"
     inputBinding:
       position: 2
-      preix: '--extsize'
+      prefix: '--extsize'
   - id: "#q"
     type: float
     description: "Minimum FDR (q-value) cutoff for peak detection. DEFAULT: 0.05. -q, and -p are mutually exclusive.\n"

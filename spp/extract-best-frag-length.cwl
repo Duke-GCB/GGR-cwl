@@ -14,11 +14,11 @@ inputs:
       position: 1
 outputs:
   - id: "#output_best_frag_length"
-    type: string
+    type: float
     outputBinding:
       glob: "best_frag_length"
       loadContents: True
-      outputEval: $(self[0].contents.replace('\n', ''))
+      outputEval: $(Number(self[0].contents.replace('\n', '')))
 
 baseCommand: extract-best-frag-length.sh
 stdout: "best_frag_length"

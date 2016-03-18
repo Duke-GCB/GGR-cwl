@@ -30,9 +30,7 @@ inputs:
       position: 3
       prefix: --nomodel
   - id: "#extsize"
-    type:
-      - 'null'
-      - float
+    type: float
     description: "The arbitrary extension size in bp. When nomodel is
                         \t true, MACS will use this value as fragment size to
                         \t extend each read towards 3' end, then pile them up.
@@ -46,7 +44,7 @@ inputs:
                         \t option.\n"
     inputBinding:
       position: 2
-      preix: '--extsize'
+      prefix: '--extsize'
   - id: "#broad_cutoff"
     type: float
     description: "Cutoff for broad region. If -p is set, this is a pvalue

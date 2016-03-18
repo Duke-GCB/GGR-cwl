@@ -36,7 +36,7 @@ inputs:
       position: 3
       prefix: --nomodel
   - id: "#extsize"
-    type: string
+    type: float
     description: "The arbitrary extension size in bp. When nomodel is
                         \t true, MACS will use this value as fragment size to
                         \t extend each read towards 3' end, then pile them up.
