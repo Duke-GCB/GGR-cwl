@@ -37,6 +37,15 @@ inputs:
     inputBinding:
       position: 2
       prefix: "-rf"
+  - id: "#nthreads"
+    type:
+      - 'null'
+      - int
+    description: "\t -p=<nodes> , number of parallel processing nodes, default=0\n"
+    inputBinding:
+      position: 2
+      valueFrom: $("-p=" + self)
+
 outputs:
   - id: "#output_spp_cross_corr"
     type: File
