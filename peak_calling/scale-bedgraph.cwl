@@ -16,11 +16,14 @@ inputs:
     type: File
     inputBinding:
       position: 2
+  - id: "#output_suffix"
+    type: string
+    default: ".norm.bdg"
 outputs:
   - id: "#bedgraph_scaled"
     type: File
     outputBinding:
-      glob: $(inputs.bedgraph_file.path.replace(/^.*[\\\/]/, '').replace(/\.bdg$/, '.norm.bdg'))
+      glob: $(inputs.bedgraph_file.path.replace(/^.*[\\\/]/, '').replace(/\.bdg$/, '') + inputs.output_suffix)
 
 baseCommand: scale-bedgraph-by-lib-uniq-reads.sh
-stdout: $(inputs.bedgraph_file.path.replace(/^.*[\\\/]/, '').replace(/\.bdg$/, '.norm.bdg'))
+stdout: $(inputs.bedgraph_file.path.replace(/^.*[\\\/]/, '').replace(/\.bdg$/, '') + inputs.output_suffix)
