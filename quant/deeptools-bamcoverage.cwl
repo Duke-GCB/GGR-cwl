@@ -48,16 +48,20 @@ inputs:
     inputBinding:
       position: 1
       prefix: "--binSize"
+  - id: "#output_suffix"
+    type: string
+    default: ".bw"
+    description: "Suffix used for output file name (input basename + suffix)"
 
 outputs:
   - id: '#output_bam_coverage'
     type: File
     outputBinding:
-      glob: $(inputs.bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.norm.bw')
+      glob: $(inputs.bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + inputs.output_suffix)
 
 baseCommand: bamCoverage
 arguments:
-  - valueFrom: $('--outFileName=' + inputs.bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.norm.bw')
+  - valueFrom: $('--outFileName=' + inputs.bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + inputs.output_suffix)
     position: 3
 
 description: "Tool:   bedGraphToBigWig v 4 - Convert a bedGraph file to bigWig format."
