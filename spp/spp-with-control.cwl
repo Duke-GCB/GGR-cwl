@@ -14,6 +14,7 @@ inputs:
   - id: "#absolute_path_to_run_spp_script"
     type: string
     description: 'Absolute path to the run_spp.R script (Required for compatibility with docker)'
+    default: "/usr/local/src/myscripts/run_spp.R"
     inputBinding:
       position: 1
   - id: savp
@@ -23,33 +24,48 @@ inputs:
     description: "\t save cross-correlation plot\n"
     inputBinding:
       position: 2
-      valueFrom: $('-savp=' + inputs.c.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.pdf')
-  - id: c
+      valueFrom: $('-savp=' + inputs.input_bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.pdf')
+  - id: "#input_bam"
     type: File
     description: "<ChIP_alignFile>, full path and name (or URL) of tagAlign/BAM file (can be gzipped)(FILE EXTENSION MUST BE tagAlign.gz, tagAlign, bam or bam.gz)"
     inputBinding:
       position: 2
       valueFrom: $('-c=' + self.path)
-  - id: i
+  - id: "#control_bam"
     type: File
     description: "\tMandatory for PEAK CALLING\n\t-i=<Input_alignFile>, full path and name (or URL) of tagAlign/BAM file (can be gzipped) (FILE EXTENSION MUST BE tagAlign.gz, tagAlign, bam or bam.gz)"
     inputBinding:
       position: 2
       valueFrom: $('-i=' + self.path)
+  - id: rf
+    type: boolean
+    default: true
+    description: "\t overwrite (force remove) output files in case they exist \n"
+    inputBinding:
+      position: 2
+      prefix: "-rf"
+  - id: "#nthreads"
+    type:
+      - 'null'
+      - int
+    description: "\t -p=<nodes> , number of parallel processing nodes, default=0\n"
+    inputBinding:
+      position: 2
+      valueFrom: $("-p=" + self)
 
 outputs:
   - id: "#output_spp_cross_corr"
     type: File
     description: "peakshift/phantomPeak results file"
     outputBinding:
-      glob: $(inputs.c.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.txt')
+      glob: $(inputs.input_bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.txt')
   - id: "#output_spp_cross_corr_plot"
     type: File
     description: "peakshift/phantomPeak results file plot"
     outputBinding:
-      glob: $(inputs.c.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.pdf')
+      glob: $(inputs.input_bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.pdf')
 
 baseCommand: Rscript
 arguments:
-  - valueFrom: $('-out=' + inputs.c.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.txt')
+  - valueFrom: $('-out=' + inputs.input_bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.txt')
     position: 2
