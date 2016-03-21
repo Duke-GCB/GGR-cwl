@@ -95,7 +95,7 @@ outputs:
 
 steps:
   - id: "#qc"
-    run: {import: "./01-qc-se.cwl"}
+    run: {import: "processing_step1/01-qc-se.cwl"}
     inputs:
       - id: "#qc.input_fastq_files"
         source: "#input_fastq_files"
@@ -110,7 +110,7 @@ steps:
       - { id:  "#qc.output_fastqc_data_files" }
       - { id:  "#qc.output_custom_adapters" }
   - id: "#trimm"
-    run: {import: "./02-trim-se.cwl"}
+    run: {import: "processing_step1/02-trim-se.cwl"}
     inputs:
       - id: "#trimm.input_fastq_files"
         source: "#input_fastq_files"
@@ -122,7 +122,7 @@ steps:
       - { id:  "#trimm.output_data_fastq_trimmed_files" }
       - { id:  "#trimm.trimmed_fastq_read_count" }
   - id: "#map"
-    run: {import: "./03-map-se.cwl"}
+    run: {import: "processing_step1/03-map-se.cwl"}
     inputs:
       - id: "#map.input_fastq_files"
         source: "#trimm.output_data_fastq_trimmed_files"
@@ -139,15 +139,4 @@ steps:
       - { id:  "#map.output_index_dedup_bam_files" }
       - { id:  "#map.output_picard_mark_duplicates_files" }
       - { id:  "#map.output_pbc_files" }
-  - id: "#quant"
-    run: {import: "./04-quantification.cwl"}
-    inputs:
-      - id: "#quant.input_bam_files"
-        source: "#map.output_data_sorted_dedup_bam_files"
-      - id: "#quant.genome_sizes"
-        source: "#genome_sizes_file"
-      - id: "#quant.nthreads"
-        source: "#nthreads_quant"
-    outputs:
-      - { id:  "#quant.coverage_bigwig_files" }
-      - { id:  "#quant.coverage_normalized_bigwig_files" }
+
