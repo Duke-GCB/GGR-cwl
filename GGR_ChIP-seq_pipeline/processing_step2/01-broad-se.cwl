@@ -5,6 +5,7 @@ description: "GGR_ChIP-seq - processing step 2 - Peak calling for broad peaks (S
 
 requirements:
   - class: ScatterFeatureRequirement
+  - class: StepInputExpressionRequirement
 
 inputs:
   - id: "#input_bam_files"
@@ -25,9 +26,27 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#output_callpeak_broadpeak_file"
+  - id: "#output_broadpeak_file"
     source: "#peak-calling-broad.output_broadpeak_file"
     description: "peakshift/phantomPeak results file"
+    type:
+      type: array
+      items: File
+  - id: "#output_extended_broadpeak_file"
+    source: "#peak-calling-broad.output_ext_frag_bdg_file"
+    description: "peakshift/phantomPeak extended fragment results file"
+    type:
+      type: array
+      items: File
+  - id: "#output_peak_xls_file"
+    source: "#peak-calling-broad.output_peak_xls_file"
+    description: "Peak calling report file (*_peaks.xls file produced by MACS2)"
+    type:
+      type: array
+      items: File
+  - id: "#output_filtered_read_count_file"
+    source: "#count-reads-filtered.read_count_file"
+    description: "Filtered read count reported by MACS2"
     type:
       type: array
       items: File
@@ -58,7 +77,6 @@ steps:
     outputs:
       - id: "#spp.output_spp_cross_corr"
       - id: "#spp.output_spp_cross_corr_plot"
-
   - id: "#extract-peak-frag-length"
     run: {import: "../../spp/extract-best-frag-length.cwl"}
     scatter: "#extract-peak-frag-length.input_spp_txt_file"
@@ -82,9 +100,19 @@ steps:
       - id: "#peak-calling-broad.nomodel"
         default: True
       - id: "#peak-calling-broad.format"
-        default: "BAM"
+        valueFrom: "BAM"
     outputs:
       - id: "#peak-calling-broad.output_broadpeak_file"
+      - id: "#peak-calling-broad.output_ext_frag_bdg_file"
+      - id: "#peak-calling-broad.output_peak_xls_file"
+  - id: "#count-reads-filtered"
+    run: {import: "../../peak_calling/count-reads-after-filtering.cwl"}
+    scatter: "#count-reads-filtered.peak_xls_file"
+    inputs:
+      - id: "#count-reads-filtered.peak_xls_file"
+        source: "#peak-calling-broad.output_peak_xls_file"
+    outputs:
+      - id: "#count-reads-filtered.read_count_file"
   - id: "#count-peaks"
     run: {import: "../../utils/count-with-output-suffix.cwl"}
     scatter: "#count-peaks.input_file"
@@ -92,7 +120,7 @@ steps:
       - id: "#count-peaks.input_file"
         source: "#peak-calling-broad.output_broadpeak_file"
       - id: "#count-peaks.output_suffix"
-        default: ".peak_count.within_replicate.txt"
+        valueFrom: ".peak_count.within_replicate.txt"
     outputs:
       - id: "#count-peaks.output_counts"
   - id: "#filter-reads-in-peaks"
@@ -115,6 +143,6 @@ steps:
       - id: "#extract-count-reads-in-peaks.input_bam_file"
         source: "#filter-reads-in-peaks.filtered_file"
       - id: "#extract-count-reads-in-peaks.output_suffix"
-        default: ".read_count.within_replicate.txt"
+        valueFrom: ".read_count.within_replicate.txt"
     outputs:
       - id: "#extract-count-reads-in-peaks.output_read_count"
