@@ -1,20 +1,21 @@
 #!/usr/bin/env cwl-runner
 
 class: Workflow
-description: "GGR_ChIP-seq - processing step 2 - Peak calling for broad peaks with control samples (SE)"
+description: "GGR_ChIP-seq - processing step 2 - Peak calling for broad peaks (SE)"
 
 requirements:
   - class: ScatterFeatureRequirement
+  - class: StepInputExpressionRequirement
 
 inputs:
   - id: "#input_bam_files"
     type:
       type: array
       items: File
-  - id: "#input_control_bam_files"
-    type:
-      type: array
-      items: File
+  - id: "#input_bam_format"
+    type: string
+    description: "BAM or BAMPE for single-end and paired-end reads respectively (default: BAM)"
+    default: "BAM"
 
 outputs:
   - id: "#output_spp_x_cross_corr"
@@ -68,16 +69,11 @@ outputs:
 
 steps:
   - id: "#spp"
-    run: {import: "../../spp/spp-with-control.cwl"}
-    scatter:
-      - "#spp.input_bam"
-      - "#spp.control_bam"
-    scatterMethod: dotproduct
+    run: {import: "../../spp/spp.cwl"}
+    scatter: "#spp.input_bam"
     inputs:
       - id: "#spp.input_bam"
         source: "#input_bam_files"
-      - id: "#spp.control_bam"
-        source: "#input_control_bam_files"
       - id: "#spp.savp"
         default: True
       - id: "#spp.nthreads"
@@ -93,24 +89,22 @@ steps:
         source: "#spp.output_spp_cross_corr"
     outputs:
       - id: "#extract-peak-frag-length.output_best_frag_length"
+
   - id: "#peak-calling-broad"
-    run: {import: "../../peak_calling/macs2-callpeak-broad-with-control.cwl"}
+    run: {import: "../../peak_calling/macs2-callpeak-broad.cwl"}
     scatter:
       - "#peak-calling-broad.treatment_sample_file"
-      - "#peak-calling-broad.control_sample_file"
       - "#peak-calling-broad.extsize"
     scatterMethod: dotproduct
     inputs:
       - id: "#peak-calling-broad.treatment_sample_file"
         source: "#input_bam_files"
-      - id: "#peak-calling-broad.control_sample_file"
-        source: "#input_control_bam_files"
       - id: "#peak-calling-broad.extsize"
         source: "#extract-peak-frag-length.output_best_frag_length"
       - id: "#peak-calling-broad.nomodel"
         default: True
       - id: "#peak-calling-broad.format"
-        default: "BAM"
+        source: "#input_bam_format"
     outputs:
       - id: "#peak-calling-broad.output_broadpeak_file"
       - id: "#peak-calling-broad.output_ext_frag_bdg_file"
@@ -130,7 +124,7 @@ steps:
       - id: "#count-peaks.input_file"
         source: "#peak-calling-broad.output_broadpeak_file"
       - id: "#count-peaks.output_suffix"
-        default: ".peak_count.within_replicate.txt"
+        valueFrom: ".peak_count.within_replicate.txt"
     outputs:
       - id: "#count-peaks.output_counts"
   - id: "#filter-reads-in-peaks"
@@ -153,6 +147,6 @@ steps:
       - id: "#extract-count-reads-in-peaks.input_bam_file"
         source: "#filter-reads-in-peaks.filtered_file"
       - id: "#extract-count-reads-in-peaks.output_suffix"
-        default: ".read_count.within_replicate.txt"
+        valueFrom: ".read_count.within_replicate.txt"
     outputs:
       - id: "#extract-count-reads-in-peaks.output_read_count"
