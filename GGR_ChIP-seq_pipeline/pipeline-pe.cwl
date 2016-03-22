@@ -38,9 +38,6 @@ inputs:
   - id: "#nthreads_map"
     type: int
     description: "Numbers of threads required for the 03-map step"
-  - id: "#nthreads_quant"
-    type: int
-    description: "Numbers of threads required for the 04-quant step"
 
 outputs:
   - id: "#qc_count_raw_reads_read1"
@@ -132,14 +129,10 @@ steps:
   - id: "#qc"
     run: {import: "processing_step1/01-qc-pe.cwl"}
     inputs:
-      - id: "#qc.input_read1_fastq_files"
-        source: "#input_fastq_read1_files"
-      - id: "#qc.input_read2_fastq_files"
-        source: "#input_fastq_read2_files"
-      - id: "#qc.default_adapters_file"
-        source: "#default_adapters_file"
-      - id: "#qc.nthreads"
-        source: "#nthreads_qc"
+      - {id: "#qc.input_read1_fastq_files", source: "#input_fastq_read1_files"}
+      - {id: "#qc.input_read2_fastq_files", source: "#input_fastq_read2_files"}
+      - {id: "#qc.default_adapters_file", source: "#default_adapters_file"}
+      - {id: "#qc.nthreads", source: "#nthreads_qc"}
     outputs:
       - { id:  "#qc.output_count_raw_reads_read1" }
       - { id:  "#qc.output_count_raw_reads_read2" }
@@ -154,16 +147,11 @@ steps:
   - id: "#trimm"
     run: {import: "processing_step1/02-trim-pe.cwl"}
     inputs:
-      - id: "#trimm.input_read1_fastq_files"
-        source: "#input_fastq_read1_files"
-      - id: "#trimm.input_read2_fastq_files"
-        source: "#input_fastq_read2_files"
-      - id: "#trimm.input_read1_adapters_files"
-        source: "#qc.output_custom_adapters_read1"
-      - id: "#trimm.input_read2_adapters_files"
-        source: "#qc.output_custom_adapters_read2"
-      - id: "#trimm.nthreads"
-        source: "#nthreads_trimm"
+      - {id: "#trimm.input_read1_fastq_files", source: "#input_fastq_read1_files"}
+      - {id: "#trimm.input_read2_fastq_files", source: "#input_fastq_read2_files"}
+      - {id: "#trimm.input_read1_adapters_files", source: "#qc.output_custom_adapters_read1"}
+      - {id: "#trimm.input_read2_adapters_files", source: "#qc.output_custom_adapters_read2"}
+      - {id: "#trimm.nthreads", source: "#nthreads_trimm"}
     outputs:
       - { id:  "#trimm.output_data_fastq_read1_trimmed_files" }
       - { id:  "#trimm.output_data_fastq_read2_trimmed_files" }
@@ -172,18 +160,12 @@ steps:
   - id: "#map"
     run: {import: "processing_step1/03-map-pe.cwl"}
     inputs:
-      - id: "#map.input_fastq_read1_files"
-        source: "#trimm.output_data_fastq_read1_trimmed_files"
-      - id: "#map.input_fastq_read2_files"
-        source: "#trimm.output_data_fastq_read2_trimmed_files"
-      - id: "#map.genome_ref_first_index_file"
-        source: "#genome_ref_first_index_file"
-      - id: "#map.genome_sizes_file"
-        source: "#genome_sizes_file"
-      - id: "#map.ENCODE_blacklist_bedfile"
-        source: "#ENCODE_blacklist_bedfile"
-      - id: "#map.nthreads"
-        source: "#nthreads_map"
+      - {id: "#map.input_fastq_read1_files", source: "#trimm.output_data_fastq_read1_trimmed_files"}
+      - {id: "#map.input_fastq_read2_files", source: "#trimm.output_data_fastq_read2_trimmed_files"}
+      - {id: "#map.genome_ref_first_index_file", source: "#genome_ref_first_index_file"}
+      - {id: "#map.genome_sizes_file", source: "#genome_sizes_file"}
+      - {id: "#map.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile"}
+      - {id: "#map.nthreads", source: "#nthreads_map"}
     outputs:
       - { id:  "#map.output_data_sorted_dedup_bam_files" }
       - { id:  "#map.output_index_dedup_bam_files" }
