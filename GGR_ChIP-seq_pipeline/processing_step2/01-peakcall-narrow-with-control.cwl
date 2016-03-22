@@ -15,6 +15,10 @@ inputs:
     type:
       type: array
       items: File
+  - id: "#input_bam_format"
+    type: string
+    description: "BAM or BAMPE for single-end and paired-end reads respectively (default: BAM)"
+    default: "BAM"
 
 outputs:
   - id: "#output_spp_x_cross_corr"
@@ -29,9 +33,27 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#output_callpeak_narrowpeak_file"
+  - id: "#output_narrowpeak_file"
     source: "#peak-calling-narrow.output_narrowpeak_file"
     description: "peakshift/phantomPeak results file"
+    type:
+      type: array
+      items: File
+  - id: "#output_extended_narrowpeak_file"
+    source: "#peak-calling-narrow.output_ext_frag_bdg_file"
+    description: "peakshift/phantomPeak extended fragment results file"
+    type:
+      type: array
+      items: File
+  - id: "#output_peak_xls_file"
+    source: "#peak-calling-narrow.output_peak_xls_file"
+    description: "Peak calling report file (*_peaks.xls file produced by MACS2)"
+    type:
+      type: array
+      items: File
+  - id: "#output_filtered_read_count_file"
+    source: "#count-reads-filtered.read_count_file"
+    description: "Filtered read count reported by MACS2"
     type:
       type: array
       items: File
@@ -67,7 +89,6 @@ steps:
     outputs:
       - id: "#spp.output_spp_cross_corr"
       - id: "#spp.output_spp_cross_corr_plot"
-
   - id: "#extract-peak-frag-length"
     run: {import: "../../spp/extract-best-frag-length.cwl"}
     scatter: "#extract-peak-frag-length.input_spp_txt_file"
@@ -76,7 +97,6 @@ steps:
         source: "#spp.output_spp_cross_corr"
     outputs:
       - id: "#extract-peak-frag-length.output_best_frag_length"
-
   - id: "#peak-calling-narrow"
     run: {import: "../../peak_calling/macs2-callpeak-narrow-with-control.cwl"}
     scatter:
@@ -94,9 +114,19 @@ steps:
       - id: "#peak-calling-narrow.nomodel"
         default: True
       - id: "#peak-calling-narrow.format"
-        default: "BAM"
+        source: "#input_bam_format"
     outputs:
       - id: "#peak-calling-narrow.output_narrowpeak_file"
+      - id: "#peak-calling-narrow.output_ext_frag_bdg_file"
+      - id: "#peak-calling-narrow.output_peak_xls_file"
+  - id: "#count-reads-filtered"
+    run: {import: "../../peak_calling/count-reads-after-filtering.cwl"}
+    scatter: "#count-reads-filtered.peak_xls_file"
+    inputs:
+      - id: "#count-reads-filtered.peak_xls_file"
+        source: "#peak-calling-narrow.output_peak_xls_file"
+    outputs:
+      - id: "#count-reads-filtered.read_count_file"
   - id: "#count-peaks"
     run: {import: "../../utils/count-with-output-suffix.cwl"}
     scatter: "#count-peaks.input_file"

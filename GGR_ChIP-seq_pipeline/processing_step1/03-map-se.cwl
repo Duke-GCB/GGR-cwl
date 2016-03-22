@@ -8,19 +8,14 @@ requirements:
   - class: SubworkflowFeatureRequirement
 
 inputs:
-  - id: "#input_fastq_read1_files"
+  - id: "#input_fastq_files"
     type: 
       type: array
       items: File
-    description: "Input fastq paired-end read 1 files"
-  - id: "#input_fastq_read2_files"
-    type:
-      type: array
-      items: File
-    description: "Input fastq paired-end read 2 files"
+    description: "Input fastq files"
   - id: "#genome_ref_first_index_file"
     type: File
-    description: "Bowtie first index files for reference genome (e.g. *1.ebwt). The rest of the files should be in the same folder."
+    description: "Bowtie first index files for reference genome (*1.ebwt). The rest of the files should be in the same folder."
   - id: "#genome_sizes_file"
     type: File
     description: "Genome sizes tab-delimited file (used in samtools)"
@@ -32,7 +27,7 @@ inputs:
     default: 1
 
 outputs:
-  - id: "#output_data_sorted_dedup_bam_files"
+  - id: "#output_sorted_dedup_bam_files"
     source: "#filtered2sorted.sorted_file"
     description: "Filtered sorted aligned BAM files with Bowtie."
     type:
@@ -75,7 +70,7 @@ outputs:
       type: array
       items: File
   - id: "#output_bowtie_log"
-    source: "#bowtie-pe.output_bowtie_log"
+    source: "#bowtie-se.output_bowtie_log"
     description: "Bowtie log file."
     type:
       type: array
@@ -83,53 +78,50 @@ outputs:
 
 steps:
   - id: "#extract_basename_1"
-    run: {import: "../utils/extract-basename.cwl" }
+    run: {import: "../../utils/extract-basename.cwl" }
     scatter: "#extract_basename_1.input_file"
     inputs:
       - id: "#extract_basename_1.input_file"
-        source: "#input_fastq_read1_files"
+        source: "#input_fastq_files"
     outputs:
       - id: "#extract_basename_1.output_basename"
   - id: "#extract_basename_2"
-    run: {import: "../utils/remove-extension.cwl" }
+    run: {import: "../../utils/remove-extension.cwl" }
     scatter: "#extract_basename_2.file_path"
     inputs:
       - id: "#extract_basename_2.file_path"
         source: "#extract_basename_1.output_basename"
     outputs:
       - id: "#extract_basename_2.output_path"
-  - id: "#bowtie-pe"
-    run: {import: "../map/bowtie-pe.cwl"}
+  - id: "#bowtie-se"
+    run: {import: "../../map/bowtie-se.cwl"}
     scatter:
-      - "#bowtie-pe.input_fastq_read1_file"
-      - "#bowtie-pe.input_fastq_read2_file"
-      - "#bowtie-pe.output_filename"
+      - "#bowtie-se.input_fastq_file"
+      - "#bowtie-se.output_filename"
     scatterMethod: dotproduct
     inputs:
-      - id: "#bowtie-pe.input_fastq_read1_file"
-        source: "#input_fastq_read1_files"
-      - id: "#bowtie-pe.input_fastq_read2_file"
-        source: "#input_fastq_read2_files"
-      - id: "#bowtie-pe.output_filename"
+      - id: "#bowtie-se.input_fastq_file"
+        source: "#input_fastq_files"
+      - id: "#bowtie-se.output_filename"
         source: "#extract_basename_2.output_path"
       - id: "#bowtie-se.genome_ref_first_index_file"
         source: "#genome_ref_first_index_file"
-      - id: "#bowtie-pe.nthreads"
+      - id: "bowtie-se.nthreads"
         source: "#nthreads"
     outputs:
-      - id: "#bowtie-pe.output_aligned_file"
-      - id: "#bowtie-pe.output_bowtie_log"
+      - id: "#bowtie-se.output_aligned_file"
+      - id: "#bowtie-se.output_bowtie_log"
   - id: "#sam2bam"
-    run: {import: "../map/samtools2bam.cwl"}
+    run: {import: "../../map/samtools2bam.cwl"}
     scatter:
       - "#sam2bam.input_file"
     inputs:
       - id: "#sam2bam.input_file"
-        source: "#bowtie-pe.output_aligned_file"
+        source: "#bowtie-se.output_aligned_file"
     outputs:
       - id: "#sam2bam.bam_file"
   - id: "#sort_bams"
-    run: {import: "../map/samtools-sort.cwl"}
+    run: {import: "../../map/samtools-sort.cwl"}
     scatter:
       - "#sort_bams.input_file"
     inputs:
@@ -140,7 +132,7 @@ steps:
     outputs:
       - id: "#sort_bams.sorted_file"
   - id: "#filter-unmapped"
-    run: {import: "../map/samtools-filter-unmapped.cwl"}
+    run: {import: "../../map/samtools-filter-unmapped.cwl"}
     scatter:
       - "#filter-unmapped.input_file"
       - "#filter-unmapped.output_filename"
@@ -153,7 +145,7 @@ steps:
     outputs:
       - id: "#filter-unmapped.filtered_file"
   - id: "#filtered2sorted"
-    run: {import: "../map/samtools-sort.cwl"}
+    run: {import: "../../map/samtools-sort.cwl"}
     scatter:
       - "#filtered2sorted.input_file"
     inputs:
@@ -164,7 +156,7 @@ steps:
     outputs:
       - id: "#filtered2sorted.sorted_file"
   - id: "#preseq-c-curve"
-    run: {import: "../map/preseq-c_curve.cwl"}
+    run: {import: "../../map/preseq-c_curve.cwl"}
     scatter:
       - "#preseq-c-curve.input_sorted_file"
       - "#preseq-c-curve.output_file_basename"
@@ -174,12 +166,10 @@ steps:
         source: "#filtered2sorted.sorted_file"
       - id: "#preseq-c-curve.output_file_basename"
         source: "#extract_basename_2.output_path"
-      - id: "#preseq-c-curve.pe"
-        default: true
     outputs:
       - id: "#preseq-c-curve.output_file"
 #  - id: "#preseq-lc-extrap"
-#    run: {import: "../map/preseq-lc_extrap.cwl"}
+#    run: {import: "../../map/preseq-lc_extrap.cwl"}
 #    scatter:
 #      - "#preseq-lc-extrap.input_sorted_file"
 #      - "#preseq-lc-extrap.output_file_basename"
@@ -191,12 +181,10 @@ steps:
 #        source: "#extract_basename_2.output_path"
 #      - id: "#preseq-lc-extrap.s"
 #        default: 100000
-#      - id: "#preseq-lc-extrap.pe"
-#        default: true
 #    outputs:
 #      - id: "#preseq-lc-extrap.output_file"
   - id: "#execute_pcr_bottleneck_coef"
-    run: {import: "../map/pcr-bottleneck-coef.cwl"}
+    run: {import: "../../map/pcr-bottleneck-coef.cwl"}
     inputs:
       - id: "#execute_pcr_bottleneck_coef.input_bam_files"
         source: "#filtered2sorted.sorted_file"
@@ -207,7 +195,7 @@ steps:
     outputs:
       - id: "#execute_pcr_bottleneck_coef.pbc_file"
   - id: "#remove_duplicates"
-    run: {import: "../map/picard-MarkDuplicates.cwl"}
+    run: {import: "../../map/picard-MarkDuplicates.cwl"}
     scatter:
       - "#remove_duplicates.input_file"
       - "#remove_duplicates.output_filename"
@@ -223,7 +211,7 @@ steps:
       - id: "#remove_duplicates.output_metrics_file"
       - id: "#remove_duplicates.output_dedup_bam_file"
   - id: "#remove_encode_blacklist"
-    run: {import: "../map/bedtools-intersect.cwl"}
+    run: {import: "../../map/bedtools-intersect.cwl"}
     scatter:
       - "#remove_encode_blacklist.a"
       - "#remove_encode_blacklist.output_basename_file"
@@ -240,7 +228,7 @@ steps:
     outputs:
       - id: "#remove_encode_blacklist.file_wo_blacklist_regions"
   - id: "#sort_dedup_bams"
-    run: {import: "../map/samtools-sort.cwl"}
+    run: {import: "../../map/samtools-sort.cwl"}
     scatter:
       - "#sort_dedup_bams.input_file"
     inputs:
@@ -251,7 +239,7 @@ steps:
     outputs:
       - id: "#sort_dedup_bams.sorted_file"
   - id: "#index_dedup_bams"
-    run: {import: "../map/samtools-index.cwl"}
+    run: {import: "../../map/samtools-index.cwl"}
     scatter:
       - "#index_dedup_bams.input_file"
     inputs:

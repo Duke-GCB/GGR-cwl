@@ -33,9 +33,6 @@ inputs:
   - id: "#nthreads_map"
     type: int
     description: "Numbers of threads required for the 03-map step"
-  - id: "#nthreads_quant"
-    type: int
-    description: "Numbers of threads required for the 04-quant step"
 
 outputs:
   - id: "#qc_raw_read_counts"
@@ -95,14 +92,11 @@ outputs:
 
 steps:
   - id: "#qc"
-    run: {import: "./01-qc-se.cwl"}
+    run: {import: "processing_step1/01-qc-se.cwl"}
     inputs:
-      - id: "#qc.input_fastq_files"
-        source: "#input_fastq_files"
-      - id: "#qc.default_adapters_file"
-        source: "#default_adapters_file"
-      - id: "#qc.nthreads"
-        source: "#nthreads_qc"
+      - {id: "#qc.input_fastq_files", source: "#input_fastq_files"}
+      - {id: "#qc.default_adapters_file", source: "#default_adapters_file"}
+      - {id: "#qc.nthreads", source: "#nthreads_qc"}
     outputs:
       - { id:  "#qc.output_raw_read_counts" }
       - { id:  "#qc.output_fastqc_read_counts" }
@@ -110,44 +104,25 @@ steps:
       - { id:  "#qc.output_fastqc_data_files" }
       - { id:  "#qc.output_custom_adapters" }
   - id: "#trimm"
-    run: {import: "./02-trim-se.cwl"}
+    run: {import: "processing_step1/02-trim-se.cwl"}
     inputs:
-      - id: "#trimm.input_fastq_files"
-        source: "#input_fastq_files"
-      - id: "#trimm.input_adapters_files"
-        source: "#qc.output_custom_adapters"
-      - id: "#trimm.nthreads"
-        source: "#nthreads_trimm"
+      - {id: "#trimm.input_fastq_files", source: "#input_fastq_files"}
+      - {id: "#trimm.input_adapters_files", source: "#qc.output_custom_adapters"}
+      - {id: "#trimm.nthreads", source: "#nthreads_trimm"}
     outputs:
       - { id:  "#trimm.output_data_fastq_trimmed_files" }
       - { id:  "#trimm.trimmed_fastq_read_count" }
   - id: "#map"
-    run: {import: "./03-map-se.cwl"}
+    run: {import: "processing_step1/03-map-se.cwl"}
     inputs:
-      - id: "#map.input_fastq_files"
-        source: "#trimm.output_data_fastq_trimmed_files"
-      - id: "#map.genome_ref_first_index_file"
-        source: "#genome_ref_first_index_file"
-      - id: "#map.genome_sizes_file"
-        source: "#genome_sizes_file"
-      - id: "#map.ENCODE_blacklist_bedfile"
-        source: "#ENCODE_blacklist_bedfile"
-      - id: "#map.nthreads"
-        source: "#nthreads_map"
+      - {id: "#map.input_fastq_files", source: "#trimm.output_data_fastq_trimmed_files"}
+      - {id: "#map.genome_ref_first_index_file", source: "#genome_ref_first_index_file"}
+      - {id: "#map.genome_sizes_file", source: "#genome_sizes_file"}
+      - {id: "#map.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile"}
+      - {id: "#map.nthreads", source: "#nthreads_map"}
     outputs:
       - { id:  "#map.output_data_sorted_dedup_bam_files" }
       - { id:  "#map.output_index_dedup_bam_files" }
       - { id:  "#map.output_picard_mark_duplicates_files" }
       - { id:  "#map.output_pbc_files" }
-  - id: "#quant"
-    run: {import: "./04-quantification.cwl"}
-    inputs:
-      - id: "#quant.input_bam_files"
-        source: "#map.output_data_sorted_dedup_bam_files"
-      - id: "#quant.genome_sizes"
-        source: "#genome_sizes_file"
-      - id: "#quant.nthreads"
-        source: "#nthreads_quant"
-    outputs:
-      - { id:  "#quant.coverage_bigwig_files" }
-      - { id:  "#quant.coverage_normalized_bigwig_files" }
+

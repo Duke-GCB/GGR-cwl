@@ -82,13 +82,22 @@ inputs:
                         Format of tag file, \"AUTO\", \"BED\" or \"ELAND\" or
                         \"ELANDMULTI\" or \"ELANDEXPORT\" or \"SAM\" or \"BAM\" or
                         \"BOWTIE\" or \"BAMPE\". The default AUTO option will let
-                        MACS decide which format the file is. Please check the
-                        definition in README file if you choose
-                        ELAND/ELANDMULTI/ELANDEXPORT/SAM/BAM/BOWTIE. DEFAULT:
+                        MACS decide which format the file is. Note that MACS can't detect \"BAMPE\"
+                        or \"BEDPE\" format with \"AUTO\", and you have to implicitly specify the
+                        format for \"BAMPE\" and \"BEDPE\". DEFAULT:
                         \"AUTO\".\n"
     inputBinding:
       position: 3
       prefix: '-f'
+  - id: "#bdg"
+    type: boolean
+    description: "  Whether or not to save extended fragment pileup, and \n
+                    \tlocal lambda tracks (two files) at every bp into a \n
+                    \tbedGraph file. DEFAULT: True"
+    default: true
+    inputBinding:
+      position: 3
+      prefix: "--bdg"
 
 outputs:
   - id: "#output_broadpeak_file"
@@ -96,6 +105,21 @@ outputs:
     description: "Peak calling output file in broadPeak format."
     outputBinding:
       glob: $(inputs.treatment_sample_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '_peaks.broadPeak')
+  - id: "#output_ext_frag_bdg_file"
+    type: File
+    description: "Bedgraph with extended fragment pileup."
+    outputBinding:
+      glob: $(inputs.treatment_sample_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '_treat_pileup.bdg')
+  - id: "#output_peak_xls_file"
+    type: File
+    description: "Peaks information/report file."
+    outputBinding:
+      glob: $(inputs.treatment_sample_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '_peaks.xls')
+  - id: "#output_peak_summits_file"
+    type: File
+    description: "Peaks summits bedfile."
+    outputBinding:
+      glob: $(inputs.treatment_sample_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '_summits.bed')
 
 baseCommand: ["macs2" , "callpeak", "--broad"]
 
