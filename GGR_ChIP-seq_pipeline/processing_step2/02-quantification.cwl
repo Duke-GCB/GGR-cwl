@@ -12,7 +12,7 @@ inputs:
     type:
       type: array
       items: File
-  - id: "#input_pileup_bedfiles"
+  - id: "#input_pileup_bedgraphs"
     type:
       type: array
       items: File
@@ -30,21 +30,25 @@ inputs:
 outputs:
   - id: "#bigwig_raw_files"
     source: "#bedgraph2bigwig-raw.output_bigwig"
+    description: "Raw reads bigWig (signal) files"
     type:
       type: array
       items: File
   - id: "#bigwig_norm_files"
     source: "#bamcoverage.output_bam_coverage"
+    description: "Normalized reads bigWig (signal) files"
     type:
       type: array
       items: File
   - id: "#bigwig_extended_files"
     source: "#bdg2bw-extend.output_bigwig"
+    description: "Fragment extended reads bigWig (signal) files"
     type:
       type: array
       items: File
   - id: "#bigwig_extended_norm_files"
     source: "#bdg2bw-extend-norm.output_bigwig"
+    description: "Normalized fragment extended reads bigWig (signal) files"
     type:
       type: array
       items: File
@@ -89,7 +93,7 @@ steps:
     scatter: "#extend-reads.i"
     inputs:
       - id: "#extend-reads.i"
-        source: "#input_pileup_bedfiles"
+        source: "#input_pileup_bedgraphs"
       - id: "#extend-reads.g"
         source: "#input_genome_sizes"
       - id: "#extend-reads.b"
@@ -126,7 +130,7 @@ steps:
     scatterMethod: dotproduct
     inputs:
       - id: "#scale-bedgraph.bedgraph_file"
-        source: "#input_pileup_bedfiles"
+        source: "#input_pileup_bedgraphs"
       - id: "#scale-bedgraph.read_count_file"
         source: "#input_read_count_dedup_files"
     outputs:
