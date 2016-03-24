@@ -5,6 +5,7 @@ description: "GGR_ChIP-seq pipeline - reads: {{read_type|upper}}, region: {{ pea
 requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
+  - class: StepInputExpressionRequirement
 
 inputs:
 {%  if "control" in sample_types %}
@@ -164,18 +165,6 @@ outputs:
     type:
       type: array
       items: File
-{#  - id: "#quant_{{ sample_type }}_coverage_bigwig_files"#}
-{#    source: "#quant_{{ sample_type }}.coverage_bigwig_files"#}
-{#    description: "Sequence coverage in BigWig format for {{ sample_type }}"#}
-{#    type:#}
-{#      type: array#}
-{#      items: File#}
-{#  - id: "#quant_{{ sample_type }}_coverage_normalized_bigwig_files"#}
-{#    source: "#quant_{{ sample_type }}.coverage_normalized_bigwig_files"#}
-{#    description: "Sequence coverage in BigWig format for {{ sample_type }}"#}
-{#    type:#}
-{#      type: array#}
-{#      items: File#}
     {%  endfor %}
 {% else %}
 {% if read_type == "pe" %}
@@ -271,25 +260,85 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#quant_coverage_bigwig_files"
-    source: "#quant.coverage_bigwig_files"
-    description: "Sequence coverage in BigWig format"
-    type:
-      type: array
-      items: File
-  - id: "#quant_coverage_normalized_bigwig_files"
-    source: "#quant.coverage_normalized_bigwig_files"
-    description: "Sequence coverage in BigWig format"
-    type:
-      type: array
-      items: File
 {% endif %}
+  - id: "#peak_call_spp_x_cross_corr"
+    source: "#peak_call.output_spp_x_cross_corr"
+    description: "SPP strand cross correlation summary"
+    type:
+      type: array
+      items: File
+  - id: "#peak_call_spp_x_cross_corr_plot"
+    source: "#peak_call.output_spp_cross_corr_plot"
+    description: "SPP strand cross correlation plot"
+    type:
+      type: array
+      items: File
+  - id: "#peak_call_peak_xls_file"
+    source: "#peak_call.output_peak_xls_file"
+    description: "Peak calling report file"
+    type:
+      type: array
+      items: File
+  - id: "#peak_call_filtered_read_count_file"
+    source: "#peak_call.output_filtered_read_count_file"
+    description: "Filtered read count after peak calling"
+    type:
+      type: array
+      items: File
+  - id: "#peak_call_read_in_peak_count_within_replicate"
+    source: "#peak_call.output_read_in_peak_count_within_replicate"
+    description: "Peak counts within replicate"
+    type:
+      type: array
+      items: File
+  - id: "#peak_call_peak_count_within_replicate"
+    source: "#peak_call.output_peak_count_within_replicate"
+    description: "Peak counts within replicate"
+    type:
+      type: array
+      items: File
+  - id: "#peak_call_{{ peak_type |lower}}peak_file"
+    source: "#peak_call.output_{{ peak_type |lower}}peak_file"
+    description: "Peaks in {{ peak_type |lower}}Peak file format"
+    type:
+      type: array
+      items: File
+  - id: "#peak_call_extended_{{ peak_type |lower}}peak_file"
+    source: "#peak_call.output_extended_{{ peak_type |lower}}peak_file"
+    description: "Extended fragment peaks in {{ peak_type |lower}}Peak file format"
+    type:
+      type: array
+      items: File
+  - id: "#quant_bigwig_raw_files"
+    source: "#quant.bigwig_raw_files"
+    description: "Raw reads bigWig (signal) files"
+    type:
+      type: array
+      items: File
+  - id: "#quant_bigwig_norm_files"
+    source: "#quant.bigwig_norm_files"
+    description: "Normalized reads bigWig (signal) files"
+    type:
+      type: array
+      items: File
+  - id: "#quant_bigwig_extended_files"
+    source: "#quant.bigwig_extended_files"
+    description: "Fragment extended reads bigWig (signal) files"
+    type:
+      type: array
+      items: File
+  - id: "#quant_bigwig_extended_norm_files"
+    source: "#quant.bigwig_extended_norm_files"
+    description: "Normalized fragment extended reads bigWig (signal) files"
+    type:
+      type: array
+      items: File
 steps:
 {%  if "control" in sample_types %}
     {% for sample_type in sample_types %}
         {% if read_type == "pe" %}
   - id: "#qc_{{ sample_type }}"
-    run: {import: "processing_step1/01-qc-pe.cwl"}
+    run: {import: "processing_step1/01-qc-pe.cwl" }
     inputs:
       - { id: "#qc_{{ sample_type }}.input_read1_fastq_files", source: "#input_{{ sample_type }}_fastq_read1_files" }
       - { id: "#qc_{{ sample_type }}.input_read2_fastq_files", source: "#input_{{ sample_type }}_fastq_read2_files" }
@@ -307,72 +356,72 @@ steps:
       - { id:  "#qc_{{ sample_type }}.output_custom_adapters_read1" }
       - { id:  "#qc_{{ sample_type }}.output_custom_adapters_read2" }
   - id: "#trimm_{{ sample_type }}"
-    run: {import: "processing_step1/02-trim-pe.cwl"}
+    run: {import: "processing_step1/02-trim-pe.cwl" }
     inputs:
-      - {id: "#trimm_{{ sample_type }}.input_read1_fastq_files", source: "#input_{{ sample_type }}_fastq_read1_files"}
-      - {id: "#trimm_{{ sample_type }}.input_read2_fastq_files", source: "#input_{{ sample_type }}_fastq_read2_files"}
-      - {id: "#trimm_{{ sample_type }}.input_read1_adapters_files", source: "#qc_{{ sample_type }}.output_custom_adapters_read1"}
-      - {id: "#trimm_{{ sample_type }}.input_read2_adapters_files", source: "#qc_{{ sample_type }}.output_custom_adapters_read2"}
-      - {id: "#trimm_{{ sample_type }}.nthreads", source: "#nthreads_trimm"}
+      - { id: "#trimm_{{ sample_type }}.input_read1_fastq_files", source: "#input_{{ sample_type }}_fastq_read1_files" }
+      - { id: "#trimm_{{ sample_type }}.input_read2_fastq_files", source: "#input_{{ sample_type }}_fastq_read2_files" }
+      - { id: "#trimm_{{ sample_type }}.input_read1_adapters_files", source: "#qc_{{ sample_type }}.output_custom_adapters_read1" }
+      - { id: "#trimm_{{ sample_type }}.input_read2_adapters_files", source: "#qc_{{ sample_type }}.output_custom_adapters_read2" }
+      - { id: "#trimm_{{ sample_type }}.nthreads", source: "#nthreads_trimm" }
     outputs:
       - { id:  "#trimm_{{ sample_type }}.output_data_fastq_read1_trimmed_files" }
       - { id:  "#trimm_{{ sample_type }}.output_data_fastq_read2_trimmed_files" }
       - { id:  "#trimm_{{ sample_type }}.output_trimmed_read1_fastq_read_count" }
       - { id:  "#trimm_{{ sample_type }}.output_trimmed_read2_fastq_read_count" }
   - id: "#map_{{ sample_type }}"
-    run: {import: "processing_step1/03-map-pe.cwl"}
+    run: {import: "processing_step1/03-map-pe.cwl" }
     inputs:
-      - {id: "#map_{{ sample_type }}.input_fastq_read1_files", source: "#trimm_{{ sample_type }}.output_data_fastq_read1_trimmed_files"}
-      - {id: "#map_{{ sample_type }}.input_fastq_read2_files", source: "#trimm_{{ sample_type }}.output_data_fastq_read2_trimmed_files"}
-      - {id: "#map_{{ sample_type }}.genome_ref_first_index_file", source: "#genome_ref_first_index_file"}
-      - {id: "#map_{{ sample_type }}.genome_sizes_file", source: "#genome_sizes_file"}
-      - {id: "#map_{{ sample_type }}.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile"}
-      - {id: "#map_{{ sample_type }}.nthreads", source: "#nthreads_map"}
+      - { id: "#map_{{ sample_type }}.input_fastq_read1_files", source: "#trimm_{{ sample_type }}.output_data_fastq_read1_trimmed_files" }
+      - { id: "#map_{{ sample_type }}.input_fastq_read2_files", source: "#trimm_{{ sample_type }}.output_data_fastq_read2_trimmed_files" }
+      - { id: "#map_{{ sample_type }}.genome_ref_first_index_file", source: "#genome_ref_first_index_file" }
+      - { id: "#map_{{ sample_type }}.genome_sizes_file", source: "#genome_sizes_file" }
+      - { id: "#map_{{ sample_type }}.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile" }
+      - { id: "#map_{{ sample_type }}.nthreads", source: "#nthreads_map" }
     outputs:
-      - { id:  "#map_{{ sample_type }}.output_data_sorted_dedup_bam_files" }
-      - { id:  "#map_{{ sample_type }}.output_index_dedup_bam_files" }
-      - { id:  "#map_{{ sample_type }}.output_picard_mark_duplicates_files" }
-      - { id:  "#map_{{ sample_type }}.output_pbc_files" }
+      - { id: "#map_{{ sample_type }}.output_data_sorted_dedup_bam_files" }
+      - { id: "#map_{{ sample_type }}.output_index_dedup_bam_files" }
+      - { id: "#map_{{ sample_type }}.output_picard_mark_duplicates_files" }
+      - { id: "#map_{{ sample_type }}.output_pbc_files" }
         {% else %}
   - id: "#qc_{{ sample_type }}"
-    run: {import: "processing_step1/01-qc-se.cwl"}
+    run: {import: "processing_step1/01-qc-se.cwl" }
     inputs:
-      - {id: "#qc_{{ sample_type }}.input_fastq_files", source: "#input_{{ sample_type }}_fastq_files"}
-      - {id: "#qc_{{ sample_type }}.default_adapters_file", source: "#default_adapters_file"}
-      - {id: "#qc_{{ sample_type }}.nthreads", source: "#nthreads_qc"}
+      - { id: "#qc_{{ sample_type }}.input_fastq_files", source: "#input_{{ sample_type }}_fastq_files" }
+      - { id: "#qc_{{ sample_type }}.default_adapters_file", source: "#default_adapters_file" }
+      - { id: "#qc_{{ sample_type }}.nthreads", source: "#nthreads_qc" }
     outputs:
-      - { id:  "#qc_{{ sample_type }}.output_raw_read_counts" }
-      - { id:  "#qc_{{ sample_type }}.output_fastqc_read_counts" }
-      - { id:  "#qc_{{ sample_type }}.output_fastqc_report_files" }
-      - { id:  "#qc_{{ sample_type }}.output_fastqc_data_files" }
-      - { id:  "#qc_{{ sample_type }}.output_custom_adapters" }
+      - { id: "#qc_{{ sample_type }}.output_raw_read_counts" }
+      - { id: "#qc_{{ sample_type }}.output_fastqc_read_counts" }
+      - { id: "#qc_{{ sample_type }}.output_fastqc_report_files" }
+      - { id: "#qc_{{ sample_type }}.output_fastqc_data_files" }
+      - { id: "#qc_{{ sample_type }}.output_custom_adapters" }
   - id: "#trimm_{{ sample_type }}"
-    run: {import: "processing_step1/02-trim-se.cwl"}
+    run: {import: "processing_step1/02-trim-se.cwl" }
     inputs:
-      - {id: "#trimm_{{ sample_type }}.input_fastq_files", source: "#input_{{ sample_type }}_fastq_files"}
-      - {id: "#trimm_{{ sample_type }}.input_adapters_files", source: "#qc_{{ sample_type }}.output_custom_adapters"}
-      - {id: "#trimm_{{ sample_type }}.nthreads", source: "#nthreads_trimm"}
+      - { id: "#trimm_{{ sample_type }}.input_fastq_files", source: "#input_{{ sample_type }}_fastq_files" }
+      - { id: "#trimm_{{ sample_type }}.input_adapters_files", source: "#qc_{{ sample_type }}.output_custom_adapters" }
+      - { id: "#trimm_{{ sample_type }}.nthreads", source: "#nthreads_trimm" }
     outputs:
-      - { id:  "#trimm_{{ sample_type }}.output_data_fastq_trimmed_files" }
-      - { id:  "#trimm_{{ sample_type }}.trimmed_fastq_read_count" }
+      - { id: "#trimm_{{ sample_type }}.output_data_fastq_trimmed_files" }
+      - { id: "#trimm_{{ sample_type }}.trimmed_fastq_read_count" }
   - id: "#map_{{ sample_type }}"
-    run: {import: "processing_step1/03-map-se.cwl"}
+    run: {import: "processing_step1/03-map-se.cwl" }
     inputs:
-      - {id: "#map_{{ sample_type }}.input_fastq_files", source: "#trimm_{{ sample_type }}.output_data_fastq_trimmed_files"}
-      - {id: "#map_{{ sample_type }}.genome_ref_first_index_file", source: "#genome_ref_first_index_file"}
-      - {id: "#map_{{ sample_type }}.genome_sizes_file", source: "#genome_sizes_file"}
-      - {id: "#map_{{ sample_type }}.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile"}
-      - {id: "#map_{{ sample_type }}.nthreads", source: "#nthreads_map"}
+      - { id: "#map_{{ sample_type }}.input_fastq_files", source: "#trimm_{{ sample_type }}.output_data_fastq_trimmed_files" }
+      - { id: "#map_{{ sample_type }}.genome_ref_first_index_file", source: "#genome_ref_first_index_file" }
+      - { id: "#map_{{ sample_type }}.genome_sizes_file", source: "#genome_sizes_file" }
+      - { id: "#map_{{ sample_type }}.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile" }
+      - { id: "#map_{{ sample_type }}.nthreads", source: "#nthreads_map" }
     outputs:
-      - { id:  "#map_{{ sample_type }}.output_data_sorted_dedup_bam_files" }
-      - { id:  "#map_{{ sample_type }}.output_index_dedup_bam_files" }
-      - { id:  "#map_{{ sample_type }}.output_picard_mark_duplicates_files" }
-      - { id:  "#map_{{ sample_type }}.output_pbc_files" }
+      - { id: "#map_{{ sample_type }}.output_data_sorted_dedup_bam_files" }
+      - { id: "#map_{{ sample_type }}.output_index_dedup_bam_files" }
+      - { id: "#map_{{ sample_type }}.output_picard_mark_duplicates_files" }
+      - { id: "#map_{{ sample_type }}.output_pbc_files" }
         {% endif %}
     {% endfor %}
 {%  elif read_type == "pe" %}
   - id: "#qc"
-    run: {import: "processing_step1/01-qc-pe.cwl"}
+    run: {import: "processing_step1/01-qc-pe.cwl" }
     inputs:
       - { id: "#qc.input_read1_fastq_files", source: "#input_fastq_read1_files" }
       - { id: "#qc.input_read2_fastq_files", source: "#input_fastq_read2_files" }
@@ -390,27 +439,27 @@ steps:
       - { id:  "#qc.output_custom_adapters_read1" }
       - { id:  "#qc.output_custom_adapters_read2" }
   - id: "#trimm"
-    run: {import: "processing_step1/02-trim-pe.cwl"}
+    run: {import: "processing_step1/02-trim-pe.cwl" }
     inputs:
-      - {id: "#trimm.input_read1_fastq_files", source: "#input_fastq_read1_files"}
-      - {id: "#trimm.input_read2_fastq_files", source: "#input_fastq_read2_files"}
-      - {id: "#trimm.input_read1_adapters_files", source: "#qc.output_custom_adapters_read1"}
-      - {id: "#trimm.input_read2_adapters_files", source: "#qc.output_custom_adapters_read2"}
-      - {id: "#trimm.nthreads", source: "#nthreads_trimm"}
+      - { id: "#trimm.input_read1_fastq_files", source: "#input_fastq_read1_files" }
+      - { id: "#trimm.input_read2_fastq_files", source: "#input_fastq_read2_files" }
+      - { id: "#trimm.input_read1_adapters_files", source: "#qc.output_custom_adapters_read1" }
+      - { id: "#trimm.input_read2_adapters_files", source: "#qc.output_custom_adapters_read2" }
+      - { id: "#trimm.nthreads", source: "#nthreads_trimm" }
     outputs:
       - { id:  "#trimm.output_data_fastq_read1_trimmed_files" }
       - { id:  "#trimm.output_data_fastq_read2_trimmed_files" }
       - { id:  "#trimm.output_trimmed_read1_fastq_read_count" }
       - { id:  "#trimm.output_trimmed_read2_fastq_read_count" }
   - id: "#map"
-    run: {import: "processing_step1/03-map-pe.cwl"}
+    run: {import: "processing_step1/03-map-pe.cwl" }
     inputs:
-      - {id: "#map.input_fastq_read1_files", source: "#trimm.output_data_fastq_read1_trimmed_files"}
-      - {id: "#map.input_fastq_read2_files", source: "#trimm.output_data_fastq_read2_trimmed_files"}
-      - {id: "#map.genome_ref_first_index_file", source: "#genome_ref_first_index_file"}
-      - {id: "#map.genome_sizes_file", source: "#genome_sizes_file"}
-      - {id: "#map.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile"}
-      - {id: "#map.nthreads", source: "#nthreads_map"}
+      - { id: "#map.input_fastq_read1_files", source: "#trimm.output_data_fastq_read1_trimmed_files" }
+      - { id: "#map.input_fastq_read2_files", source: "#trimm.output_data_fastq_read2_trimmed_files" }
+      - { id: "#map.genome_ref_first_index_file", source: "#genome_ref_first_index_file" }
+      - { id: "#map.genome_sizes_file", source: "#genome_sizes_file" }
+      - { id: "#map.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile" }
+      - { id: "#map.nthreads", source: "#nthreads_map" }
     outputs:
       - { id:  "#map.output_data_sorted_dedup_bam_files" }
       - { id:  "#map.output_index_dedup_bam_files" }
@@ -418,11 +467,11 @@ steps:
       - { id:  "#map.output_pbc_files" }
 {% else %}
   - id: "#qc"
-    run: {import: "processing_step1/01-qc-se.cwl"}
+    run: {import: "processing_step1/01-qc-se.cwl" }
     inputs:
-      - {id: "#qc.input_fastq_files", source: "#input_fastq_files"}
-      - {id: "#qc.default_adapters_file", source: "#default_adapters_file"}
-      - {id: "#qc.nthreads", source: "#nthreads_qc"}
+      - { id: "#qc.input_fastq_files", source: "#input_fastq_files" }
+      - { id: "#qc.default_adapters_file", source: "#default_adapters_file" }
+      - { id: "#qc.nthreads", source: "#nthreads_qc" }
     outputs:
       - { id:  "#qc.output_raw_read_counts" }
       - { id:  "#qc.output_fastqc_read_counts" }
@@ -430,25 +479,55 @@ steps:
       - { id:  "#qc.output_fastqc_data_files" }
       - { id:  "#qc.output_custom_adapters" }
   - id: "#trimm"
-    run: {import: "processing_step1/02-trim-se.cwl"}
+    run: {import: "processing_step1/02-trim-se.cwl" }
     inputs:
-      - {id: "#trimm.input_fastq_files", source: "#input_fastq_files"}
-      - {id: "#trimm.input_adapters_files", source: "#qc.output_custom_adapters"}
-      - {id: "#trimm.nthreads", source: "#nthreads_trimm"}
+      - { id: "#trimm.input_fastq_files", source: "#input_fastq_files" }
+      - { id: "#trimm.input_adapters_files", source: "#qc.output_custom_adapters" }
+      - { id: "#trimm.nthreads", source: "#nthreads_trimm" }
     outputs:
       - { id:  "#trimm.output_data_fastq_trimmed_files" }
       - { id:  "#trimm.trimmed_fastq_read_count" }
   - id: "#map"
-    run: {import: "processing_step1/03-map-se.cwl"}
+    run: {import: "processing_step1/03-map-se.cwl" }
     inputs:
-      - {id: "#map.input_fastq_files", source: "#trimm.output_data_fastq_trimmed_files"}
-      - {id: "#map.genome_ref_first_index_file", source: "#genome_ref_first_index_file"}
-      - {id: "#map.genome_sizes_file", source: "#genome_sizes_file"}
-      - {id: "#map.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile"}
-      - {id: "#map.nthreads", source: "#nthreads_map"}
+      - { id: "#map.input_fastq_files", source: "#trimm.output_data_fastq_trimmed_files" }
+      - { id: "#map.genome_ref_first_index_file", source: "#genome_ref_first_index_file" }
+      - { id: "#map.genome_sizes_file", source: "#genome_sizes_file" }
+      - { id: "#map.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile" }
+      - { id: "#map.nthreads", source: "#nthreads_map" }
     outputs:
       - { id:  "#map.output_data_sorted_dedup_bam_files" }
       - { id:  "#map.output_index_dedup_bam_files" }
       - { id:  "#map.output_picard_mark_duplicates_files" }
       - { id:  "#map.output_pbc_files" }
 {% endif %}
+  - id: "#peak_call"
+    run: {import: "processing_step2/01-peakcall-{{ peak_type }}-{% if 'control' in sample_types %}with-control{% endif %}.cwl" }
+    inputs:
+      - { id: "#peak_call.input_bam_files", source: "#map{% if 'control' in sample_types %}_treatment{% endif %}.output_data_sorted_dedup_bam_files" }
+      - { id: "#peak_call.input_bam_format", valueFrom: "BAM{% if read_type == 'pe' %}PE{% endif %}" }
+    {% if 'control' in sample_types %}
+      - { id: "#peak_call.input_control_bam_files", source: "#map_control.output_data_sorted_dedup_bam_files" }
+    {% endif %}
+    outputs:
+      - { id: "#peak_call.output_spp_x_cross_corr" }
+      - { id: "#peak_call.output_spp_cross_corr_plot" }
+      - { id: "#peak_call.output_{{ peak_type }}peak_file" }
+      - { id: "#peak_call.output_extended_{{ peak_type }}peak_file" }
+      - { id: "#peak_call.output_peak_xls_file" }
+      - { id: "#peak_call.output_filtered_read_count_file" }
+      - { id: "#peak_call.output_peak_count_within_replicate" }
+      - { id: "#peak_call.output_read_in_peak_count_within_replicate" }
+  - id: "#quant"
+    run: {import: "processing_step2/02-quantification.cwl" }
+    inputs:
+      - { id: "#quant.input_bam_files", source: "#map{% if 'control' in sample_types %}_treatment{% endif %}.output_data_sorted_dedup_bam_files" }
+      - { id: "#quant.input_pileup_bedgraphs", source: "#peak_call.output_extended_{{ peak_type }}peak_file" }
+      - { id: "#quant.input_peak_xls_files", source: "#peak_call.output_peak_xls_file" }
+      - { id: "#quant.input_read_count_dedup_files", source: "#peak_call.output_read_in_peak_count_within_replicate" }
+      - { id: "#quant.input_genome_sizes", source: "#genome_sizes_file" }
+    outputs:
+      - { id: "#quant.bigwig_raw_files" }
+      - { id: "#quant.bigwig_norm_files" }
+      - { id: "#quant.bigwig_extended_files" }
+      - { id: "#quant.bigwig_extended_norm_files" }
