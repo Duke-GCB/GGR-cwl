@@ -30,7 +30,6 @@
   sample_types:
     - treatment
     - control
-
 -
   read_type: pe
   peak_type: broad
