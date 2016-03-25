@@ -76,7 +76,7 @@ steps:
       - id: "#spp.savp"
         default: True
       - id: "#spp.nthreads"
-        default: 2
+        default: 1
     outputs:
       - id: "#spp.output_spp_cross_corr"
       - id: "#spp.output_spp_cross_corr_plot"
