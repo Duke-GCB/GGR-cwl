@@ -1,0 +1,44 @@
+-
+  read_type: pe
+  peak_type: broad
+  sample_types:
+    - treatment
+-
+  read_type: se
+  peak_type: broad
+  sample_types:
+    - treatment
+-
+  read_type: pe
+  peak_type: narrow
+  sample_types:
+    - treatment
+-
+  read_type: se
+  peak_type: narrow
+  sample_types:
+    - treatment
+-
+  read_type: pe
+  peak_type: narrow
+  sample_types:
+    - treatment
+    - control
+-
+  read_type: se
+  peak_type: narrow
+  sample_types:
+    - treatment
+    - control
+-
+  read_type: pe
+  peak_type: broad
+  sample_types:
+    - treatment
+    - control
+-
+  read_type: se
+  peak_type: broad
+  sample_types:
+    - treatment
+    - control
