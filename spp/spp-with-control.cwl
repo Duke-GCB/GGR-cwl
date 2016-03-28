@@ -11,12 +11,6 @@ requirements:
   - class: ShellCommandRequirement
 
 inputs:
-  - id: "#absolute_path_to_run_spp_script"
-    type: string
-    description: 'Absolute path to the run_spp.R script (Required for compatibility with docker)'
-    default: "/usr/local/src/myscripts/run_spp.R"
-    inputBinding:
-      position: 1
   - id: savp
     type:
       - 'null'
@@ -65,7 +59,7 @@ outputs:
     outputBinding:
       glob: $(inputs.input_bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.pdf')
 
-baseCommand: Rscript
+baseCommand: run_spp.R
 arguments:
   - valueFrom: $('-out=' + inputs.input_bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.txt')
     position: 2
