@@ -72,17 +72,3 @@ arguments:
   - valueFrom: $('METRICS_FILE='+inputs.output_filename + '.' + inputs.metrics_suffix)
     position: 5
     shellQuote: false
-
-  - id: "#trimmomatic_jar_path"
-    type: string
-    inputBinding:
-      position: 2
-      prefix: "-jar"
-  - id: "#java_opts"
-    type:
-      - 'null'
-      - string
-    description: "JVM arguments should be a quoted, space separated list"
-    inputBinding:
-      position: 1
-      shellQuote: false
