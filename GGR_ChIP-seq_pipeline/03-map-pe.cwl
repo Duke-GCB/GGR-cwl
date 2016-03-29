@@ -30,6 +30,15 @@ inputs:
   - id: "#nthreads"
     type: int
     default: 1
+  - id: "#picard_jar_path"
+    type: string
+    default: "/usr/picard/picard.jar"
+    description: "Picard Java jar file"
+  - id: "#picard_java_opts"
+    type:
+      - 'null'
+      - string
+    description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
 
 outputs:
   - id: "#output_data_sorted_dedup_bam_files"

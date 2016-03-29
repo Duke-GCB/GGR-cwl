@@ -22,22 +22,17 @@ inputs:
   - id: "#output_filename"
     type: string
     description: "Output filename used as basename"
-      
-  - id: "#java_Xms"
-    type: string
-    description: "Starting memory allocation pool for a Java Virtual Machine (JVM)"
-    default: "-Xms512m"
+  - id: "#java_opts"
+    type:
+      - 'null'
+      - string
+    description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
     inputBinding:
       position: 1
-  - id: "#java_Xmx"
+      shellQuote: false
+  - id: "#picard_jar_path"
     type: string
-    description: "Maximum memory allocation pool for a Java Virtual Machine (JVM)"
-    default: "-Xmx2000m"
-    inputBinding:
-      position: 1
-  - id: "#absolute_path_to_picard_jar"
-    type: string
-    description: 'Absolute path to the picard.jar file (Required for compatibility with docker)'
+    description: 'Path to the picard.jar file'
     inputBinding:
       position: 2
       prefix: "-jar"
@@ -77,3 +72,17 @@ arguments:
   - valueFrom: $('METRICS_FILE='+inputs.output_filename + '.' + inputs.metrics_suffix)
     position: 5
     shellQuote: false
+
+  - id: "#trimmomatic_jar_path"
+    type: string
+    inputBinding:
+      position: 2
+      prefix: "-jar"
+  - id: "#java_opts"
+    type:
+      - 'null'
+      - string
+    description: "JVM arguments should be a quoted, space separated list"
+    inputBinding:
+      position: 1
+      shellQuote: false

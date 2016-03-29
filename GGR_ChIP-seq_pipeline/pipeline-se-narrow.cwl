@@ -34,15 +34,21 @@ inputs:
     type: int
     description: "Numbers of threads required for the 03-map step"
   - id: "#trimmomatic_jar_path"
-    type:
-      - 'null'
-      - string
+    type: string
     description: "Trimmomatic Java jar file"
   - id: "#trimmomatic_java_opts"
     type:
       - 'null'
       - string
-    description: "JVM arguments should be a quoted, space separated list"
+    description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
+  - id: "#picard_jar_path"
+    type: string
+    description: "Picard Java jar file"
+  - id: "#picard_java_opts"
+    type:
+      - 'null'
+      - string
+    description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
 outputs:
   - id: "#qc_raw_read_counts"
     source: "#qc.output_raw_read_counts"
@@ -190,6 +196,8 @@ steps:
       - { id: "#map.genome_sizes_file", source: "#genome_sizes_file" }
       - { id: "#map.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile" }
       - { id: "#map.nthreads", source: "#nthreads_map" }
+      - { id: "#map.picard_jar_path", source: "#picard_jar_path" }
+      - { id: "#map.picard_java_opts", source: "#picard_java_opts" }
     outputs:
       - { id:  "#map.output_data_sorted_dedup_bam_files" }
       - { id:  "#map.output_index_dedup_bam_files" }
