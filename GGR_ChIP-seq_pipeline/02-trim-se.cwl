@@ -19,6 +19,17 @@ inputs:
   - id: "#nthreads"
     type: int
     default: 1
+  - id: "#trimmomatic_jar_path"
+    type:
+      - 'null'
+      - string
+    default: "/usr/share/java/trimmomatic.jar"
+    description: "Trimmomatic Java jar file"
+  - id: "#trimmomatic_java_opts"
+    type:
+      - 'null'
+      - string
+    description: "JVM arguments should be a quoted, space separated list"
 
 outputs:
   - id: "#output_data_fastq_trimmed_files"
@@ -48,6 +59,10 @@ steps:
         source: "#input_adapters_files"
       - id: "#trimmomatic-se.nthreads"
         source: "#nthreads"
+      - id: "#trimmomatic-se.java_opts"
+        source: "#trimmomatic_java_opts"
+      - id: "#trimmomatic-se.trimmomatic_jar_path"
+        source: "#trimmomatic_jar_path"
     outputs:
       - id: "#trimmomatic-se.output_trimmed_file"
   - id: "#extract_basename"

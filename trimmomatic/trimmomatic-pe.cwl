@@ -6,28 +6,45 @@ hints:
   - class: DockerRequirement
     dockerImageId: 'dukegcb/trimmomatic'
 
+requirements:
+  - class: InlineJavascriptRequirement
+  - class: ShellCommandRequirement
+
 inputs:
-  - id: "#threads"
+  - id: "#nthreads"
     type: int
     default: 1
     inputBinding:
-      position: 1
+      position: 4
       prefix: -threads
   - id: "#quality_score"
     type: string
     default: "-phred33" # or "-phred64"
     inputBinding:
-      position: 2
+      position: 4
   - id: "#input_read1_fastq_file"
     type: File
     inputBinding:
-      position: 3
+      position: 5
   - id: "#input_read2_fastq_file"
     type: File
     inputBinding:
-      position: 4
+      position: 6
   - id: "#input_adapters_file"
     type: File
+  - id: "#trimmomatic_jar_path"
+    type: string
+    inputBinding:
+      position: 2
+      prefix: "-jar"
+  - id: "#java_opts"
+    type:
+      - 'null'
+      - string
+    description: "JVM arguments should be a quoted, space separated list"
+    inputBinding:
+      position: 1
+      shellQuote: false
 
 outputs:
   - id: "#output_read1_trimmed_paired_file"
@@ -47,17 +64,21 @@ outputs:
     outputBinding:
       glob: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.unpaired.trimmed.fastq')
 
-baseCommand: TrimmomaticPE
+baseCommand: java
 arguments:
+  - valueFrom: "PE"
+    position: 3
   - valueFrom: $(inputs.input_read1_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.paired.trimmed.fastq')
-    position: 5
-  - valueFrom: $(inputs.input_read1_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.unpaired.trimmed.fastq')
-    position: 6
-  - valueFrom: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.paired.trimmed.fastq')
     position: 7
-  - valueFrom: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.unpaired.trimmed.fastq')
+  - valueFrom: $(inputs.input_read1_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.unpaired.trimmed.fastq')
     position: 8
-  - valueFrom: $("ILLUMINACLIP:" + inputs.input_adapters_file.path + ":2:30:15")
+  - valueFrom: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.paired.trimmed.fastq')
     position: 9
-  - valueFrom: $("LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:10")
+  - valueFrom: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.unpaired.trimmed.fastq')
     position: 10
+  - valueFrom: $("ILLUMINACLIP:" + inputs.input_adapters_file.path + ":2:30:15")
+    position: 11
+    shellQuote: false
+  - valueFrom: $("LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:10")
+    position: 12
+    shellQuote: false

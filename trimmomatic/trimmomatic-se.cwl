@@ -6,24 +6,41 @@ hints:
   - class: DockerRequirement
     dockerImageId: 'dukegcb/trimmomatic'
 
+requirements:
+  - class: InlineJavascriptRequirement
+  - class: ShellCommandRequirement
+
 inputs:
   - id: "#nthreads"
     type: int
     default: 1
     inputBinding:
-      position: 1
+      position: 4
       prefix: -threads
   - id: "#quality_score"
     type: string
     default: "-phred33" # or "-phred64"
     inputBinding:
-      position: 2
+      position: 4
   - id: "#input_fastq_file"
     type: File
     inputBinding:
-      position: 3
+      position: 5
   - id: "#input_adapters_file"
     type: File
+  - id: "#trimmomatic_jar_path"
+    type: string
+    inputBinding:
+      position: 2
+      prefix: "-jar"
+  - id: "#java_opts"
+    type:
+      - 'null'
+      - string
+    description: "JVM arguments should be a quoted, space separated list"
+    inputBinding:
+      position: 1
+      shellQuote: false
 
 
 outputs:
@@ -32,11 +49,15 @@ outputs:
     outputBinding:
       glob: $(inputs.input_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.trimmed.fastq')
 
-baseCommand: TrimmomaticSE
+baseCommand: java
 arguments:
+  - valueFrom: "SE"
+    position: 3
   - valueFrom: $(inputs.input_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.trimmed.fastq')
-    position: 4
-  - valueFrom: $("ILLUMINACLIP:" + inputs.input_adapters_file.path + ":2:30:15")
-    position: 5
-  - valueFrom: $("LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:10")
     position: 6
+  - valueFrom: $("ILLUMINACLIP:" + inputs.input_adapters_file.path + ":2:30:15")
+    position: 7
+    shellQuote: false
+  - valueFrom: $("LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:10")
+    position: 8
+    shellQuote: false

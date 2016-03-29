@@ -39,6 +39,16 @@ inputs:
   - id: "#nthreads_map"
     type: int
     description: "Numbers of threads required for the 03-map step"
+  - id: "#trimmomatic_jar_path"
+    type:
+      - 'null'
+      - string
+    description: "Trimmomatic Java jar file"
+  - id: "#trimmomatic_java_opts"
+    type:
+      - 'null'
+      - string
+    description: "JVM arguments should be a quoted, space separated list"
 outputs:
    - id: "#qc_count_raw_reads_read1"
     source: "#qc.output_count_raw_reads_read1"
@@ -211,6 +221,8 @@ steps:
       - { id: "#trimm.input_read1_adapters_files", source: "#qc.output_custom_adapters_read1" }
       - { id: "#trimm.input_read2_adapters_files", source: "#qc.output_custom_adapters_read2" }
       - { id: "#trimm.nthreads", source: "#nthreads_trimm" }
+      - { id: "#trimm.trimmomatic_jar_path", source: "#trimmomatic_jar_path" }
+      - { id: "#trimm.trimmomatic_java_opts", source: "#trimmomatic_java_opts" }
     outputs:
       - { id:  "#trimm.output_data_fastq_read1_trimmed_files" }
       - { id:  "#trimm.output_data_fastq_read2_trimmed_files" }
