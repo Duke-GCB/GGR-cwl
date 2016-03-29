@@ -41,7 +41,7 @@ inputs:
     type:
       - 'null'
       - string
-    description: "JVM arguments should be a quoted, space separated list"
+    description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
     inputBinding:
       position: 1
       shellQuote: false
