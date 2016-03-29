@@ -226,8 +226,10 @@ steps:
         source: "#filtered2sorted.sorted_file"
       - id: "#remove_duplicates.output_filename"
         source: "#extract_basename_2.output_path"
-      - id: "#remove_duplicates.absolute_path_to_picard_jar"
-        default: "/usr/picard/picard.jar"
+      - id: "#remove_duplicates.java_opts"
+        source: "#picard_java_opts"
+      - id: "#remove_duplicates.picard_jar_path"
+        source: "#picard_jar_path"
     outputs:
       - id: "#remove_duplicates.output_metrics_file"
       - id: "#remove_duplicates.output_dedup_bam_file"
