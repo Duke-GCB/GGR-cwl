@@ -533,7 +533,7 @@ steps:
       - { id:  "#map.output_pbc_files" }
 {% endif %}
   - id: "#peak_call"
-    run: {import: "04-peakcall-{{ peak_type }}-{% if 'control' in sample_types %}with-control{% endif %}.cwl" }
+    run: {import: "04-peakcall-{{ peak_type }}{% if 'control' in sample_types %}-with-control{% endif %}.cwl" }
     inputs:
       - { id: "#peak_call.input_bam_files", source: "#map{% if 'control' in sample_types %}_treatment{% endif %}.output_data_sorted_dedup_bam_files" }
       - { id: "#peak_call.input_bam_format", valueFrom: "BAM{% if read_type == 'pe' %}PE{% endif %}" }

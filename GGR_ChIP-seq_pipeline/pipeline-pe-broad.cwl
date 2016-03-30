@@ -251,7 +251,7 @@ steps:
       - { id:  "#map.output_picard_mark_duplicates_files" }
       - { id:  "#map.output_pbc_files" }
   - id: "#peak_call"
-    run: {import: "04-peakcall-broad-.cwl" }
+    run: {import: "04-peakcall-broad.cwl" }
     inputs:
       - { id: "#peak_call.input_bam_files", source: "#map.output_data_sorted_dedup_bam_files" }
       - { id: "#peak_call.input_bam_format", valueFrom: "BAMPE" }
