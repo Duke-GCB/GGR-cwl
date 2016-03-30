@@ -33,6 +33,17 @@ inputs:
   - id: "#quality_score"
     type: string
     default: "-phred33"
+  - id: "#trimmomatic_jar_path"
+    type:
+      - 'null'
+      - string
+    default: "/usr/share/java/trimmomatic.jar"
+    description: "Trimmomatic Java jar file"
+  - id: "#trimmomatic_java_opts"
+    type:
+      - 'null'
+      - string
+    description: "JVM arguments should be a quoted, space separated list"
 
 outputs:
   - id: "#output_data_fastq_read1_trimmed_files"
@@ -90,6 +101,10 @@ steps:
         source: "#concat_adapters.output_file"
       - id: "#trimmomatic-pe.nthreads"
         source: "#nthreads"
+      - id: "#trimmomatic-pe.java_opts"
+        source: "#trimmomatic_java_opts"
+      - id: "#trimmomatic-pe.trimmomatic_jar_path"
+        source: "#trimmomatic_jar_path"
     outputs:
       - id: "#trimmomatic-pe.output_read1_trimmed_paired_file"
 #      - id: "#trimmomatic-pe.output_read1_trimmed_unpaired_file"

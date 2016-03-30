@@ -37,6 +37,22 @@ inputs:
   - id: "#nthreads_map"
     type: int
     description: "Numbers of threads required for the 03-map step"
+  - id: "#trimmomatic_jar_path"
+    type: string
+    description: "Trimmomatic Java jar file"
+  - id: "#trimmomatic_java_opts"
+    type:
+      - 'null'
+      - string
+    description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
+  - id: "#picard_jar_path"
+    type: string
+    description: "Picard Java jar file"
+  - id: "#picard_java_opts"
+    type:
+      - 'null'
+      - string
+    description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
 outputs:
   - id: "#qc_treatment_raw_read_counts"
     source: "#qc_treatment.output_raw_read_counts"
@@ -213,6 +229,8 @@ steps:
       - { id: "#trimm_treatment.input_fastq_files", source: "#input_treatment_fastq_files" }
       - { id: "#trimm_treatment.input_adapters_files", source: "#qc_treatment.output_custom_adapters" }
       - { id: "#trimm_treatment.nthreads", source: "#nthreads_trimm" }
+      - { id: "#trimm_treatment.trimmomatic_jar_path", source: "#trimmomatic_jar_path" }
+      - { id: "#trimm_treatment.trimmomatic_java_opts", source: "#trimmomatic_java_opts" }
     outputs:
       - { id: "#trimm_treatment.output_data_fastq_trimmed_files" }
       - { id: "#trimm_treatment.trimmed_fastq_read_count" }
@@ -224,6 +242,8 @@ steps:
       - { id: "#map_treatment.genome_sizes_file", source: "#genome_sizes_file" }
       - { id: "#map_treatment.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile" }
       - { id: "#map_treatment.nthreads", source: "#nthreads_map" }
+      - { id: "#map_treatment.picard_jar_path", source: "#picard_jar_path" }
+      - { id: "#map_treatment.picard_java_opts", source: "#picard_java_opts" }
     outputs:
       - { id: "#map_treatment.output_data_sorted_dedup_bam_files" }
       - { id: "#map_treatment.output_index_dedup_bam_files" }
@@ -247,6 +267,8 @@ steps:
       - { id: "#trimm_control.input_fastq_files", source: "#input_control_fastq_files" }
       - { id: "#trimm_control.input_adapters_files", source: "#qc_control.output_custom_adapters" }
       - { id: "#trimm_control.nthreads", source: "#nthreads_trimm" }
+      - { id: "#trimm_control.trimmomatic_jar_path", source: "#trimmomatic_jar_path" }
+      - { id: "#trimm_control.trimmomatic_java_opts", source: "#trimmomatic_java_opts" }
     outputs:
       - { id: "#trimm_control.output_data_fastq_trimmed_files" }
       - { id: "#trimm_control.trimmed_fastq_read_count" }
@@ -258,6 +280,8 @@ steps:
       - { id: "#map_control.genome_sizes_file", source: "#genome_sizes_file" }
       - { id: "#map_control.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile" }
       - { id: "#map_control.nthreads", source: "#nthreads_map" }
+      - { id: "#map_control.picard_jar_path", source: "#picard_jar_path" }
+      - { id: "#map_control.picard_java_opts", source: "#picard_java_opts" }
     outputs:
       - { id: "#map_control.output_data_sorted_dedup_bam_files" }
       - { id: "#map_control.output_index_dedup_bam_files" }
