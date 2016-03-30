@@ -41,12 +41,6 @@ inputs:
     description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
 
 outputs:
-  - id: "#output_data_sorted_dedup_bam_files"
-    source: "#filtered2sorted.sorted_file"
-    description: "Filtered sorted aligned BAM files with Bowtie."
-    type:
-      type: array
-      items: File
   - id: "#output_picard_mark_duplicates_files"
     source: "#remove_duplicates.output_metrics_file"
     description: "Picard MarkDuplicates metrics files."
