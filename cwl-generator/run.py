@@ -18,6 +18,8 @@ def get_cwl_name(template_name, conf_obj):
         else:
             suf_list = [conf_obj['peak_type'], 'with-control']
         return "04-peakcall-%s" % '-'.join(suf_list)
+    if 'chipseq-03-map' == template_name:
+        return "03-map-%s" % conf_obj['read_type']
     return None
 
 
