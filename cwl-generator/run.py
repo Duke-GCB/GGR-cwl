@@ -22,6 +22,8 @@ def get_cwl_name(template_name, conf_obj):
         return "03-map-%s" % conf_obj['read_type']
     if 'chipseq-02-trim' == template_name:
         return "02-trim-%s" % conf_obj['read_type']
+    if 'chipseq-01-qc' == template_name:
+        return "01-qc-%s" % conf_obj['read_type']
     return None
 
 
