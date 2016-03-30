@@ -1,15 +1,12 @@
 #!/usr/bin/env cwl-runner
-
 class: Workflow
-description: "GGR_ChIP-seq - Mapping"
-
+description: "GGR_ChIP-peq 03 mapping - reads: PE"
 requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
-
 inputs:
   - id: "#input_fastq_read1_files"
-    type: 
+    type:
       type: array
       items: File
     description: "Input fastq paired-end read 1 files"
@@ -39,7 +36,6 @@ inputs:
       - 'null'
       - string
     description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
-
 outputs:
   - id: "#output_picard_mark_duplicates_files"
     source: "#remove_duplicates.output_metrics_file"
@@ -83,7 +79,6 @@ outputs:
     type:
       type: array
       items: File
-
 steps:
   - id: "#extract_basename_1"
     run: {import: "../utils/extract-basename.cwl" }
@@ -115,7 +110,7 @@ steps:
         source: "#input_fastq_read2_files"
       - id: "#bowtie-pe.output_filename"
         source: "#extract_basename_2.output_path"
-      - id: "#bowtie-se.genome_ref_first_index_file"
+      - id: "#bowtie-pe.genome_ref_first_index_file"
         source: "#genome_ref_first_index_file"
       - id: "#bowtie-pe.nthreads"
         source: "#nthreads"
