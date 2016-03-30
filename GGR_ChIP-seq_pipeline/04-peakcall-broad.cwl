@@ -1,12 +1,9 @@
 #!/usr/bin/env cwl-runner
-
 class: Workflow
-description: "GGR_ChIP-seq - processing step 2 - Peak calling for broad peaks (SE)"
-
+description: "GGR_ChIP-seq 04 quantification - region: broad, samples: treatment."
 requirements:
   - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
-
 inputs:
   - id: "#input_bam_files"
     type:
@@ -16,7 +13,9 @@ inputs:
     type: string
     description: "BAM or BAMPE for single-end and paired-end reads respectively (default: BAM)"
     default: "BAM"
-
+  - id: "#nthreads"
+    type: int
+    default: 1
 outputs:
   - id: "#output_spp_x_cross_corr"
     source: "#spp.output_spp_cross_corr"
@@ -66,18 +65,19 @@ outputs:
     type:
       type: array
       items: File
-
 steps:
   - id: "#spp"
     run: {import: "../spp/spp.cwl"}
-    scatter: "#spp.input_bam"
+    scatter:
+      - "#spp.input_bam"
+    scatterMethod: dotproduct
     inputs:
       - id: "#spp.input_bam"
         source: "#input_bam_files"
       - id: "#spp.savp"
         default: True
       - id: "#spp.nthreads"
-        default: 1
+        source: "#nthreads"
     outputs:
       - id: "#spp.output_spp_cross_corr"
       - id: "#spp.output_spp_cross_corr_plot"
@@ -89,7 +89,6 @@ steps:
         source: "#spp.output_spp_cross_corr"
     outputs:
       - id: "#extract-peak-frag-length.output_best_frag_length"
-
   - id: "#peak-calling-broad"
     run: {import: "../peak_calling/macs2-callpeak-broad.cwl"}
     scatter:

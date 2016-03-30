@@ -1,11 +1,9 @@
 #!/usr/bin/env cwl-runner
-
 class: Workflow
-description: "GGR_ChIP-seq - processing step 2 - Peak calling for narrow peaks (SE)"
-
+description: "GGR_ChIP-seq 04 quantification - region: narrow, samples: treatment."
 requirements:
   - class: ScatterFeatureRequirement
-
+  - class: StepInputExpressionRequirement
 inputs:
   - id: "#input_bam_files"
     type:
@@ -15,7 +13,9 @@ inputs:
     type: string
     description: "BAM or BAMPE for single-end and paired-end reads respectively (default: BAM)"
     default: "BAM"
-
+  - id: "#nthreads"
+    type: int
+    default: 1
 outputs:
   - id: "#output_spp_x_cross_corr"
     source: "#spp.output_spp_cross_corr"
@@ -65,22 +65,22 @@ outputs:
     type:
       type: array
       items: File
-
 steps:
   - id: "#spp"
     run: {import: "../spp/spp.cwl"}
-    scatter: "#spp.input_bam"
+    scatter:
+      - "#spp.input_bam"
+    scatterMethod: dotproduct
     inputs:
       - id: "#spp.input_bam"
         source: "#input_bam_files"
       - id: "#spp.savp"
         default: True
       - id: "#spp.nthreads"
-        default: 1
+        source: "#nthreads"
     outputs:
       - id: "#spp.output_spp_cross_corr"
       - id: "#spp.output_spp_cross_corr_plot"
-
   - id: "#extract-peak-frag-length"
     run: {import: "../spp/extract-best-frag-length.cwl"}
     scatter: "#extract-peak-frag-length.input_spp_txt_file"
@@ -89,7 +89,6 @@ steps:
         source: "#spp.output_spp_cross_corr"
     outputs:
       - id: "#extract-peak-frag-length.output_best_frag_length"
-
   - id: "#peak-calling-narrow"
     run: {import: "../peak_calling/macs2-callpeak-narrow.cwl"}
     scatter:
@@ -124,7 +123,7 @@ steps:
       - id: "#count-peaks.input_file"
         source: "#peak-calling-narrow.output_narrowpeak_file"
       - id: "#count-peaks.output_suffix"
-        default: ".peak_count.within_replicate.txt"
+        valueFrom: ".peak_count.within_replicate.txt"
     outputs:
       - id: "#count-peaks.output_counts"
   - id: "#filter-reads-in-peaks"
@@ -147,6 +146,6 @@ steps:
       - id: "#extract-count-reads-in-peaks.input_bam_file"
         source: "#filter-reads-in-peaks.filtered_file"
       - id: "#extract-count-reads-in-peaks.output_suffix"
-        default: ".read_count.within_replicate.txt"
+        valueFrom: ".read_count.within_replicate.txt"
     outputs:
       - id: "#extract-count-reads-in-peaks.output_read_count"
