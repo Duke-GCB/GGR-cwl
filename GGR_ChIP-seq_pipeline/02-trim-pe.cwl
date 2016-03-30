@@ -1,13 +1,11 @@
 #!/usr/bin/env cwl-runner
-
 class: Workflow
-description: "GGR_ChIP-seq - Trimm"
+description: "GGR_ChIP-seq 02 trimming - reads: PE"
 requirements:
   - class: ScatterFeatureRequirement
-
 inputs:
   - id: "#input_read1_fastq_files"
-    type: 
+    type:
       type: array
       items: File
     description: "Input read 1 fastq files"
@@ -44,7 +42,6 @@ inputs:
       - 'null'
       - string
     description: "JVM arguments should be a quoted, space separated list"
-
 outputs:
   - id: "#output_data_fastq_read1_trimmed_files"
     source: "#trimmomatic-pe.output_read1_trimmed_paired_file"
@@ -70,7 +67,6 @@ outputs:
     type:
       type: array
       items: File
-
 steps:
   - id: "#concat_adapters"
     run: {import: "../utils/concat-files.cwl"}
