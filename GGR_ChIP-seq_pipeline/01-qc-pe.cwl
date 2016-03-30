@@ -1,10 +1,8 @@
 #!/usr/bin/env cwl-runner
-
 class: Workflow
-description: "GGR_ChIP-seq - QC PE"
+description: "GGR_ChIP-seq 01 QC - reads: PE"
 requirements:
   - class: ScatterFeatureRequirement
-
 inputs:
   - id: "#input_read1_fastq_files"
     type:
@@ -22,7 +20,6 @@ inputs:
   - id: "#nthreads"
     description: "Number of threads."
     type: int
-
 outputs:
   - id: "#output_fastqc_report_files_read1"
     source: "#fastqc_read1.output_qc_report_file"
@@ -95,7 +92,6 @@ steps:
         source: "#input_read2_fastq_files"
     outputs:
       - id: "#extract_basename_read2.output_basename"
-
   - id: "#count_raw_reads_read1"
     run: {import: "../utils/count-fastq-reads.cwl" }
     scatter:
@@ -109,7 +105,6 @@ steps:
         source: "#extract_basename_read1.output_basename"
     outputs:
       - id: "#count_raw_reads_read1.output_read_count"
-
   - id: "#count_raw_reads_read2"
     run: {import: "../utils/count-fastq-reads.cwl" }
     scatter:
@@ -123,7 +118,6 @@ steps:
         source: "#extract_basename_read2.output_basename"
     outputs:
       - id: "#count_raw_reads_read2.output_read_count"
-
   - id: "#fastqc_read1"
     run: {import: "../qc/fastqc.cwl" }
     scatter: "#fastqc_read1.input_fastq_file"
@@ -144,7 +138,6 @@ steps:
         source: "#nthreads"
     outputs:
       - id: "#fastqc_read2.output_qc_report_file"
-
   - id: "#extract_fastqc_data_read1"
     run: {import: "../qc/extract_fastqc_data.cwl" }
     scatter:
@@ -158,7 +151,6 @@ steps:
         source: "#extract_basename_read1.output_basename"
     outputs:
       - id: "#extract_fastqc_data_read1.output_fastqc_data_file"
-
   - id: "#extract_fastqc_data_read2"
     run: {import: "../qc/extract_fastqc_data.cwl" }
     scatter:
@@ -172,7 +164,6 @@ steps:
         source: "#extract_basename_read2.output_basename"
     outputs:
       - id: "#extract_fastqc_data_read2.output_fastqc_data_file"
-
   - id: "#overrepresented_sequence_extract_read1"
     run: {import: "../qc/overrepresented_sequence_extract.cwl" }
     scatter:
@@ -188,7 +179,6 @@ steps:
         source: "#extract_basename_read1.output_basename"
     outputs:
       - id: "#overrepresented_sequence_extract_read1.output_custom_adapters"
-
   - id: "#overrepresented_sequence_extract_read2"
     run: {import: "../qc/overrepresented_sequence_extract.cwl" }
     scatter:
@@ -204,7 +194,6 @@ steps:
         source: "#extract_basename_read2.output_basename"
     outputs:
       - id: "#overrepresented_sequence_extract_read2.output_custom_adapters"
-
   - id: "#count_fastqc_reads_read1"
     run: {import: "../qc/count-fastqc-reads.cwl" }
     scatter:
@@ -218,7 +207,6 @@ steps:
         source: "#extract_basename_read1.output_basename"
     outputs:
       - id: "#count_fastqc_reads_read1.output_fastqc_read_count"
-
   - id: "#count_fastqc_reads_read2"
     run: {import: "../qc/count-fastqc-reads.cwl" }
     scatter:
@@ -232,7 +220,6 @@ steps:
         source: "#extract_basename_read2.output_basename"
     outputs:
       - id: "#count_fastqc_reads_read2.output_fastqc_read_count"
-
   - id: "#compare_read_counts_read1"
     run: {import: "../qc/diff.cwl" }
     scatter:
@@ -246,7 +233,6 @@ steps:
         source: "#count_fastqc_reads_read1.output_fastqc_read_count"
     outputs:
       - id: "#compare_read_counts_read1.result"
-
   - id: "#compare_read_counts_read2"
     run: {import: "../qc/diff.cwl" }
     scatter:
