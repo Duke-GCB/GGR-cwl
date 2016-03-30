@@ -20,6 +20,8 @@ def get_cwl_name(template_name, conf_obj):
         return "04-peakcall-%s" % '-'.join(suf_list)
     if 'chipseq-03-map' == template_name:
         return "03-map-%s" % conf_obj['read_type']
+    if 'chipseq-02-trim' == template_name:
+        return "02-trim-%s" % conf_obj['read_type']
     return None
 
 
