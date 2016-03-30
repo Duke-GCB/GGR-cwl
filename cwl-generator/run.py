@@ -12,6 +12,12 @@ def get_cwl_name(template_name, conf_obj):
         else:
             suf_list = [conf_obj['read_type'], conf_obj['peak_type'], 'with-control']
         return "pipeline-%s" % '-'.join(suf_list)
+    if 'chipseq-04-peakcall' == template_name:
+        if "control" not in conf_obj['sample_types']:
+            suf_list = [conf_obj['peak_type']]
+        else:
+            suf_list = [conf_obj['peak_type'], 'with-control']
+        return "04-peakcall-%s" % '-'.join(suf_list)
     return None
 
 

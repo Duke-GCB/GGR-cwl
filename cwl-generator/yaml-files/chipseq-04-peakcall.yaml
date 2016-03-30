@@ -1,0 +1,18 @@
+-
+  peak_type: broad
+  sample_types:
+    - treatment
+-
+  peak_type: narrow
+  sample_types:
+    - treatment
+-
+  peak_type: narrow
+  sample_types:
+    - treatment
+    - control
+-
+  peak_type: broad
+  sample_types:
+    - treatment
+    - control
