@@ -1,17 +1,11 @@
 #!/usr/bin/env cwl-runner
-
 class: Workflow
-description: "GGR_ChIP-seq - processing step 2 - Peak calling for broad peaks with control samples (SE)"
-
+description: "GGR_ChIP-seq 04 quantification - region: broad, samples: treatment and control."
 requirements:
   - class: ScatterFeatureRequirement
-
+  - class: StepInputExpressionRequirement
 inputs:
   - id: "#input_bam_files"
-    type:
-      type: array
-      items: File
-  - id: "#input_control_bam_files"
     type:
       type: array
       items: File
@@ -19,7 +13,13 @@ inputs:
     type: string
     description: "BAM or BAMPE for single-end and paired-end reads respectively (default: BAM)"
     default: "BAM"
-
+  - id: "#input_control_bam_files"
+    type:
+      type: array
+      items: File
+  - id: "#nthreads"
+    type: int
+    default: 1
 outputs:
   - id: "#output_spp_x_cross_corr"
     source: "#spp.output_spp_cross_corr"
@@ -69,7 +69,6 @@ outputs:
     type:
       type: array
       items: File
-
 steps:
   - id: "#spp"
     run: {import: "../spp/spp-with-control.cwl"}
@@ -85,7 +84,7 @@ steps:
       - id: "#spp.savp"
         default: True
       - id: "#spp.nthreads"
-        default: 1
+        source: "#nthreads"
     outputs:
       - id: "#spp.output_spp_cross_corr"
       - id: "#spp.output_spp_cross_corr_plot"
@@ -134,7 +133,7 @@ steps:
       - id: "#count-peaks.input_file"
         source: "#peak-calling-broad.output_broadpeak_file"
       - id: "#count-peaks.output_suffix"
-        default: ".peak_count.within_replicate.txt"
+        valueFrom: ".peak_count.within_replicate.txt"
     outputs:
       - id: "#count-peaks.output_counts"
   - id: "#filter-reads-in-peaks"
@@ -157,6 +156,6 @@ steps:
       - id: "#extract-count-reads-in-peaks.input_bam_file"
         source: "#filter-reads-in-peaks.filtered_file"
       - id: "#extract-count-reads-in-peaks.output_suffix"
-        default: ".read_count.within_replicate.txt"
+        valueFrom: ".read_count.within_replicate.txt"
     outputs:
       - id: "#extract-count-reads-in-peaks.output_read_count"

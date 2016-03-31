@@ -1,13 +1,11 @@
 #!/usr/bin/env cwl-runner
-
 class: Workflow
-description: "GGR_ChIP-seq - Trimm"
+description: "GGR_ChIP-seq 02 trimming - reads: SE"
 requirements:
   - class: ScatterFeatureRequirement
-
 inputs:
   - id: "#input_fastq_files"
-    type: 
+    type:
       type: array
       items: File
     description: "Input fastq files"
@@ -19,10 +17,12 @@ inputs:
   - id: "#nthreads"
     type: int
     default: 1
+    description: "Number of threads"
+  - id: "#quality_score"
+    type: string
+    default: "-phred33"
   - id: "#trimmomatic_jar_path"
-    type:
-      - 'null'
-      - string
+    type: string
     default: "/usr/share/java/trimmomatic.jar"
     description: "Trimmomatic Java jar file"
   - id: "#trimmomatic_java_opts"
@@ -30,7 +30,6 @@ inputs:
       - 'null'
       - string
     description: "JVM arguments should be a quoted, space separated list"
-
 outputs:
   - id: "#output_data_fastq_trimmed_files"
     source: "#trimmomatic-se.output_trimmed_file"
@@ -44,7 +43,6 @@ outputs:
     type:
       type: array
       items: File
-
 steps:
   - id: "#trimmomatic-se"
     run: {import: "../trimmomatic/trimmomatic-se.cwl"}

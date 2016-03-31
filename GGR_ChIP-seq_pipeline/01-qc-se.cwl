@@ -1,10 +1,8 @@
 #!/usr/bin/env cwl-runner
-
 class: Workflow
-description: "GGR_ChIP-seq - QC"
+description: "GGR_ChIP-seq 01 QC - reads: SE"
 requirements:
   - class: ScatterFeatureRequirement
-
 inputs:
   - id: "#input_fastq_files"
     type:
@@ -17,7 +15,6 @@ inputs:
   - id: "#nthreads"
     description: "Number of threads."
     type: int
-
 outputs:
   - id: "#output_raw_read_counts"
     source: "#count_raw_reads.output_read_count"
@@ -47,7 +44,6 @@ outputs:
     type:
       type: array
       items: File
-
 steps:
   - id: "#extract_basename"
     run: {import: "../utils/extract-basename.cwl" }

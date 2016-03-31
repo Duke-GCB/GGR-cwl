@@ -1,21 +1,18 @@
 #!/usr/bin/env cwl-runner
-
 class: Workflow
-description: "GGR_ChIP-seq - Mapping"
-
+description: "GGR_ChIP-seq 03 mapping - reads: SE"
 requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
-
 inputs:
   - id: "#input_fastq_files"
-    type: 
+    type:
       type: array
       items: File
     description: "Input fastq files"
   - id: "#genome_ref_first_index_file"
     type: File
-    description: "Bowtie first index files for reference genome (*1.ebwt). The rest of the files should be in the same folder."
+    description: "Bowtie first index files for reference genome (e.g. *1.ebwt). The rest of the files should be in the same folder."
   - id: "#genome_sizes_file"
     type: File
     description: "Genome sizes tab-delimited file (used in samtools)"
@@ -34,14 +31,7 @@ inputs:
       - 'null'
       - string
     description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
-
 outputs:
-  - id: "#output_sorted_dedup_bam_files"
-    source: "#filtered2sorted.sorted_file"
-    description: "Filtered sorted aligned BAM files with Bowtie."
-    type:
-      type: array
-      items: File
   - id: "#output_picard_mark_duplicates_files"
     source: "#remove_duplicates.output_metrics_file"
     description: "Picard MarkDuplicates metrics files."
@@ -84,7 +74,6 @@ outputs:
     type:
       type: array
       items: File
-
 steps:
   - id: "#extract_basename_1"
     run: {import: "../utils/extract-basename.cwl" }
@@ -115,7 +104,7 @@ steps:
         source: "#extract_basename_2.output_path"
       - id: "#bowtie-se.genome_ref_first_index_file"
         source: "#genome_ref_first_index_file"
-      - id: "bowtie-se.nthreads"
+      - id: "#bowtie-se.nthreads"
         source: "#nthreads"
     outputs:
       - id: "#bowtie-se.output_aligned_file"
