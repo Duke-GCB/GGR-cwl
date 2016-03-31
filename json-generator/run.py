@@ -36,7 +36,7 @@ class MetadataParser(object):
             peak_type = r['Peak type'].lower()
             sample_names = {'treatment': r['Name']}
             wf_key = '-'.join([read_type, peak_type])
-            if 'Control' in r.keys():
+            if 'Control' in r.keys() and r['Control'] and r['Control'].upper() != 'NA':
                 sample_names['control'] = r['Control']
                 wf_key += '-with-control'
             wf_conf_dict[wf_key] = {'iter': r['Iter num'], 'rt': read_type, 'pt': peak_type, 'st': sample_names.keys()}
