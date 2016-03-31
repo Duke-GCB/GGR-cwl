@@ -26,6 +26,9 @@ inputs:
       items: File
   - id: "#input_genome_sizes"
     type: File
+  - id: "#nthreads"
+    type: int
+    default: 1
 
 outputs:
   - id: "#bigwig_raw_files"
@@ -86,6 +89,8 @@ steps:
         source: "#input_bam_files"
       - id: "#bamcoverage.output_suffix"
         valueFrom: ".norm.bw"
+      - id: "#bamcoverage.nthreads"
+        source: "#nthreads"
     outputs:
       - id: "#bamcoverage.output_bam_coverage"
   - id: "#extend-reads"

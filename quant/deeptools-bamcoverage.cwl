@@ -48,6 +48,14 @@ inputs:
     inputBinding:
       position: 1
       prefix: "--binSize"
+  - id: "#nthreads"
+    type:
+      - 'null'
+      - int
+    description: "Number of processors to use. (default max/2 available processors)"
+    inputBinding:
+      position: 1
+      prefix: "-p"
   - id: "#output_suffix"
     type: string
     default: ".bw"
