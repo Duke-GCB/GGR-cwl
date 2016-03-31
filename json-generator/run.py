@@ -74,7 +74,12 @@ def main():
     # Parse input
     args = parser.parse_args()
 
-    if args.outdir and os.path.isdir(args.outdir) and not os.path.exists(args.outdir):
+    if os.path.isfile(args.outdir):
+        print "[ERROR] :: Target output directory is an existing file."
+        import sys
+        sys.exit(1)
+
+    if args.outdir and not os.path.exists(args.outdir):
         os.mkdir(args.outdir)
 
     # Generate outputs
