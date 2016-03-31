@@ -42,13 +42,19 @@ inputs:
     description: "Bedfile containing ENCODE consensus blacklist regions to be excluded."
   - id: "#nthreads_qc"
     type: int
-    description: "Numbers of threads required for the 01-qc step"
+    description: "Number of threads required for the 01-qc step"
   - id: "#nthreads_trimm"
     type: int
-    description: "Numbers of threads required for the 02-trim step"
+    description: "Number of threads required for the 02-trim step"
   - id: "#nthreads_map"
     type: int
-    description: "Numbers of threads required for the 03-map step"
+    description: "Number of threads required for the 03-map step"
+  - id: "#nthreads_peakcall"
+    type: int
+    description: "Number of threads required for the 04-peakcall step"
+  - id: "#nthreads_quant"
+    type: int
+    description: "Number of threads required for the 05-quantification step"
   - id: "#trimmomatic_jar_path"
     type: string
     description: "Trimmomatic Java jar file"
@@ -387,6 +393,7 @@ steps:
       - { id: "#peak_call.input_bam_files", source: "#map_treatment.output_data_sorted_dedup_bam_files" }
       - { id: "#peak_call.input_bam_format", valueFrom: "BAMPE" }
       - { id: "#peak_call.input_control_bam_files", source: "#map_control.output_data_sorted_dedup_bam_files" }
+      - { id: "#peak_call.nthreads", source: "#nthreads_peakcall" }
     outputs:
       - { id: "#peak_call.output_spp_x_cross_corr" }
       - { id: "#peak_call.output_spp_cross_corr_plot" }
@@ -404,6 +411,7 @@ steps:
       - { id: "#quant.input_peak_xls_files", source: "#peak_call.output_peak_xls_file" }
       - { id: "#quant.input_read_count_dedup_files", source: "#peak_call.output_read_in_peak_count_within_replicate" }
       - { id: "#quant.input_genome_sizes", source: "#genome_sizes_file" }
+      - { id: "#quant.nthreads", source: "#nthreads_quant" }
     outputs:
       - { id: "#quant.bigwig_raw_files" }
       - { id: "#quant.bigwig_norm_files" }
