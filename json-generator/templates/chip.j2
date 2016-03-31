@@ -1,0 +1,41 @@
+{
+    "input{% if 'control' in wf_conf['st'] %}_treatment{% endif %}_fastq{% if 'pe' == wf_conf['rt'] %}_read1{% endif %}_files": [
+    {% for samples in samples_list %}
+        { "class": "File", "path": "{{ data_dir }}/{{ wf_conf['iter'] }}/{{ samples['treatment'] }}{% if 'pe' == wf_conf['rt'] %}.R1{% endif %}.fastq" }{% if loop.index < samples_list|length %},{% endif %}
+    {% endfor %}
+    ],
+{% if 'pe' == wf_conf['rt'] %}
+    "input{% if 'control' in wf_conf['st'] %}_treatment{% endif %}_fastq_read2_files": [
+    {% for samples in samples_list %}
+        { "class": "File", "path": "{{ data_dir }}/{{ wf_conf['iter'] }}/{{ samples['treatment'] }}.R2.fastq" }{% if loop.index < samples_list|length %},{% endif %}
+    {% endfor %}
+    ],
+{% endif %}
+{% if 'control' in wf_conf['st'] %}
+
+    "input_control_fastq{% if 'pe' == wf_conf['rt'] %}_read1{% endif %}_files": [
+    {% for samples in samples_list %}
+        { "class": "File", "path": "{{ data_dir }}/{{ wf_conf['iter'] }}/{{ samples['control'] }}{% if 'pe' == wf_conf['rt'] %}.R1{% endif %}.fastq" }{% if loop.index < samples_list|length %},{% endif %}
+    {% endfor %}
+    ],
+    {% if 'pe' == wf_conf['rt'] %}
+    "input_control_fastq_read2_files": [
+    {% for samples in samples_list %}
+        { "class": "File", "path": "{{ data_dir }}/{{ wf_conf['iter'] }}/{{ samples['control'] }}.R2.fastq" }{% if loop.index < samples_list|length %},{% endif %}
+    {% endfor %}
+    ],
+    {% endif %}
+{% endif %}
+
+    "genome_sizes_file": { "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/hg38.sizes" },
+    "ENCODE_blacklist_bedfile": { "class": "File", "path": "/data/reddylab/Reference_Data/ENCODE/wgEncodeDacMapabilityConsensusExcludable.hg38.bed" },
+    "nthreads_qc": 16,
+    "nthreads_trimm": 16,
+    "nthreads_map": 16,
+    "nthreads_peakcall": 16,
+    "nthreads_quant": 16,
+    "trimmomatic_jar_path": "/data/reddylab/software/Trimmomatic-0.32/trimmomatic-0.32.jar",
+    "trimmomatic_java_opts": "-Xms8000m -Xmx12000m",
+    "picard_jar_path": "/data/reddylab/software/picard/dist/picard.jar",
+    "picard_java_opts": "-Xms8000m -Xmx12000m"
+}
