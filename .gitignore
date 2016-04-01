@@ -2,3 +2,4 @@ commands
 #scripts_local_run
 *.json
 .idea/
+json-generator/*.txt
