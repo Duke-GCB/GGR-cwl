@@ -32,7 +32,7 @@ inputs:
 
 outputs:
   - id: "#bigwig_raw_files"
-    source: "#bedgraph2bigwig-raw.output_bigwig"
+    source: "#bdg2bw-raw.output_bigwig"
     description: "Raw reads bigWig (signal) files"
     type:
       type: array
@@ -69,18 +69,26 @@ steps:
         default: true
     outputs:
       - id: "#bedtools_genomecov.output_bedfile"
-  - id: "#bedgraph2bigwig-raw"
-    run: {import: "../quant/bedGraphToBigWig.cwl"}
-    scatter: "#bedgraph2bigwig-raw.bed_graph"
+  - id: "#bedsort_genomecov"
+    run: {import: "../quant/bedSort.cwl"}
+    scatter: "#bedsort_genomecov.bed_file"
     inputs:
-      - id: "#bedgraph2bigwig-raw.bed_graph"
+      - id: "#bedsort_genomecov.bed_file"
         source: "#bedtools_genomecov.output_bedfile"
-      - id: "#bedgraph2bigwig-raw.genome_sizes"
+    outputs:
+      - id: "#bedsort_genomecov.output_bedfile_sorted"
+  - id: "#bdg2bw-raw"
+    run: {import: "../quant/bedGraphToBigWig.cwl"}
+    scatter: "#bdg2bw-raw.bed_graph"
+    inputs:
+      - id: "#bdg2bw-raw.bed_graph"
+        source: "#bedsort_genomecov.output_bedfile_sorted"
+      - id: "#bdg2bw-raw.genome_sizes"
         source: "#input_genome_sizes"
-      - id: "bedgraph2bigwig-raw.output_suffix"
+      - id: "bdg2bw-raw.output_suffix"
         valueFrom: ".raw.bw"
     outputs:
-      - id: "#bedgraph2bigwig-raw.output_bigwig"
+      - id: "#bdg2bw-raw.output_bigwig"
   - id: "#bamcoverage"
     run: {import: "../quant/deeptools-bamcoverage.cwl"}
     scatter: "#bamcoverage.bam"
