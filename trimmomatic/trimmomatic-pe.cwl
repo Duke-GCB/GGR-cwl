@@ -82,3 +82,6 @@ arguments:
   - valueFrom: $("LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:10")
     position: 12
     shellQuote: false
+  - valueFrom: $("-Djava.io.tmpdir="+runtime.tmpdir)
+    shellQuote: false
+    poition: 1
