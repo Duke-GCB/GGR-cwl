@@ -72,3 +72,6 @@ arguments:
   - valueFrom: $('METRICS_FILE='+inputs.output_filename + '.' + inputs.metrics_suffix)
     position: 5
     shellQuote: false
+  - valueFrom: $('TMP_DIR='+runtime.tmpdir)
+    position: 5
+    shellQuote: false
