@@ -123,12 +123,20 @@ steps:
         source: "#input_genome_sizes"
     outputs:
       - id: "#clip-off-chrom.bed_file_clipped"
+  - id: "#bedsort_clipped_bedfile"
+    run: {import: "../quant/bedSort.cwl"}
+    scatter: "#bedsort_clipped_bedfile.bed_file"
+    inputs:
+      - id: "#bedsort_clipped_bedfile.bed_file"
+        source: "#clip-off-chrom.bed_file_clipped"
+    outputs:
+      - id: "#bedsort_clipped_bedfile.output_bedfile_sorted"
   - id: "#bdg2bw-extend"
     run: {import: "../quant/bedGraphToBigWig.cwl"}
     scatter: "#bdg2bw-extend.bed_graph"
     inputs:
       - id: "#bdg2bw-extend.bed_graph"
-        source: "#clip-off-chrom.bed_file_clipped"
+        source: "#bedsort_clipped_bedfile.output_bedfile_sorted"
       - id: "#bdg2bw-extend.genome_sizes"
         source: "#input_genome_sizes"
       - id: "bdg2bw-extend.output_suffix"
@@ -148,16 +156,23 @@ steps:
         source: "#input_read_count_dedup_files"
     outputs:
       - id: "#scale-bedgraph.bedgraph_scaled"
+  - id: "#bedsort_scaled_bdg"
+    run: {import: "../quant/bedSort.cwl"}
+    scatter: "#bedsort_scaled_bdg.bed_file"
+    inputs:
+      - id: "#bedsort_scaled_bdg.bed_file"
+        source: "#scale-bedgraph.bedgraph_scaled"
+    outputs:
+      - id: "#bedsort_scaled_bdg.output_bedfile_sorted"
   - id: "#bdg2bw-extend-norm"
     run: {import: "../quant/bedGraphToBigWig.cwl"}
     scatter: "#bdg2bw-extend-norm.bed_graph"
     inputs:
       - id: "#bdg2bw-extend-norm.bed_graph"
-        source: "#scale-bedgraph.bedgraph_scaled"
+        source: "#bedsort_scaled_bdg.output_bedfile_sorted"
       - id: "#bdg2bw-extend-norm.genome_sizes"
         source: "#input_genome_sizes"
       - id: "bdg2bw-extend-norm.output_suffix"
         default: ".fragment_extended_norm.bw"
     outputs:
       - id: "#bdg2bw-extend-norm.output_bigwig"
-
