@@ -29,7 +29,7 @@ inputs:
     type: int
     default: 2
     description: "Report end-to-end hits w/ <=v mismatches; ignore qualities"
-    inputBindng:
+    inputBinding:
       position: 3
       prefix: "-v"
   - id: "#X"
