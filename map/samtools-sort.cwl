@@ -28,7 +28,7 @@ outputs:
     type: File
     description: "Sorted aligned file"
     outputBinding:
-      glob: $(inputs.input_file.path.replace(/^.*[\\\/]/, '') + '.sorted.bam')
+      glob: $(inputs.input_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.sorted.bam')
 
 baseCommand: ["samtools", "sort"]
-stdout: $(inputs.input_file.path.replace(/^.*[\\\/]/, '') + '.sorted.bam')
+stdout: $(inputs.input_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.sorted.bam')

@@ -148,8 +148,8 @@ outputs:
   - id: '#output_bedfile'
     type: File
     outputBinding:
-      glob: $(inputs.ibam.path.replace(/^.*[\\\/]/, '') + '.bdg')
-stdout: $(inputs.ibam.path.replace(/^.*[\\\/]/, '') + '.bdg')
+      glob: $(inputs.ibam.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.bdg')
+stdout: $(inputs.ibam.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.bdg')
 baseCommand:
   - bedtools
   - genomecov

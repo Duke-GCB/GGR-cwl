@@ -110,25 +110,25 @@ outputs:
     type: File
     description: "Peak calling output file in broadPeak format."
     outputBinding:
-      glob: $(inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '') + '_peaks.broadPeak')
+      glob: $(inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_peaks.broadPeak')
   - id: "#output_ext_frag_bdg_file"
     type: File
     description: "Bedgraph with extended fragment pileup."
     outputBinding:
-      glob: $(inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '') + '_treat_pileup.bdg')
+      glob: $(inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_treat_pileup.bdg')
   - id: "#output_peak_xls_file"
     type: File
     description: "Peaks information/report file."
     outputBinding:
-      glob: $(inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '') + '_peaks.xls')
+      glob: $(inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_peaks.xls')
   - id: "#output_peak_summits_file"
     type: File
     description: "Peaks summits bedfile."
     outputBinding:
-      glob: $(inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '') + '_summits.bed')
+      glob: $(inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_summits.bed')
 
 baseCommand: ["macs2" , "callpeak", "--broad"]
 
 arguments:
-  - valueFrom: $('-n=' + inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, ''))
+  - valueFrom: $('-n=' + inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, ''))
     position: 2

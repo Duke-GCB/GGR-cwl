@@ -42,7 +42,7 @@ outputs:
     type: File
     description: "Aligned file in BAM format"
     outputBinding:
-      glob: $(inputs.input_file.path.replace(/^.*[\\\/]/, '') + '.bam')
+      glob: $(inputs.input_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.bam')
 
 baseCommand: ["samtools", "view", "-b"]
-stdout: $(inputs.input_file.path.replace(/^.*[\\\/]/, '') + '.bam')
+stdout: $(inputs.input_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.bam')
