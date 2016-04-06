@@ -20,11 +20,11 @@ outputs:
   - id: '#bed_file_sorted'
     type: File
     outputBinding:
-      glob: $(inputs.bed_file.path.replace(/^.*[\\\/]/, '') + ".sorted")
+      glob: $(inputs.bed_file.path.replace(/^.*[\\\/]/, '') + "_sorted")
 
 baseCommand: bedSort
 arguments:
-  - valueFrom: $(inputs.bed_file.path.replace(/^.*[\\\/]/, '') + ".sorted")
+  - valueFrom: $(inputs.bed_file.path.replace(/^.*[\\\/]/, '') + "_sorted")
     position: 2
 
 description: |
