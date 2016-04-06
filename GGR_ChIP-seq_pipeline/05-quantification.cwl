@@ -32,7 +32,7 @@ inputs:
 
 outputs:
   - id: "#bigwig_raw_files"
-    source: "#bedgraph2bigwig-raw.output_bigwig"
+    source: "#bdg2bw-raw.output_bigwig"
     description: "Raw reads bigWig (signal) files"
     type:
       type: array
@@ -69,18 +69,26 @@ steps:
         default: true
     outputs:
       - id: "#bedtools_genomecov.output_bedfile"
-  - id: "#bedgraph2bigwig-raw"
-    run: {import: "../quant/bedGraphToBigWig.cwl"}
-    scatter: "#bedgraph2bigwig-raw.bed_graph"
+  - id: "#bedsort_genomecov"
+    run: {import: "../quant/bedSort.cwl"}
+    scatter: "#bedsort_genomecov.bed_file"
     inputs:
-      - id: "#bedgraph2bigwig-raw.bed_graph"
+      - id: "#bedsort_genomecov.bed_file"
         source: "#bedtools_genomecov.output_bedfile"
-      - id: "#bedgraph2bigwig-raw.genome_sizes"
+    outputs:
+      - id: "#bedsort_genomecov.bed_file_sorted"
+  - id: "#bdg2bw-raw"
+    run: {import: "../quant/bedGraphToBigWig.cwl"}
+    scatter: "#bdg2bw-raw.bed_graph"
+    inputs:
+      - id: "#bdg2bw-raw.bed_graph"
+        source: "#bedsort_genomecov.bed_file_sorted"
+      - id: "#bdg2bw-raw.genome_sizes"
         source: "#input_genome_sizes"
-      - id: "bedgraph2bigwig-raw.output_suffix"
+      - id: "bdg2bw-raw.output_suffix"
         valueFrom: ".raw.bw"
     outputs:
-      - id: "#bedgraph2bigwig-raw.output_bigwig"
+      - id: "#bdg2bw-raw.output_bigwig"
   - id: "#bamcoverage"
     run: {import: "../quant/deeptools-bamcoverage.cwl"}
     scatter: "#bamcoverage.bam"
@@ -115,12 +123,20 @@ steps:
         source: "#input_genome_sizes"
     outputs:
       - id: "#clip-off-chrom.bed_file_clipped"
+  - id: "#bedsort_clipped_bedfile"
+    run: {import: "../quant/bedSort.cwl"}
+    scatter: "#bedsort_clipped_bedfile.bed_file"
+    inputs:
+      - id: "#bedsort_clipped_bedfile.bed_file"
+        source: "#clip-off-chrom.bed_file_clipped"
+    outputs:
+      - id: "#bedsort_clipped_bedfile.bed_file_sorted"
   - id: "#bdg2bw-extend"
     run: {import: "../quant/bedGraphToBigWig.cwl"}
     scatter: "#bdg2bw-extend.bed_graph"
     inputs:
       - id: "#bdg2bw-extend.bed_graph"
-        source: "#clip-off-chrom.bed_file_clipped"
+        source: "#bedsort_clipped_bedfile.bed_file_sorted"
       - id: "#bdg2bw-extend.genome_sizes"
         source: "#input_genome_sizes"
       - id: "bdg2bw-extend.output_suffix"
@@ -140,16 +156,23 @@ steps:
         source: "#input_read_count_dedup_files"
     outputs:
       - id: "#scale-bedgraph.bedgraph_scaled"
+  - id: "#bedsort_scaled_bdg"
+    run: {import: "../quant/bedSort.cwl"}
+    scatter: "#bedsort_scaled_bdg.bed_file"
+    inputs:
+      - id: "#bedsort_scaled_bdg.bed_file"
+        source: "#scale-bedgraph.bedgraph_scaled"
+    outputs:
+      - id: "#bedsort_scaled_bdg.bed_file_sorted"
   - id: "#bdg2bw-extend-norm"
     run: {import: "../quant/bedGraphToBigWig.cwl"}
     scatter: "#bdg2bw-extend-norm.bed_graph"
     inputs:
       - id: "#bdg2bw-extend-norm.bed_graph"
-        source: "#scale-bedgraph.bedgraph_scaled"
+        source: "#bedsort_scaled_bdg.bed_file_sorted"
       - id: "#bdg2bw-extend-norm.genome_sizes"
         source: "#input_genome_sizes"
       - id: "bdg2bw-extend-norm.output_suffix"
         default: ".fragment_extended_norm.bw"
     outputs:
       - id: "#bdg2bw-extend-norm.output_bigwig"
-
