@@ -144,6 +144,18 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#map_treatment_preseq_c_curve_files"
+    source: "#map_treatment.output_preseq_c_curve_files"
+    description: "Preseq c_curve output files for treatment"
+    type:
+      type: array
+      items: File
+  - id: "#map_treatment_bowtie_log_files"
+    source: "#map_treatment.output_bowtie_log"
+    description: "Bowtie log file with mapping stats for treatment"
+    type:
+      type: array
+      items: File
   - id: "#qc_control_count_raw_reads_read1"
     source: "#qc_control.output_count_raw_reads_read1"
     description: "Raw read counts of fastq files for read 1 after QC for control"
@@ -213,6 +225,18 @@ outputs:
   - id: "#map_control_pbc_files"
     source: "#map_control.output_pbc_files"
     description: "PCR Bottleneck Coefficient files (used to flag samples when pbc<0.5) for control"
+    type:
+      type: array
+      items: File
+  - id: "#map_control_preseq_c_curve_files"
+    source: "#map_control.output_preseq_c_curve_files"
+    description: "Preseq c_curve output files for control"
+    type:
+      type: array
+      items: File
+  - id: "#map_control_bowtie_log_files"
+    source: "#map_control.output_bowtie_log"
+    description: "Bowtie log file with mapping stats for control"
     type:
       type: array
       items: File
@@ -338,6 +362,8 @@ steps:
       - { id: "#map_treatment.output_index_dedup_bam_files" }
       - { id: "#map_treatment.output_picard_mark_duplicates_files" }
       - { id: "#map_treatment.output_pbc_files" }
+      - { id: "#map_treatment.output_bowtie_log" }
+      - { id: "#map_treatment.output_preseq_c_curve_files" }
   - id: "#qc_control"
     run: {import: "01-qc-pe.cwl" }
     inputs:
@@ -387,6 +413,8 @@ steps:
       - { id: "#map_control.output_index_dedup_bam_files" }
       - { id: "#map_control.output_picard_mark_duplicates_files" }
       - { id: "#map_control.output_pbc_files" }
+      - { id: "#map_control.output_bowtie_log" }
+      - { id: "#map_control.output_preseq_c_curve_files" }
   - id: "#peak_call"
     run: {import: "04-peakcall-narrow-with-control.cwl" }
     inputs:

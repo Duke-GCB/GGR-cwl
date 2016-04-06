@@ -79,7 +79,7 @@ arguments:
   - valueFrom: $("ILLUMINACLIP:" + inputs.input_adapters_file.path + ":2:30:15")
     position: 11
     shellQuote: false
-  - valueFrom: $("LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:10")
+  - valueFrom: $("LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:15")
     position: 12
     shellQuote: false
   - valueFrom: $("-Djava.io.tmpdir="+runtime.tmpdir)

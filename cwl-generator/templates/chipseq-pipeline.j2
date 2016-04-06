@@ -186,6 +186,18 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#map_{{ sample_type }}_preseq_c_curve_files"
+    source: "#map_{{ sample_type }}.output_preseq_c_curve_files"
+    description: "Preseq c_curve output files for {{ sample_type }}"
+    type:
+      type: array
+      items: File
+  - id: "#map_{{ sample_type }}_bowtie_log_files"
+    source: "#map_{{ sample_type }}.output_bowtie_log"
+    description: "Bowtie log file with mapping stats for {{ sample_type }}"
+    type:
+      type: array
+      items: File
     {%  endfor %}
 {% else %}
 {% if read_type == "pe" %}
@@ -278,6 +290,18 @@ outputs:
   - id: "#map_pbc_files"
     source: "#map.output_pbc_files"
     description: "PCR Bottleneck Coefficient files (used to flag samples when pbc<0.5)"
+    type:
+      type: array
+      items: File
+  - id: "#map_preseq_c_curve_files"
+    source: "#map.output_preseq_c_curve_files"
+    description: "Preseq c_curve output files"
+    type:
+      type: array
+      items: File
+  - id: "#map_bowtie_log_files"
+    source: "#map.output_bowtie_log"
+    description: "Bowtie log file with mapping stats"
     type:
       type: array
       items: File
@@ -407,6 +431,8 @@ steps:
       - { id: "#map_{{ sample_type }}.output_index_dedup_bam_files" }
       - { id: "#map_{{ sample_type }}.output_picard_mark_duplicates_files" }
       - { id: "#map_{{ sample_type }}.output_pbc_files" }
+      - { id: "#map_{{ sample_type }}.output_bowtie_log" }
+      - { id: "#map_{{ sample_type }}.output_preseq_c_curve_files" }
         {% else %}
   - id: "#qc_{{ sample_type }}"
     run: {import: "01-qc-se.cwl" }
@@ -446,6 +472,8 @@ steps:
       - { id: "#map_{{ sample_type }}.output_index_dedup_bam_files" }
       - { id: "#map_{{ sample_type }}.output_picard_mark_duplicates_files" }
       - { id: "#map_{{ sample_type }}.output_pbc_files" }
+      - { id: "#map_{{ sample_type }}.output_bowtie_log" }
+      - { id: "#map_{{ sample_type }}.output_preseq_c_curve_files" }
         {% endif %}
     {% endfor %}
 {%  elif read_type == "pe" %}
@@ -498,6 +526,8 @@ steps:
       - { id:  "#map.output_index_dedup_bam_files" }
       - { id:  "#map.output_picard_mark_duplicates_files" }
       - { id:  "#map.output_pbc_files" }
+      - { id:  "#map.output_bowtie_log" }
+      - { id:  "#map.output_preseq_c_curve_files" }
 {% else %}
   - id: "#qc"
     run: {import: "01-qc-se.cwl" }
@@ -537,6 +567,8 @@ steps:
       - { id:  "#map.output_index_dedup_bam_files" }
       - { id:  "#map.output_picard_mark_duplicates_files" }
       - { id:  "#map.output_pbc_files" }
+      - { id:  "#map.output_bowtie_log" }
+      - { id:  "#map.output_preseq_c_curve_files" }
 {% endif %}
   - id: "#peak_call"
     run: {import: "04-peakcall-{{ peak_type }}{% if 'control' in sample_types %}-with-control{% endif %}.cwl" }
