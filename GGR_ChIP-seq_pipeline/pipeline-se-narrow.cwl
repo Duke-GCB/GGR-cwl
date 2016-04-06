@@ -98,6 +98,18 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#map_preseq_c_curve_files"
+    source: "#map.output_preseq_c_curve_files"
+    description: "Preseq c_curve output files"
+    type:
+      type: array
+      items: File
+  - id: "#map_bowtie_log_files"
+    source: "#map.output_bowtie_log"
+    description: "Bowtie log file with mapping stats"
+    type:
+      type: array
+      items: File
   - id: "#peak_call_spp_x_cross_corr"
     source: "#peak_call.output_spp_x_cross_corr"
     description: "SPP strand cross correlation summary"
@@ -209,6 +221,8 @@ steps:
       - { id:  "#map.output_index_dedup_bam_files" }
       - { id:  "#map.output_picard_mark_duplicates_files" }
       - { id:  "#map.output_pbc_files" }
+      - { id:  "#map.output_bowtie_log" }
+      - { id:  "#map.output_preseq_c_curve_files" }
   - id: "#peak_call"
     run: {import: "04-peakcall-narrow.cwl" }
     inputs:
