@@ -50,31 +50,31 @@ outputs:
   - id: "#output_read1_trimmed_paired_file"
     type: File
     outputBinding:
-      glob: $(inputs.input_read1_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.paired.trimmed.fastq')
+      glob: $(inputs.input_read1_fastq_file.path.replace(/^.*[\\\/]/, '') + '.paired.trimmed.fastq')
   - id: "#output_read1_trimmed_unpaired_file"
     type: File
     outputBinding:
-      glob: $(inputs.input_read1_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.unpaired.trimmed.fastq')
+      glob: $(inputs.input_read1_fastq_file.path.replace(/^.*[\\\/]/, '') + '.unpaired.trimmed.fastq')
   - id: "#output_read2_trimmed_paired_file"
     type: File
     outputBinding:
-      glob: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.paired.trimmed.fastq')
+      glob: $(inputs.input_read2_fastq_file.path.replace(/^.*[\\\/]/, '') + '.paired.trimmed.fastq')
   - id: "#output_read2_trimmed_unpaired_file"
     type: File
     outputBinding:
-      glob: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.unpaired.trimmed.fastq')
+      glob: $(inputs.input_read2_fastq_file.path.replace(/^.*[\\\/]/, '') + '.unpaired.trimmed.fastq')
 
 baseCommand: java
 arguments:
   - valueFrom: "PE"
     position: 3
-  - valueFrom: $(inputs.input_read1_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.paired.trimmed.fastq')
+  - valueFrom: $(inputs.input_read1_fastq_file.path.replace(/^.*[\\\/]/, '') + '.paired.trimmed.fastq')
     position: 7
-  - valueFrom: $(inputs.input_read1_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.unpaired.trimmed.fastq')
+  - valueFrom: $(inputs.input_read1_fastq_file.path.replace(/^.*[\\\/]/, '') + '.unpaired.trimmed.fastq')
     position: 8
-  - valueFrom: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.paired.trimmed.fastq')
+  - valueFrom: $(inputs.input_read2_fastq_file.path.replace(/^.*[\\\/]/, '') + '.paired.trimmed.fastq')
     position: 9
-  - valueFrom: $(inputs.input_read2_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.unpaired.trimmed.fastq')
+  - valueFrom: $(inputs.input_read2_fastq_file.path.replace(/^.*[\\\/]/, '') + '.unpaired.trimmed.fastq')
     position: 10
   - valueFrom: $("ILLUMINACLIP:" + inputs.input_adapters_file.path + ":2:30:15")
     position: 11

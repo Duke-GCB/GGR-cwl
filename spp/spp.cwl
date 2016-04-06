@@ -18,7 +18,7 @@ inputs:
     description: "\t save cross-correlation plot\n"
     inputBinding:
       position: 2
-      valueFrom: $('-savp=' + inputs.input_bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.pdf')
+      valueFrom: $('-savp=' + inputs.input_bam.path.replace(/^.*[\\\/]/, '') + '.spp_cross_corr.pdf')
   - id: "#input_bam"
     type: File
     description: "<ChIP_alignFile>, full path and name (or URL) of tagAlign/BAM file (can be gzipped)(FILE EXTENSION MUST BE tagAlign.gz, tagAlign, bam or bam.gz)"
@@ -46,14 +46,14 @@ outputs:
     type: File
     description: "peakshift/phantomPeak results file"
     outputBinding:
-      glob: $(inputs.input_bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.txt')
+      glob: $(inputs.input_bam.path.replace(/^.*[\\\/]/, '') + '.spp_cross_corr.txt')
   - id: "#output_spp_cross_corr_plot"
     type: File
     description: "peakshift/phantomPeak results file plot"
     outputBinding:
-      glob: $(inputs.input_bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.pdf')
+      glob: $(inputs.input_bam.path.replace(/^.*[\\\/]/, '') + '.spp_cross_corr.pdf')
 
 baseCommand: run_spp.R
 arguments:
-  - valueFrom: $('-out=' + inputs.input_bam.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.spp_cross_corr.txt')
+  - valueFrom: $('-out=' + inputs.input_bam.path.replace(/^.*[\\\/]/, '') + '.spp_cross_corr.txt')
     position: 2

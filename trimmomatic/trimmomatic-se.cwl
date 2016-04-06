@@ -47,13 +47,13 @@ outputs:
   - id: "#output_trimmed_file"
     type: File
     outputBinding:
-      glob: $(inputs.input_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.trimmed.fastq')
+      glob: $(inputs.input_fastq_file.path.replace(/^.*[\\\/]/, '') + '.trimmed.fastq')
 
 baseCommand: java
 arguments:
   - valueFrom: "SE"
     position: 3
-  - valueFrom: $(inputs.input_fastq_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.trimmed.fastq')
+  - valueFrom: $(inputs.input_fastq_file.path.replace(/^.*[\\\/]/, '') + '.trimmed.fastq')
     position: 6
   - valueFrom: $("ILLUMINACLIP:" + inputs.input_adapters_file.path + ":2:30:15")
     position: 7
