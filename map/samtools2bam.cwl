@@ -29,14 +29,20 @@ inputs:
     inputBinding:
       position: 1
       prefix: "-S"
+  - id: "#nthreads"
+    type: int
+    default: 1
+    description: "Number of threads used"
+    inputBinding:
+      position: 1
+      prefix: "-@"
 
 outputs:
   - id: "#bam_file"
     type: File
     description: "Aligned file in BAM format"
     outputBinding:
-      glob: "*.bam"
-      outputEval: $(self[0])
+      glob: $(inputs.input_file.path.replace(/^.*[\\\/]/, '') + '.bam')
 
 baseCommand: ["samtools", "view", "-b"]
-stdout: $(inputs.input_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '.bam')
+stdout: $(inputs.input_file.path.replace(/^.*[\\\/]/, '') + '.bam')
