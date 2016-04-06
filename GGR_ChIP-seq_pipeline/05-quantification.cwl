@@ -140,7 +140,7 @@ steps:
       - id: "#bdg2bw-extend.genome_sizes"
         source: "#input_genome_sizes"
       - id: "bdg2bw-extend.output_suffix"
-        default: ".fragment_extended.bw"
+        valueFrom: ".fragment_extended.bw"
     outputs:
       - id: "#bdg2bw-extend.output_bigwig"
   - id: "#scale-bedgraph"
@@ -173,6 +173,6 @@ steps:
       - id: "#bdg2bw-extend-norm.genome_sizes"
         source: "#input_genome_sizes"
       - id: "bdg2bw-extend-norm.output_suffix"
-        default: ".fragment_extended_norm.bw"
+        valueFrom: ".fragment_extended_norm.bw"
     outputs:
       - id: "#bdg2bw-extend-norm.output_bigwig"
