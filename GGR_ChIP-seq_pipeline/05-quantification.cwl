@@ -173,6 +173,6 @@ steps:
       - id: "#bdg2bw-extend-norm.genome_sizes"
         source: "#input_genome_sizes"
       - id: "bdg2bw-extend-norm.output_suffix"
-        valueFrom: ".fragment_extended_norm.bw"
+        valueFrom: ".fragment_extended.bw"
     outputs:
       - id: "#bdg2bw-extend-norm.output_bigwig"
