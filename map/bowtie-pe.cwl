@@ -48,7 +48,6 @@ inputs:
       prefix: "--best"
   - id: "#chunkmbs"
     type: int
-    default: 256
     description: "The number of megabytes of memory a given thread is given to store path descriptors in --best mode. (Default: 256)"
     inputBinding:
       position: 5
