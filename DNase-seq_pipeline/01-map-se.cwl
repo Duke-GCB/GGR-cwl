@@ -60,23 +60,14 @@ outputs:
       type: array
       items: File
 steps:
-  - id: "#extract_basename_1"
+  - id: "#extract_basename"
     run: {import: "../utils/extract-basename.cwl" }
-    scatter: "#extract_basename_1.input_file"
+    scatter: "#extract_basename.input_file"
     inputs:
-      - id: "#extract_basename_1.input_file"
+      - id: "#extract_basename.input_file"
         source: "#input_fastq_files"
     outputs:
-      - id: "#extract_basename_1.output_basename"
-  - id: "#extract_basename_2"
-    run: {import: "../utils/remove-extension.cwl" }
-    scatter: "#extract_basename_2.file_path"
-    inputs:
-      - id: "#extract_basename_2.file_path"
-        source: "#extract_basename_1.output_basename"
-    outputs:
-      - id: "#extract_basename_2.output_path"
-
+      - id: "#extract_basename.output_basename"
   - id: "#count_fastq_reads"
     run: {import: "../utils/count-fastq-reads.cwl" }
     scatter:
@@ -87,7 +78,7 @@ steps:
       - id: "#count_fastq_reads.input_fastq_file"
         source: "#input_fastq_files"
       - id: "#count_fastq_reads.input_basename"
-        source: "#extract_basename_1.output_basename"
+        source: "#extract_basename.output_basename"
     outputs:
       - id: "#count_fastq_reads.output_read_count"
 
@@ -101,7 +92,7 @@ steps:
       - id: "#bowtie-se.input_fastq_file"
         source: "#input_fastq_files"
       - id: "#bowtie-se.output_filename"
-        source: "#extract_basename_2.output_path"
+        source: "#extract_basename.output_basename"
       - id: "#bowtie-se.genome_ref_first_index_file"
         source: "#genome_ref_first_index_file"
       - id: "#bowtie-se.nthreads"
@@ -139,7 +130,7 @@ steps:
       - id: "#preseq-c-curve.input_sorted_file"
         source: "#sort_bams.sorted_file"
       - id: "#preseq-c-curve.output_file_basename"
-        source: "#extract_basename_2.output_path"
+        source: "#extract_basename.output_basename"
     outputs:
       - id: "#preseq-c-curve.output_file"
   - id: "#filter-unmapped"
@@ -152,7 +143,7 @@ steps:
       - id: "#filter-unmapped.input_file"
         source: "#sort_bams.sorted_file"
       - id: "#filter-unmapped.output_filename"
-        source: "#extract_basename_2.output_path"
+        source: "#extract_basename.output_basename"
     outputs:
       - id: "#filter-unmapped.filtered_file"
   - id: "#filtered2sorted"
@@ -174,7 +165,7 @@ steps:
       - id: "#execute_pcr_bottleneck_coef.genome_sizes"
         source: "#genome_sizes_file"
       - id: "#execute_pcr_bottleneck_coef.input_output_filenames"
-        source: "#extract_basename_2.output_path"
+        source: "#extract_basename.output_basename"
     outputs:
       - id: "#execute_pcr_bottleneck_coef.pbc_file"
   - id: "#remove_encode_blacklist"
@@ -187,7 +178,7 @@ steps:
       - id: "#remove_encode_blacklist.v"
         default: true
       - id: "#remove_encode_blacklist.output_basename_file"
-        source: "#extract_basename_2.output_path"
+        source: "#extract_basename.output_basename"
       - id: "#remove_encode_blacklist.a"
         source: "#filtered2sorted.sorted_file"
       - id: "#remove_encode_blacklist.b"
