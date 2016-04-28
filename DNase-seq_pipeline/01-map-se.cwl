@@ -4,6 +4,7 @@ description: "DNase-seq 01 mapping - reads: SE"
 requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
+  - class: StepInputExpressionRequirement
 inputs:
   - id: "#input_fastq_files"
     type:
@@ -95,6 +96,12 @@ steps:
         source: "#extract_basename.output_basename"
       - id: "#bowtie-se.genome_ref_first_index_file"
         source: "#genome_ref_first_index_file"
+      - id: "#bowtie-se.trim3"
+        valueFrom: $(30)
+      - id: "#bowtie-se.seedlen"
+        valueFrom: $(20)
+      - id: "#bowtie-se.seedmms"
+        valueFrom: $(1)
       - id: "#bowtie-se.nthreads"
         source: "#nthreads"
     outputs:

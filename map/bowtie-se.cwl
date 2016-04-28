@@ -11,6 +11,38 @@ requirements:
   - class: ShellCommandRequirement
 
 inputs:
+  - id: "#seedmms"
+    type:
+      - 'null'
+      - int
+    description: "max mismatches in seed (between [0, 3], default: 2)"
+    inputBinding:
+      position: 1
+      prefix: "--seedmms"
+  - id: "#seedlen"
+    type:
+      - 'null'
+      - int
+    description: "seed length for -n (default: 28)"
+    inputBinding:
+      position: 1
+      prefix: "--seedlen"
+  - id: "#trim3"
+    type:
+      - 'null'
+      - int
+    description: "trim <int> bases from 3' (right) end of reads"
+    inputBinding:
+      position: 1
+      prefix: "--trim3"
+  - id: "#trim5"
+    type:
+      - 'null'
+      - int
+    description: "trim <int> bases from 5' (left) end of reads"
+    inputBinding:
+      position: 1
+      prefix: "--trim5"
   - id: "#t"
     type: boolean
     default: true
@@ -26,16 +58,18 @@ inputs:
       position: 7
       prefix: "-m"
   - id: "#v"
-    type: int
-    default: 2
+    type:
+      - 'null'
+      - int
     description: "Report end-to-end hits w/ <=v mismatches; ignore qualities"
     inputBinding:
       position: 3
       prefix: "-v"
   - id: "#X"
-    type: int
-    default: 2000
-    description: "maximum insert size for paired-end alignment (default: 2000)"
+    type:
+      - 'null'
+      - int
+    description: "maximum insert size for paired-end alignment (default: 250)"
     inputBinding:
       position: 4
       prefix: "-X"
