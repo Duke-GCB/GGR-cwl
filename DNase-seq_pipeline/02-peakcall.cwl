@@ -93,19 +93,17 @@ steps:
     run: {import: "../peak_calling/macs2-callpeak-narrow.cwl"}
     scatter:
       - "#peak-calling-narrow.treatment_sample_file"
-      - "#peak-calling-narrow.extsize"
-    scatterMethod: dotproduct
     inputs:
       - id: "#peak-calling-narrow.treatment_sample_file"
         source: "#input_bam_files"
       - id: "#peak-calling-narrow.extsize"
-        valueFrom: "200"
+        valueFrom: $(200)
       - id: "#peak-calling-narrow.nomodel"
         default: True
       - id: "#peak-calling-narrow.q"
-        valueFrom: "0.10"
+        valueFrom: $(0.10)
       - id: "#peak-calling-narrow.shift"
-        valueFrom: "-100"
+        valueFrom: $(-100)
       - id: "#peak-calling-narrow.format"
         source: "#input_bam_format"
     outputs:
@@ -130,7 +128,6 @@ steps:
         valueFrom: ".peak_count.within_replicate.txt"
     outputs:
       - id: "#count-peaks.output_counts"
-
   - id: "#filter-reads-in-peaks"
     run: {import: "../peak_calling/samtools-filter-in-bedfile.cwl"}
     scatter:
