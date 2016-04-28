@@ -6,6 +6,7 @@ description: "GGR_ChIP-seq 03 mapping - reads: {{read_type|upper}}"
 requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
+  - class: StepInputExpressionRequirement
 
 inputs:
 {% if read_type == "pe" %}
@@ -137,6 +138,10 @@ steps:
         source: "#genome_ref_first_index_file"
       - id: "#bowtie-{{ read_type }}.nthreads"
         source: "#nthreads"
+      - id: "#bowtie-{{ read_type }}.X"
+        valueFrom: $(2000)
+      - id: "#bowtie-{{ read_type }}.v"
+        valueFrom: $(2)
     outputs:
       - id: "#bowtie-{{ read_type }}.output_aligned_file"
       - id: "#bowtie-{{ read_type }}.output_bowtie_log"
