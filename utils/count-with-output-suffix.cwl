@@ -8,7 +8,7 @@ inputs:
     - { id: input_file, type: File}
     - { id: output_suffix, type: string, default: ".count"}
 outputs:
-    - id: file_count
+    - id: output_counts
       type: File
       outputBinding:
         glob: $(inputs.input_file.path.replace(/^.*[\\\/]/, '') + inputs.output_suffix)
