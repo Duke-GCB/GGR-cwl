@@ -124,6 +124,8 @@ steps:
     inputs:
       - id: "#sam2bam.input_file"
         source: "#bowtie-pe.output_aligned_file"
+      - id: "#sam2bam.nthreads"
+        source: "#nthreads"
     outputs:
       - id: "#sam2bam.bam_file"
   - id: "#sort_bams"

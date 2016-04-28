@@ -109,26 +109,26 @@ outputs:
     type: File
     description: "Peak calling output file in narrowPeak format."
     outputBinding:
-      glob: $(inputs.treatment_sample_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '_peaks.narrowPeak')
+      glob: $(inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_peaks.narrowPeak')
   - id: "#output_ext_frag_bdg_file"
     type: File
     description: "Bedgraph with extended fragment pileup."
     outputBinding:
-      glob: $(inputs.treatment_sample_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '_treat_pileup.bdg')
+      glob: $(inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_treat_pileup.bdg')
   - id: "#output_peak_xls_file"
     type: File
     description: "Peaks information/report file."
     outputBinding:
-      glob: $(inputs.treatment_sample_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '_peaks.xls')
+      glob: $(inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_peaks.xls')
   - id: "#output_peak_summits_file"
     type: File
     description: "Peaks summits bedfile."
     outputBinding:
-      glob: $(inputs.treatment_sample_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.') + '_summits.bed')
+      glob: $(inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_summits.bed')
 
 baseCommand: ["macs2" , "callpeak"]
 
 arguments:
-  - valueFrom: $('-n=' + inputs.treatment_sample_file.path.split('/').slice(-1)[0].split('\.').slice(0,-1).join('.'))
+  - valueFrom: $('-n=' + inputs.treatment_sample_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, ''))
     position: 2
 

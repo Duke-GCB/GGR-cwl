@@ -29,7 +29,7 @@ inputs:
     type: int
     default: 2
     description: "Report end-to-end hits w/ <=v mismatches; ignore qualities"
-    inputBindng:
+    inputBinding:
       position: 3
       prefix: "-v"
   - id: "#X"
@@ -46,6 +46,14 @@ inputs:
     inputBinding:
       position: 5
       prefix: "--best"
+  - id: "#chunkmbs"
+    type:
+      - 'null'
+      - int
+    description: "The number of megabytes of memory a given thread is given to store path descriptors in --best mode. (Default: 256)"
+    inputBinding:
+      position: 5
+      prefix: "--chunkmbs"
   - id: "#strata"
     type: boolean
     default: true
