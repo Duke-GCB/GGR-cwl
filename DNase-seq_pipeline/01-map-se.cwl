@@ -24,12 +24,6 @@ inputs:
     type: int
     default: 1
 outputs:
-  - id: "#original_fastq_read_count"
-    source: "#count_fastq_reads.output_read_count"
-    description: "Read counts of the (unprocessed) input fastq files"
-    type:
-      type: array
-      items: File
   - id: "#output_data_filtered_bam_files"
     source: "#sort_filtered_bam.sorted_file"
     description: "BAM files without PCR artifact reads."
@@ -60,19 +54,25 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#read_count_mapped"
+  - id: "#original_fastq_read_count"
+    source: "#count_fastq_reads.output_read_count"
+    description: "Read counts of the (unprocessed) input fastq files"
+    type:
+      type: array
+      items: File
+  - id: "#output_read_count_mapped"
     source: "#mapped_reads_count.output"
     description: "Read counts of the mapped BAM files"
     type:
       type: array
       items: File
-  - id: "#read_count_mapped_filtered"
+  - id: "#output_read_count_mapped_filtered"
     source: "#mapped_filtered_reads_count.output_read_count"
     description: "Read counts of the mapped and filtered BAM files"
     type:
       type: array
       items: File
-  - id: "#percentage_uniq_reads"
+  - id: "#output_percentage_uniq_reads"
     source: "#percent_uniq_reads.output"
     description: "Percentage of uniq reads from preseq c_curve output"
     type:
@@ -272,6 +272,6 @@ steps:
       - id: "#mapped_filtered_reads_count.input_bam_file"
         source: "#sort_filtered_bam.sorted_file"
       - id: "#mapped_filtered_reads_count.output_suffix"
-        valueFrom: ".read_count.mapped_and_filtered"
+        valueFrom: ".mapped_and_filtered.read_count.txt"
     outputs:
       - id: "#mapped_filtered_reads_count.output_read_count"
