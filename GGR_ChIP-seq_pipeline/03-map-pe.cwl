@@ -229,6 +229,14 @@ steps:
     outputs:
       - id: "#remove_duplicates.output_metrics_file"
       - id: "#remove_duplicates.output_dedup_bam_file"
+  - id: "#mapped_file_basename"
+    run: {import: "../utils/extract-basename.cwl" }
+    scatter: "#mapped_file_basename.input_file"
+    inputs:
+      - id: "#mapped_file_basename.input_file"
+        source: "#remove_duplicates.output_dedup_bam_file"
+    outputs:
+      - id: "#mapped_file_basename.output_basename"
   - id: "#remove_encode_blacklist"
     run: {import: "../map/bedtools-intersect.cwl"}
     scatter:
@@ -239,7 +247,7 @@ steps:
       - id: "#remove_encode_blacklist.v"
         default: true
       - id: "#remove_encode_blacklist.output_basename_file"
-        source: "#extract_basename_2.output_path"
+        source: "#mapped_file_basename.output_basename"
       - id: "#remove_encode_blacklist.a"
         source: "#remove_duplicates.output_dedup_bam_file"
       - id: "#remove_encode_blacklist.b"
