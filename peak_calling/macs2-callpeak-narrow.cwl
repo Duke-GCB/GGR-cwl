@@ -45,6 +45,25 @@ inputs:
     inputBinding:
       position: 2
       prefix: '--extsize'
+  - id: "#shift"
+    type:
+      - 'null'
+      - int
+    description: "(NOT the legacy --shiftsize option!) The arbitrary
+            shift in bp. Use discretion while setting it other
+            than default value. When NOMODEL is set, MACS will use
+            this value to move cutting ends (5') towards 5'->3'
+            direction then apply EXTSIZE to extend them to
+            fragments. When this value is negative, ends will be
+            moved toward 3'->5' direction. Recommended to keep it
+            as default 0 for ChIP-Seq datasets, or -1 * half of
+            EXTSIZE together with EXTSIZE option for detecting
+            enriched cutting loci such as certain DNAseI-Seq
+            datasets. Note, you can't set values other than 0 if
+            format is BAMPE for paired-end data. DEFAULT: 0."
+    inputBinding:
+      position: 2
+      prefix: '--shift'
   - id: "#q"
     type: float
     description: "Minimum FDR (q-value) cutoff for peak detection. DEFAULT: 0.05. -q, and -p are mutually exclusive.\n"
@@ -90,10 +109,10 @@ inputs:
       prefix: '-f'
   - id: "#bdg"
     type: boolean
+    default: true
     description: "  Whether or not to save extended fragment pileup, and \n
                     \tlocal lambda tracks (two files) at every bp into a \n
                     \tbedGraph file. DEFAULT: True"
-    default: true
     inputBinding:
       position: 3
       prefix: "--bdg"

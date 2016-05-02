@@ -30,7 +30,7 @@ inputs:
     type:
       - 'null'
       - boolean
-    description: "\t Normalize read coundts by RPKM. \n"
+    description: "\t Normalize read counts by RPKM. \n"
     inputBinding:
       position: 1
       prefix: "--normalizeUsingRPKM"

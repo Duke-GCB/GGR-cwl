@@ -4,6 +4,7 @@ description: "GGR_ChIP-seq 03 mapping - reads: SE"
 requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
+  - class: StepInputExpressionRequirement
 inputs:
   - id: "#input_fastq_files"
     type:
@@ -106,6 +107,10 @@ steps:
         source: "#genome_ref_first_index_file"
       - id: "#bowtie-se.nthreads"
         source: "#nthreads"
+      - id: "#bowtie-se.X"
+        valueFrom: $(2000)
+      - id: "#bowtie-se.v"
+        valueFrom: $(2)
     outputs:
       - id: "#bowtie-se.output_aligned_file"
       - id: "#bowtie-se.output_bowtie_log"
