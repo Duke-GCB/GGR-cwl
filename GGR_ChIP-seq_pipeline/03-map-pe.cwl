@@ -80,6 +80,24 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#output_read_count_mapped"
+    source: "#mapped_reads_count.output"
+    description: "Read counts of the mapped BAM files"
+    type:
+      type: array
+      items: File
+  - id: "#output_read_count_mapped_filtered"
+    source: "#mapped_filtered_reads_count.output_read_count"
+    description: "Read counts of the mapped and filtered BAM files"
+    type:
+      type: array
+      items: File
+  - id: "#output_percentage_uniq_reads"
+    source: "#percent_uniq_reads.output"
+    description: "Percentage of uniq reads from preseq c_curve output"
+    type:
+      type: array
+      items: File
 steps:
   - id: "#extract_basename_1"
     run: {import: "../utils/extract-basename.cwl" }
@@ -274,3 +292,29 @@ steps:
         source: "#sort_dedup_bams.sorted_file"
     outputs:
       - id: "#index_dedup_bams.index_file"
+  - id: "#mapped_reads_count"
+    run: {import: "../map/bowtie-log-read-count.cwl"}
+    scatter: "#mapped_reads_count.bowtie_log"
+    inputs:
+      - id: "#mapped_reads_count.bowtie_log"
+        source: "#bowtie-pe.output_bowtie_log"
+    outputs:
+      - id: "#mapped_reads_count.output"
+  - id: "#percent_uniq_reads"
+    run: {import: "../map/preseq-percent-uniq-reads.cwl"}
+    scatter: "#percent_uniq_reads.preseq_c_curve_outfile"
+    inputs:
+      - id: "#percent_uniq_reads.preseq_c_curve_outfile"
+        source: "#preseq-c-curve.output_file"
+    outputs:
+      - id: "#percent_uniq_reads.output"
+  - id: "#mapped_filtered_reads_count"
+    run: {import: "../peak_calling/samtools-extract-number-mapped-reads.cwl"}
+    scatter: "#mapped_filtered_reads_count.input_bam_file"
+    inputs:
+      - id: "#mapped_filtered_reads_count.input_bam_file"
+        source: "#sort_dedup_bams.sorted_file"
+      - id: "#mapped_filtered_reads_count.output_suffix"
+        valueFrom: ".mapped_and_filtered.read_count.txt"
+    outputs:
+      - id: "#mapped_filtered_reads_count.output_read_count"
