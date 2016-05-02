@@ -306,8 +306,9 @@ outputs:
   - id: '#file_wo_blacklist_regions'
     type: File
     outputBinding:
-      glob: $(inputs.output_basename_file + '.dedup_filtered.bam')
-stdout: $(inputs.output_basename_file + '.dedup_filtered.bam')
+      glob: $(inputs.output_basename_file + '.masked.bam')
+
+stdout: $(inputs.output_basename_file + '.masked.bam')
 baseCommand:
   - bedtools
   - intersect

@@ -92,6 +92,24 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#output_read_count_mapped"
+    source: "#mapped_reads_count.output"
+    description: "Read counts of the mapped BAM files"
+    type:
+      type: array
+      items: File
+  - id: "#output_read_count_mapped_filtered"
+    source: "#mapped_filtered_reads_count.output_read_count"
+    description: "Read counts of the mapped and filtered BAM files"
+    type:
+      type: array
+      items: File
+  - id: "#output_percentage_uniq_reads"
+    source: "#percent_uniq_reads.output"
+    description: "Percentage of uniq reads from preseq c_curve output"
+    type:
+      type: array
+      items: File
 
 steps:
 
@@ -256,6 +274,14 @@ steps:
     outputs:
       - id: "#remove_duplicates.output_metrics_file"
       - id: "#remove_duplicates.output_dedup_bam_file"
+  - id: "#mapped_file_basename"
+    run: {import: "../utils/extract-basename.cwl" }
+    scatter: "#mapped_file_basename.input_file"
+    inputs:
+      - id: "#mapped_file_basename.input_file"
+        source: "#remove_duplicates.output_dedup_bam_file"
+    outputs:
+      - id: "#mapped_file_basename.output_basename"
   - id: "#remove_encode_blacklist"
     run: {import: "../map/bedtools-intersect.cwl"}
     scatter:
@@ -266,7 +292,7 @@ steps:
       - id: "#remove_encode_blacklist.v"
         default: true
       - id: "#remove_encode_blacklist.output_basename_file"
-        source: "#extract_basename_2.output_path"
+        source: "#mapped_file_basename.output_basename"
       - id: "#remove_encode_blacklist.a"
         source: "#remove_duplicates.output_dedup_bam_file"
       - id: "#remove_encode_blacklist.b"
@@ -293,4 +319,30 @@ steps:
         source: "#sort_dedup_bams.sorted_file"
     outputs:
       - id: "#index_dedup_bams.index_file"
+  - id: "#mapped_reads_count"
+    run: {import: "../map/bowtie-log-read-count.cwl"}
+    scatter: "#mapped_reads_count.bowtie_log"
+    inputs:
+      - id: "#mapped_reads_count.bowtie_log"
+        source: "#bowtie-{{ read_type }}.output_bowtie_log"
+    outputs:
+      - id: "#mapped_reads_count.output"
+  - id: "#percent_uniq_reads"
+    run: {import: "../map/preseq-percent-uniq-reads.cwl"}
+    scatter: "#percent_uniq_reads.preseq_c_curve_outfile"
+    inputs:
+      - id: "#percent_uniq_reads.preseq_c_curve_outfile"
+        source: "#preseq-c-curve.output_file"
+    outputs:
+      - id: "#percent_uniq_reads.output"
+  - id: "#mapped_filtered_reads_count"
+    run: {import: "../peak_calling/samtools-extract-number-mapped-reads.cwl"}
+    scatter: "#mapped_filtered_reads_count.input_bam_file"
+    inputs:
+      - id: "#mapped_filtered_reads_count.input_bam_file"
+        source: "#sort_dedup_bams.sorted_file"
+      - id: "#mapped_filtered_reads_count.output_suffix"
+        valueFrom: ".mapped_and_filtered.read_count.txt"
+    outputs:
+      - id: "#mapped_filtered_reads_count.output_read_count"
 

@@ -18,7 +18,7 @@ outputs:
     - id: output
       type: File
       outputBinding:
-        glob: $(inputs.preseq_c_curve_outfile.path.replace(/^.*[\\\/]/, '') + '.percentage_unique_reads.txt')
+        glob: $(inputs.preseq_c_curve_outfile.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, "") + '.percentage_unique_reads.txt')
 
 baseCommand: percent-uniq-reads-from-preseq.sh
-stdout: $(inputs.preseq_c_curve_outfile.path.replace(/^.*[\\\/]/, '') + '.percentage_unique_reads.txt')
+stdout: $(inputs.preseq_c_curve_outfile.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, "") + '.percentage_unique_reads.txt')
