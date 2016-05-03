@@ -1,21 +1,16 @@
 #!/usr/bin/env cwl-runner
 class: Workflow
-description: "GGR_ChIP-seq 03 mapping - reads: PE"
+description: "ChIP-seq 03 mapping - reads: SE"
 requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
   - class: StepInputExpressionRequirement
 inputs:
-  - id: "#input_fastq_read1_files"
+  - id: "#input_fastq_files"
     type:
       type: array
       items: File
-    description: "Input fastq paired-end read 1 files"
-  - id: "#input_fastq_read2_files"
-    type:
-      type: array
-      items: File
-    description: "Input fastq paired-end read 2 files"
+    description: "Input fastq files"
   - id: "#genome_ref_first_index_file"
     type: File
     description: "Bowtie first index files for reference genome (e.g. *1.ebwt). The rest of the files should be in the same folder."
@@ -75,7 +70,7 @@ outputs:
       type: array
       items: File
   - id: "#output_bowtie_log"
-    source: "#bowtie-pe.output_bowtie_log"
+    source: "#bowtie-se.output_bowtie_log"
     description: "Bowtie log file."
     type:
       type: array
@@ -104,7 +99,7 @@ steps:
     scatter: "#extract_basename_1.input_file"
     inputs:
       - id: "#extract_basename_1.input_file"
-        source: "#input_fastq_read1_files"
+        source: "#input_fastq_files"
     outputs:
       - id: "#extract_basename_1.output_basename"
   - id: "#extract_basename_2"
@@ -115,38 +110,35 @@ steps:
         source: "#extract_basename_1.output_basename"
     outputs:
       - id: "#extract_basename_2.output_path"
-  - id: "#bowtie-pe"
-    run: {import: "../map/bowtie-pe.cwl"}
+  - id: "#bowtie-se"
+    run: {import: "../map/bowtie-se.cwl"}
     scatter:
-      - "#bowtie-pe.input_fastq_read1_file"
-      - "#bowtie-pe.input_fastq_read2_file"
-      - "#bowtie-pe.output_filename"
+      - "#bowtie-se.input_fastq_file"
+      - "#bowtie-se.output_filename"
     scatterMethod: dotproduct
     inputs:
-      - id: "#bowtie-pe.input_fastq_read1_file"
-        source: "#input_fastq_read1_files"
-      - id: "#bowtie-pe.input_fastq_read2_file"
-        source: "#input_fastq_read2_files"
-      - id: "#bowtie-pe.output_filename"
+      - id: "#bowtie-se.input_fastq_file"
+        source: "#input_fastq_files"
+      - id: "#bowtie-se.output_filename"
         source: "#extract_basename_2.output_path"
-      - id: "#bowtie-pe.genome_ref_first_index_file"
+      - id: "#bowtie-se.genome_ref_first_index_file"
         source: "#genome_ref_first_index_file"
-      - id: "#bowtie-pe.nthreads"
+      - id: "#bowtie-se.nthreads"
         source: "#nthreads"
-      - id: "#bowtie-pe.X"
+      - id: "#bowtie-se.X"
         valueFrom: $(2000)
-      - id: "#bowtie-pe.v"
+      - id: "#bowtie-se.v"
         valueFrom: $(2)
     outputs:
-      - id: "#bowtie-pe.output_aligned_file"
-      - id: "#bowtie-pe.output_bowtie_log"
+      - id: "#bowtie-se.output_aligned_file"
+      - id: "#bowtie-se.output_bowtie_log"
   - id: "#sam2bam"
     run: {import: "../map/samtools2bam.cwl"}
     scatter:
       - "#sam2bam.input_file"
     inputs:
       - id: "#sam2bam.input_file"
-        source: "#bowtie-pe.output_aligned_file"
+        source: "#bowtie-se.output_aligned_file"
       - id: "#sam2bam.nthreads"
         source: "#nthreads"
     outputs:
@@ -197,8 +189,6 @@ steps:
         source: "#filtered2sorted.sorted_file"
       - id: "#preseq-c-curve.output_file_basename"
         source: "#extract_basename_2.output_path"
-      - id: "#preseq-c-curve.pe"
-        default: true
     outputs:
       - id: "#preseq-c-curve.output_file"
 #  - id: "#preseq-lc-extrap"
@@ -214,8 +204,6 @@ steps:
 #        source: "#extract_basename_2.output_path"
 #      - id: "#preseq-lc-extrap.s"
 #        default: 100000
-#      - id: "#preseq-lc-extrap.pe"
-#        default: true
 #    outputs:
 #      - id: "#preseq-lc-extrap.output_file"
   - id: "#execute_pcr_bottleneck_coef"
@@ -297,7 +285,7 @@ steps:
     scatter: "#mapped_reads_count.bowtie_log"
     inputs:
       - id: "#mapped_reads_count.bowtie_log"
-        source: "#bowtie-pe.output_bowtie_log"
+        source: "#bowtie-se.output_bowtie_log"
     outputs:
       - id: "#mapped_reads_count.output"
   - id: "#percent_uniq_reads"

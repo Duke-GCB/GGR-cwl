@@ -1,6 +1,6 @@
 #!/usr/bin/env cwl-runner
 class: Workflow
-description: "GGR_ChIP-seq 01 QC - reads: SE"
+description: "ChIP-seq 01 QC - reads: SE"
 requirements:
   - class: ScatterFeatureRequirement
 inputs:

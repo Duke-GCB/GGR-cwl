@@ -1,6 +1,6 @@
 #!/usr/bin/env cwl-runner
 class: Workflow
-description: "GGR_ChIP-seq 04 quantification - region: broad, samples: treatment."
+description: "ChIP-seq 04 quantification - region: narrow, samples: treatment and control."
 requirements:
   - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
@@ -13,6 +13,10 @@ inputs:
     type: string
     description: "BAM or BAMPE for single-end and paired-end reads respectively (default: BAM)"
     default: "BAM"
+  - id: "#input_control_bam_files"
+    type:
+      type: array
+      items: File
   - id: "#nthreads"
     type: int
     default: 1
@@ -29,20 +33,20 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#output_broadpeak_file"
-    source: "#peak-calling-broad.output_broadpeak_file"
+  - id: "#output_narrowpeak_file"
+    source: "#peak-calling-narrow.output_narrowpeak_file"
     description: "peakshift/phantomPeak results file"
     type:
       type: array
       items: File
-  - id: "#output_extended_broadpeak_file"
-    source: "#peak-calling-broad.output_ext_frag_bdg_file"
+  - id: "#output_extended_narrowpeak_file"
+    source: "#peak-calling-narrow.output_ext_frag_bdg_file"
     description: "peakshift/phantomPeak extended fragment results file"
     type:
       type: array
       items: File
   - id: "#output_peak_xls_file"
-    source: "#peak-calling-broad.output_peak_xls_file"
+    source: "#peak-calling-narrow.output_peak_xls_file"
     description: "Peak calling report file (*_peaks.xls file produced by MACS2)"
     type:
       type: array
@@ -67,13 +71,16 @@ outputs:
       items: File
 steps:
   - id: "#spp"
-    run: {import: "../spp/spp.cwl"}
+    run: {import: "../spp/spp-with-control.cwl"}
     scatter:
       - "#spp.input_bam"
+      - "#spp.control_bam"
     scatterMethod: dotproduct
     inputs:
       - id: "#spp.input_bam"
         source: "#input_bam_files"
+      - id: "#spp.control_bam"
+        source: "#input_control_bam_files"
       - id: "#spp.savp"
         default: True
       - id: "#spp.nthreads"
@@ -89,31 +96,34 @@ steps:
         source: "#spp.output_spp_cross_corr"
     outputs:
       - id: "#extract-peak-frag-length.output_best_frag_length"
-  - id: "#peak-calling-broad"
-    run: {import: "../peak_calling/macs2-callpeak-broad.cwl"}
+  - id: "#peak-calling-narrow"
+    run: {import: "../peak_calling/macs2-callpeak-narrow-with-control.cwl"}
     scatter:
-      - "#peak-calling-broad.treatment_sample_file"
-      - "#peak-calling-broad.extsize"
+      - "#peak-calling-narrow.treatment_sample_file"
+      - "#peak-calling-narrow.control_sample_file"
+      - "#peak-calling-narrow.extsize"
     scatterMethod: dotproduct
     inputs:
-      - id: "#peak-calling-broad.treatment_sample_file"
+      - id: "#peak-calling-narrow.treatment_sample_file"
         source: "#input_bam_files"
-      - id: "#peak-calling-broad.extsize"
+      - id: "#peak-calling-narrow.control_sample_file"
+        source: "#input_control_bam_files"
+      - id: "#peak-calling-narrow.extsize"
         source: "#extract-peak-frag-length.output_best_frag_length"
-      - id: "#peak-calling-broad.nomodel"
+      - id: "#peak-calling-narrow.nomodel"
         default: True
-      - id: "#peak-calling-broad.format"
+      - id: "#peak-calling-narrow.format"
         source: "#input_bam_format"
     outputs:
-      - id: "#peak-calling-broad.output_broadpeak_file"
-      - id: "#peak-calling-broad.output_ext_frag_bdg_file"
-      - id: "#peak-calling-broad.output_peak_xls_file"
+      - id: "#peak-calling-narrow.output_narrowpeak_file"
+      - id: "#peak-calling-narrow.output_ext_frag_bdg_file"
+      - id: "#peak-calling-narrow.output_peak_xls_file"
   - id: "#count-reads-filtered"
     run: {import: "../peak_calling/count-reads-after-filtering.cwl"}
     scatter: "#count-reads-filtered.peak_xls_file"
     inputs:
       - id: "#count-reads-filtered.peak_xls_file"
-        source: "#peak-calling-broad.output_peak_xls_file"
+        source: "#peak-calling-narrow.output_peak_xls_file"
     outputs:
       - id: "#count-reads-filtered.read_count_file"
   - id: "#count-peaks"
@@ -121,7 +131,7 @@ steps:
     scatter: "#count-peaks.input_file"
     inputs:
       - id: "#count-peaks.input_file"
-        source: "#peak-calling-broad.output_broadpeak_file"
+        source: "#peak-calling-narrow.output_narrowpeak_file"
       - id: "#count-peaks.output_suffix"
         valueFrom: ".peak_count.within_replicate.txt"
     outputs:
@@ -136,7 +146,7 @@ steps:
       - id: "#filter-reads-in-peaks.input_bam_file"
         source: "#input_bam_files"
       - id: "#filter-reads-in-peaks.input_bedfile"
-        source: "#peak-calling-broad.output_broadpeak_file"
+        source: "#peak-calling-narrow.output_narrowpeak_file"
     outputs:
       - id: "#filter-reads-in-peaks.filtered_file"
   - id: "#extract-count-reads-in-peaks"

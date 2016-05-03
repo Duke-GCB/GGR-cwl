@@ -1,7 +1,7 @@
 #!/usr/bin/env cwl-runner
 
 class: Workflow
-description: "GGR_ChIP-seq - Quantification"
+description: "ChIP-seq - Quantification"
 
 requirements:
   - class: ScatterFeatureRequirement

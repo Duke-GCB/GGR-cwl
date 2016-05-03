@@ -1,7 +1,7 @@
 #!/usr/bin/env cwl-runner
 
 class: Workflow
-description: "GGR_ChIP-seq - map - PCR Bottleneck Coefficients"
+description: "ChIP-seq - map - PCR Bottleneck Coefficients"
 
 requirements:
   - class: ScatterFeatureRequirement
