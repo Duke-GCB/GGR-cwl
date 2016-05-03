@@ -1,6 +1,6 @@
 #!/usr/bin/env cwl-runner
 class: Workflow
-description: "GGR_ChIP-seq pipeline - reads: SE, region: broad, samples: treatment."
+description: "ChIP-seq pipeline - reads: SE, region: broad, samples: treatment."
 requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement

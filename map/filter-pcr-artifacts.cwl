@@ -1,7 +1,7 @@
 #!/usr/bin/env cwl-runner
 
 class: Workflow
-description: "GGR_DNase-seq - map - Filter PCR Artifacts"
+description: "DNase-seq - map - Filter PCR Artifacts"
 
 requirements:
   - class: ScatterFeatureRequirement

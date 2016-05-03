@@ -1,15 +1,21 @@
 #!/usr/bin/env cwl-runner
 class: Workflow
-description: "GGR_ChIP-seq pipeline - reads: SE, region: narrow, samples: treatment."
+description: "ChIP-seq pipeline - reads: PE, region: broad, samples: treatment."
 requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
   - class: StepInputExpressionRequirement
 inputs:
-  - id: "#input_fastq_files"
+  - id: "#input_fastq_read1_files"
     type:
       type: array
       items: File
+    description: "Input fastq paired-end read 1 files"
+  - id: "#input_fastq_read2_files"
+    type:
+      type: array
+      items: File
+    description: "Input fastq paired-end read 2 files"
   - id: "#default_adapters_file"
     type: File
     description: "Adapters file"
@@ -56,20 +62,50 @@ inputs:
       - string
     description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
 outputs:
-  - id: "#qc_raw_read_counts"
-    source: "#qc.output_raw_read_counts"
-    description: "Raw read counts of fastq files after QC"
+   - id: "#qc_count_raw_reads_read1"
+    source: "#qc.output_count_raw_reads_read1"
+    description: "Raw read counts of fastq files for read 1 after QC"
     type:
       type: array
       items: File
-  - id: "#trimm_raw_read_counts"
-    source: "#trimm.trimmed_fastq_read_count"
-    description: "Raw read counts of fastq files after TRIMM"
+ - id: "#qc_count_raw_reads_read2"
+    source: "#qc.output_count_raw_reads_read2"
+    description: "Raw read counts of fastq files for read 2 after QC"
     type:
       type: array
       items: File
-  - id: "#trimm_fastq_files"
-    source: "#trimm.output_data_fastq_trimmed_files"
+  - id: "#qc_diff_counts_read1"
+    source: "#qc.output_diff_counts_read1"
+    description: "Diff file between number of raw reads and number of reads counted by FASTQC, read 1"
+    type:
+      type: array
+      items: File
+  - id: "#qc_diff_counts_read2"
+    source: "#qc.output_diff_counts_read2"
+    description: "Diff file between number of raw reads and number of reads counted by FASTQC, read 2"
+    type:
+      type: array
+      items: File
+  - id: "#trimm_raw_counts_read1"
+    source: "#trimm.output_trimmed_read1_fastq_read_count"
+    description: "Raw read counts for R1 of fastq files after TRIMM"
+    type:
+      type: array
+      items: File
+  - id: "#trimm_raw_counts_read2"
+    source: "#trimm.output_trimmed_read2_fastq_read_count"
+    description: "Raw read counts for R2 of fastq files after TRIMM"
+    type:
+      type: array
+      items: File
+  - id: "#trimm_fastq_files_read1"
+    source: "#trimm.output_data_fastq_read1_trimmed_files"
+    description: "FASTQ files after trimming step"
+    type:
+      type: array
+      items: File
+  - id: "#trimm_fastq_files_read2"
+    source: "#trimm.output_data_fastq_read2_trimmed_files"
     description: "FASTQ files after trimming step"
     type:
       type: array
@@ -146,15 +182,15 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#peak_call_narrowpeak_file"
-    source: "#peak_call.output_narrowpeak_file"
-    description: "Peaks in narrowPeak file format"
+  - id: "#peak_call_broadpeak_file"
+    source: "#peak_call.output_broadpeak_file"
+    description: "Peaks in broadPeak file format"
     type:
       type: array
       items: File
-  - id: "#peak_call_extended_narrowpeak_file"
-    source: "#peak_call.output_extended_narrowpeak_file"
-    description: "Extended fragment peaks in narrowPeak file format"
+  - id: "#peak_call_extended_broadpeak_file"
+    source: "#peak_call.output_extended_broadpeak_file"
+    description: "Extended fragment peaks in broadPeak file format"
     type:
       type: array
       items: File
@@ -184,32 +220,43 @@ outputs:
       items: File
 steps:
   - id: "#qc"
-    run: {import: "01-qc-se.cwl" }
+    run: {import: "01-qc-pe.cwl" }
     inputs:
-      - { id: "#qc.input_fastq_files", source: "#input_fastq_files" }
+      - { id: "#qc.input_read1_fastq_files", source: "#input_fastq_read1_files" }
+      - { id: "#qc.input_read2_fastq_files", source: "#input_fastq_read2_files" }
       - { id: "#qc.default_adapters_file", source: "#default_adapters_file" }
       - { id: "#qc.nthreads", source: "#nthreads_qc" }
     outputs:
-      - { id:  "#qc.output_raw_read_counts" }
-      - { id:  "#qc.output_fastqc_read_counts" }
-      - { id:  "#qc.output_fastqc_report_files" }
-      - { id:  "#qc.output_fastqc_data_files" }
-      - { id:  "#qc.output_custom_adapters" }
+      - { id:  "#qc.output_count_raw_reads_read1" }
+      - { id:  "#qc.output_count_raw_reads_read2" }
+      - { id:  "#qc.output_diff_counts_read1" }
+      - { id:  "#qc.output_diff_counts_read2" }
+      - { id:  "#qc.output_fastqc_report_files_read1" }
+      - { id:  "#qc.output_fastqc_report_files_read2" }
+      - { id:  "#qc.output_fastqc_data_files_read1" }
+      - { id:  "#qc.output_fastqc_data_files_read2" }
+      - { id:  "#qc.output_custom_adapters_read1" }
+      - { id:  "#qc.output_custom_adapters_read2" }
   - id: "#trimm"
-    run: {import: "02-trim-se.cwl" }
+    run: {import: "02-trim-pe.cwl" }
     inputs:
-      - { id: "#trimm.input_fastq_files", source: "#input_fastq_files" }
-      - { id: "#trimm.input_adapters_files", source: "#qc.output_custom_adapters" }
+      - { id: "#trimm.input_read1_fastq_files", source: "#input_fastq_read1_files" }
+      - { id: "#trimm.input_read2_fastq_files", source: "#input_fastq_read2_files" }
+      - { id: "#trimm.input_read1_adapters_files", source: "#qc.output_custom_adapters_read1" }
+      - { id: "#trimm.input_read2_adapters_files", source: "#qc.output_custom_adapters_read2" }
       - { id: "#trimm.nthreads", source: "#nthreads_trimm" }
       - { id: "#trimm.trimmomatic_jar_path", source: "#trimmomatic_jar_path" }
       - { id: "#trimm.trimmomatic_java_opts", source: "#trimmomatic_java_opts" }
     outputs:
-      - { id:  "#trimm.output_data_fastq_trimmed_files" }
-      - { id:  "#trimm.trimmed_fastq_read_count" }
+      - { id:  "#trimm.output_data_fastq_read1_trimmed_files" }
+      - { id:  "#trimm.output_data_fastq_read2_trimmed_files" }
+      - { id:  "#trimm.output_trimmed_read1_fastq_read_count" }
+      - { id:  "#trimm.output_trimmed_read2_fastq_read_count" }
   - id: "#map"
-    run: {import: "03-map-se.cwl" }
+    run: {import: "03-map-pe.cwl" }
     inputs:
-      - { id: "#map.input_fastq_files", source: "#trimm.output_data_fastq_trimmed_files" }
+      - { id: "#map.input_fastq_read1_files", source: "#trimm.output_data_fastq_read1_trimmed_files" }
+      - { id: "#map.input_fastq_read2_files", source: "#trimm.output_data_fastq_read2_trimmed_files" }
       - { id: "#map.genome_ref_first_index_file", source: "#genome_ref_first_index_file" }
       - { id: "#map.genome_sizes_file", source: "#genome_sizes_file" }
       - { id: "#map.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile" }
@@ -224,16 +271,16 @@ steps:
       - { id:  "#map.output_bowtie_log" }
       - { id:  "#map.output_preseq_c_curve_files" }
   - id: "#peak_call"
-    run: {import: "04-peakcall-narrow.cwl" }
+    run: {import: "04-peakcall-broad.cwl" }
     inputs:
       - { id: "#peak_call.input_bam_files", source: "#map.output_data_sorted_dedup_bam_files" }
-      - { id: "#peak_call.input_bam_format", valueFrom: "BAM" }
+      - { id: "#peak_call.input_bam_format", valueFrom: "BAMPE" }
       - { id: "#peak_call.nthreads", source: "#nthreads_peakcall" }
     outputs:
       - { id: "#peak_call.output_spp_x_cross_corr" }
       - { id: "#peak_call.output_spp_cross_corr_plot" }
-      - { id: "#peak_call.output_narrowpeak_file" }
-      - { id: "#peak_call.output_extended_narrowpeak_file" }
+      - { id: "#peak_call.output_broadpeak_file" }
+      - { id: "#peak_call.output_extended_broadpeak_file" }
       - { id: "#peak_call.output_peak_xls_file" }
       - { id: "#peak_call.output_filtered_read_count_file" }
       - { id: "#peak_call.output_peak_count_within_replicate" }
@@ -242,7 +289,7 @@ steps:
     run: {import: "05-quantification.cwl" }
     inputs:
       - { id: "#quant.input_bam_files", source: "#map.output_data_sorted_dedup_bam_files" }
-      - { id: "#quant.input_pileup_bedgraphs", source: "#peak_call.output_extended_narrowpeak_file" }
+      - { id: "#quant.input_pileup_bedgraphs", source: "#peak_call.output_extended_broadpeak_file" }
       - { id: "#quant.input_peak_xls_files", source: "#peak_call.output_peak_xls_file" }
       - { id: "#quant.input_read_count_dedup_files", source: "#peak_call.output_read_in_peak_count_within_replicate" }
       - { id: "#quant.input_genome_sizes", source: "#genome_sizes_file" }

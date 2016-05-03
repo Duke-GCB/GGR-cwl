@@ -1,6 +1,6 @@
 #!/usr/bin/env cwl-runner
 class: Workflow
-description: "GGR_ChIP-seq pipeline - reads: PE, region: narrow, samples: treatment and control."
+description: "ChIP-seq pipeline - reads: PE, region: broad, samples: treatment and control."
 requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
@@ -276,15 +276,15 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#peak_call_narrowpeak_file"
-    source: "#peak_call.output_narrowpeak_file"
-    description: "Peaks in narrowPeak file format"
+  - id: "#peak_call_broadpeak_file"
+    source: "#peak_call.output_broadpeak_file"
+    description: "Peaks in broadPeak file format"
     type:
       type: array
       items: File
-  - id: "#peak_call_extended_narrowpeak_file"
-    source: "#peak_call.output_extended_narrowpeak_file"
-    description: "Extended fragment peaks in narrowPeak file format"
+  - id: "#peak_call_extended_broadpeak_file"
+    source: "#peak_call.output_extended_broadpeak_file"
+    description: "Extended fragment peaks in broadPeak file format"
     type:
       type: array
       items: File
@@ -416,7 +416,7 @@ steps:
       - { id: "#map_control.output_bowtie_log" }
       - { id: "#map_control.output_preseq_c_curve_files" }
   - id: "#peak_call"
-    run: {import: "04-peakcall-narrow-with-control.cwl" }
+    run: {import: "04-peakcall-broad-with-control.cwl" }
     inputs:
       - { id: "#peak_call.input_bam_files", source: "#map_treatment.output_data_sorted_dedup_bam_files" }
       - { id: "#peak_call.input_bam_format", valueFrom: "BAMPE" }
@@ -425,8 +425,8 @@ steps:
     outputs:
       - { id: "#peak_call.output_spp_x_cross_corr" }
       - { id: "#peak_call.output_spp_cross_corr_plot" }
-      - { id: "#peak_call.output_narrowpeak_file" }
-      - { id: "#peak_call.output_extended_narrowpeak_file" }
+      - { id: "#peak_call.output_broadpeak_file" }
+      - { id: "#peak_call.output_extended_broadpeak_file" }
       - { id: "#peak_call.output_peak_xls_file" }
       - { id: "#peak_call.output_filtered_read_count_file" }
       - { id: "#peak_call.output_peak_count_within_replicate" }
@@ -435,7 +435,7 @@ steps:
     run: {import: "05-quantification.cwl" }
     inputs:
       - { id: "#quant.input_bam_files", source: "#map_treatment.output_data_sorted_dedup_bam_files" }
-      - { id: "#quant.input_pileup_bedgraphs", source: "#peak_call.output_extended_narrowpeak_file" }
+      - { id: "#quant.input_pileup_bedgraphs", source: "#peak_call.output_extended_broadpeak_file" }
       - { id: "#quant.input_peak_xls_files", source: "#peak_call.output_peak_xls_file" }
       - { id: "#quant.input_read_count_dedup_files", source: "#peak_call.output_read_in_peak_count_within_replicate" }
       - { id: "#quant.input_genome_sizes", source: "#genome_sizes_file" }

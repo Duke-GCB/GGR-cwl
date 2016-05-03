@@ -1,6 +1,6 @@
 #!/usr/bin/env cwl-runner
 class: Workflow
-description: "GGR_ChIP-seq 02 trimming - reads: SE"
+description: "ChIP-seq 02 trimming - reads: SE"
 requirements:
   - class: ScatterFeatureRequirement
 inputs:

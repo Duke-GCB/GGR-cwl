@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#SBATCH --job-name=GGR_ChIP_seq
+#SBATCH --job-name=ChIP_seq
 #SBATCH --output=ggr-chip-seq.out
 #SBATCH --mail-user=dan.leehr@duke.edu
 #SBATCH --mail-type=FAIL
