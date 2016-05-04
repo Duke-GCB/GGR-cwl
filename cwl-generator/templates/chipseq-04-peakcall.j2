@@ -39,19 +39,19 @@ outputs:
       type: array
       items: File
   - id: "#output_{{ peak_type }}peak_file"
-    source: "#peak-calling-{{ peak_type }}.output_{{ peak_type }}peak_file"
+    source: "#peak-calling.output_peak_file"
     description: "peakshift/phantomPeak results file"
     type:
       type: array
       items: File
-  - id: "#output_extended_{{ peak_type }}peak_file"
-    source: "#peak-calling-{{ peak_type }}.output_ext_frag_bdg_file"
+  - id: "#output_extended_peak_file"
+    source: "#peak-calling.output_ext_frag_bdg_file"
     description: "peakshift/phantomPeak extended fragment results file"
     type:
       type: array
       items: File
   - id: "#output_peak_xls_file"
-    source: "#peak-calling-{{ peak_type }}.output_peak_xls_file"
+    source: "#peak-calling.output_peak_xls_file"
     description: "Peak calling report file (*_peaks.xls file produced by MACS2)"
     type:
       type: array
@@ -89,6 +89,7 @@ steps:
 {% if 'control' in sample_types %}
       - id: "#spp.control_bam"
         source: "#input_control_bam_files"
+        valueFrom: $(['null', self])
 {% endif %}
       - id: "#spp.savp"
         default: True
@@ -105,38 +106,43 @@ steps:
         source: "#spp.output_spp_cross_corr"
     outputs:
       - id: "#extract-peak-frag-length.output_best_frag_length"
-  - id: "#peak-calling-{{ peak_type }}"
-    run: {import: "../peak_calling/macs2-callpeak-{{ peak_type }}{% if 'control' in sample_types %}-with-control{% endif %}.cwl"}
+  - id: "#peak-calling"
+    run: {import: "../peak_calling/macs2-callpeak.cwl"}
     scatter:
-      - "#peak-calling-{{ peak_type }}.treatment_sample_file"
 {% if 'control' in sample_types %}
-      - "#peak-calling-{{ peak_type }}.control_sample_file"
+      - "#peak-calling.control_sample_file"
 {% endif %}
-      - "#peak-calling-{{ peak_type }}.extsize"
+      - "#peak-calling.extsize"
     scatterMethod: dotproduct
     inputs:
-      - id: "#peak-calling-{{ peak_type }}.treatment_sample_file"
+      - id: "#peak-calling.treatment_sample_file"
         source: "#input_bam_files"
 {% if 'control' in sample_types %}
-      - id: "#peak-calling-{{ peak_type }}.control_sample_file"
+      - id: "#peak-calling.control_sample_file"
         source: "#input_control_bam_files"
 {% endif %}
-      - id: "#peak-calling-{{ peak_type }}.extsize"
+{% if 'broad' == peak_type %}
+      - id: "#peak-calling.broad"
+        valueFrom: $(true)
+      - id: "#peak-calling.q"
+        valueFrom: $(0.1)
+{% endif %}
+      - id: "#peak-calling.extsize"
         source: "#extract-peak-frag-length.output_best_frag_length"
-      - id: "#peak-calling-{{ peak_type }}.nomodel"
+      - id: "#peak-calling.nomodel"
         default: True
-      - id: "#peak-calling-{{ peak_type }}.format"
+      - id: "#peak-calling.format"
         source: "#input_bam_format"
     outputs:
-      - id: "#peak-calling-{{ peak_type }}.output_{{ peak_type }}peak_file"
-      - id: "#peak-calling-{{ peak_type }}.output_ext_frag_bdg_file"
-      - id: "#peak-calling-{{ peak_type }}.output_peak_xls_file"
+      - id: "#peak-calling.output_peak_file"
+      - id: "#peak-calling.output_ext_frag_bdg_file"
+      - id: "#peak-calling.output_peak_xls_file"
   - id: "#count-reads-filtered"
     run: {import: "../peak_calling/count-reads-after-filtering.cwl"}
     scatter: "#count-reads-filtered.peak_xls_file"
     inputs:
       - id: "#count-reads-filtered.peak_xls_file"
-        source: "#peak-calling-{{ peak_type }}.output_peak_xls_file"
+        source: "#peak-calling.output_peak_xls_file"
     outputs:
       - id: "#count-reads-filtered.read_count_file"
   - id: "#count-peaks"
@@ -144,7 +150,7 @@ steps:
     scatter: "#count-peaks.input_file"
     inputs:
       - id: "#count-peaks.input_file"
-        source: "#peak-calling-{{ peak_type }}.output_{{ peak_type }}peak_file"
+        source: "#peak-calling.output_peak_file"
       - id: "#count-peaks.output_suffix"
         valueFrom: ".peak_count.within_replicate.txt"
     outputs:
@@ -159,7 +165,7 @@ steps:
       - id: "#filter-reads-in-peaks.input_bam_file"
         source: "#input_bam_files"
       - id: "#filter-reads-in-peaks.input_bedfile"
-        source: "#peak-calling-{{ peak_type }}.output_{{ peak_type }}peak_file"
+        source: "#peak-calling.output_peak_file"
     outputs:
       - id: "#filter-reads-in-peaks.filtered_file"
   - id: "#extract-count-reads-in-peaks"

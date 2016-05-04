@@ -29,8 +29,8 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#output_narrowpeak_file"
-    source: "#peak-calling-narrow.output_narrowpeak_file"
+  - id: "#output_peak_file"
+    source: "#peak-calling-narrow.output_peak_file"
     description: "peakshift/phantomPeak results file"
     type:
       type: array
@@ -107,7 +107,7 @@ steps:
       - id: "#peak-calling-narrow.format"
         source: "#input_bam_format"
     outputs:
-      - id: "#peak-calling-narrow.output_narrowpeak_file"
+      - id: "#peak-calling-narrow.output_peak_file"
       - id: "#peak-calling-narrow.output_ext_frag_bdg_file"
       - id: "#peak-calling-narrow.output_peak_xls_file"
   - id: "#count-reads-filtered"
@@ -123,7 +123,7 @@ steps:
     scatter: "#count-peaks.input_file"
     inputs:
       - id: "#count-peaks.input_file"
-        source: "#peak-calling-narrow.output_narrowpeak_file"
+        source: "#peak-calling-narrow.output_peak_file"
       - id: "#count-peaks.output_suffix"
         valueFrom: ".peak_count.within_replicate.txt"
     outputs:
@@ -138,7 +138,7 @@ steps:
       - id: "#filter-reads-in-peaks.input_bam_file"
         source: "#input_bam_files"
       - id: "#filter-reads-in-peaks.input_bedfile"
-        source: "#peak-calling-narrow.output_narrowpeak_file"
+        source: "#peak-calling-narrow.output_peak_file"
     outputs:
       - id: "#filter-reads-in-peaks.filtered_file"
 
