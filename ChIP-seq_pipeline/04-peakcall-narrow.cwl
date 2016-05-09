@@ -95,12 +95,14 @@ steps:
       - "#peak-calling.extsize"
     scatterMethod: dotproduct
     inputs:
-      - id: "#peak-calling.treatment_sample_file"
+      - id: "#peak-calling.t"
         source: "#input_bam_files"
       - id: "#peak-calling.extsize"
         source: "#extract-peak-frag-length.output_best_frag_length"
       - id: "#peak-calling.nomodel"
-        default: True
+        valueFrom: $(true)
+      - id: "#peak-calling.bdg"
+        valueFrom: $(true)
       - id: "#peak-calling.format"
         source: "#input_bam_format"
     outputs:

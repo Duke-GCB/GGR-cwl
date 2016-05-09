@@ -10,21 +10,20 @@ hints:
 
 requirements:
   - class: InlineJavascriptRequirement
-  - class: ShellCommandRequirement
 
 inputs:
-
+# ---------------------------------- #
 # ------ Input files arguments ----- #
-
-  - id: treatment_sample_file
+# ---------------------------------- #
+  - id: t
     type:
       type: array
       items: File
-    description: 'Treatment sample file.'
+    description: "Treatment sample file(s). If multiple files are given as -t A B C, then they will all be read and pooled together. IMPORTANT: the first sample will be used as the outputs basename."
     inputBinding:
       position: 2
       prefix: -t
-  - id: control_sample_file
+  - id: c
     type:
       - 'null'
       - File
@@ -33,14 +32,17 @@ inputs:
       position: 2
       prefix: -c
   - id: format
-    type: ['null', string]
+    type:
+      - 'null'
+      - string
     description: "-f {AUTO,BAM,SAM,BED,ELAND,ELANDMULTI,ELANDEXPORT,BOWTIE,BAMPE}, --format {AUTO,BAM,SAM,BED,ELAND,ELANDMULTI,ELANDEXPORT,BOWTIE,BAMPE} Format of tag file, \"AUTO\", \"BED\" or \"ELAND\" or \"ELANDMULTI\" or \"ELANDEXPORT\" or \"SAM\" or \"BAM\" or \"BOWTIE\" or \"BAMPE\". The default AUTO option will let MACS decide which format the file is. Note that MACS can't detect \"BAMPE\" or \"BEDPE\" format with \"AUTO\", and you have to implicitly specify the format for \"BAMPE\" and \"BEDPE\". DEFAULT: \"AUTO\"."
     inputBinding:
       position: 1
       prefix: '-f'
   - id: g
-    type: string
-    default: 'hs'
+    type:
+      - 'null'
+      - string
     description: "Effective genome size. It can be 1.0e+9 or 1000000000,  or shortcuts:'hs' for human (2.7e9), 'mm' for mouse  (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for  fruitfly (1.2e8), Default:hs."
     inputBinding:
       position: 1
@@ -79,17 +81,17 @@ inputs:
       to read alignment files). Minimum memory requested for
       reading an alignment file is about # of CHROMOSOME *
       BUFFER_SIZE * 2 Bytes. DEFAULT: 100000
-      Output arguments:
     inputBinding:
       position: 1
       prefix: '--buffer-size'
-
-# ------ Output arguments ----- #
-
+# ---------------------------------- #
+# ------    Output arguments   ----- #
+# ---------------------------------- #
   - id: bdg
-    type: boolean
-    description: "  Whether or not to save extended fragment pileup, and local lambda tracks (two files) at every bp into a bedGraph file. DEFAULT: True"
-    default: true
+    type:
+      - 'null'
+      - boolean
+    description: "Whether or not to save extended fragment pileup, and local lambda tracks (two files) at every bp into a bedGraph file. DEFAULT: True"
     inputBinding:
       position: 1
       prefix: "--bdg"
@@ -121,9 +123,9 @@ inputs:
     inputBinding:
       position: 1
       prefix: '--SPMR'
-  
+# ------------------------------------- #
 # ------ Shifting model arguments ----- #
-
+# ------------------------------------- #
   - id: s
     type:
       - 'null'
@@ -169,9 +171,10 @@ inputs:
       position: 1
       prefix: '--fix-bimodal'
   - id: nomodel
-    type: ['null', boolean]
+    type:
+      - 'null'
+      -  boolean
     description: "\t Whether or not to build the shifting model. If True,  MACS will not build model. by default it means  shifting size = 100, try to set extsize to change it.  DEFAULT: False"
-    default: true
     inputBinding:
       position: 1
       prefix: --nomodel
@@ -182,16 +185,16 @@ inputs:
       position: 1
       prefix: '--shift'
   - id: extsize
-    type: ['null', int]
+    type: ['null', float]
     description: "The arbitrary extension size in bp. When nomodel is  true, MACS will use this value as fragment size to  extend each read towards 3' end, then pile them up.  It's exactly twice the number of obsolete SHIFTSIZE.  In previous language, each read is moved 5'->3'  direction to middle of fragment by 1/2 d, then  extended to both direction with 1/2 d. This is  equivalent to say each read is extended towards 5'->3'  into a d size fragment. DEFAULT: 200. EXTSIZE and  SHIFT can be combined when necessary. Check SHIFT  option."
     inputBinding:
       position: 1
       prefix: '--extsize'
-  
+# ------------------------------------- #
 # ------ Shifting model arguments ----- #
-
+# ------------------------------------- #
   - id: q
-    type: 
+    type:
       - 'null'
       - float
     description: "Minimum FDR (q-value) cutoff for peak detection. DEFAULT: 0.05. -q, and -p are mutually exclusive."
@@ -199,7 +202,7 @@ inputs:
       position: 1
       prefix: '-q'
   - id: p
-    type: 
+    type:
       - 'null'
       - float
     description: "Pvalue cutoff for peak detection. DEFAULT: not set.  -q, and -p are mutually exclusive. If pvalue cutoff is  set, qvalue will not be calculated and reported as -1  in the final .xls file.."
@@ -312,9 +315,9 @@ inputs:
     inputBinding:
       position: 1
       prefix: '--cutoff-analysis'
-
+# ------------------------------------- #
 # ------ Shifting model arguments ----- #
-
+# ------------------------------------- #
   - id: call-summits
     type:
       - 'null'
@@ -341,28 +344,31 @@ outputs:
     type: File
     description: "Peak calling output file in narrowPeak format."
     outputBinding:
-      glob: $(inputs.treatment_sample_file[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_peaks.*Peak')
+      glob: $(inputs.t[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_peaks.*Peak')
       outputEval: $(self[0])
   - id: output_ext_frag_bdg_file
-    type: File
+    type:
+      - 'null'
+      - File
     description: "Bedgraph with extended fragment pileup."
     outputBinding:
-      glob: $(inputs.treatment_sample_file[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_treat_pileup.bdg')
+      glob: $(inputs.t[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_treat_pileup.bdg')
   - id: output_peak_xls_file
     type: File
     description: "Peaks information/report file."
     outputBinding:
-      glob: $(inputs.treatment_sample_file[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_peaks.xls')
+      glob: $(inputs.t[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_peaks.xls')
   - id: output_peak_summits_file
     type: File
     description: "Peaks summits bedfile."
     outputBinding:
-      glob: $(inputs.treatment_sample_file[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_summits.bed')
+      glob: $(inputs.t[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_summits.bed')
 
 baseCommand:
   - macs2
   - callpeak
 
 arguments:
-  - valueFrom: $('-n=' + inputs.treatment_sample_file[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, ''))
+  - valueFrom: $(inputs.t[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, ''))
+    prefix: "-n"
     position: 1
