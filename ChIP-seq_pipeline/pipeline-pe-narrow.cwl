@@ -183,7 +183,7 @@ outputs:
       type: array
       items: File
   - id: "#peak_call_narrowpeak_file"
-    source: "#peak_call.output_peak_file"
+    source: "#peak_call.output_narrowpeak_file"
     description: "Peaks in narrowPeak file format"
     type:
       type: array
@@ -279,7 +279,7 @@ steps:
     outputs:
       - { id: "#peak_call.output_spp_x_cross_corr" }
       - { id: "#peak_call.output_spp_cross_corr_plot" }
-      - { id: "#peak_call.output_peak_file" }
+      - { id: "#peak_call.output_narrowpeak_file" }
       - { id: "#peak_call.output_extended_narrowpeak_file" }
       - { id: "#peak_call.output_peak_xls_file" }
       - { id: "#peak_call.output_filtered_read_count_file" }
