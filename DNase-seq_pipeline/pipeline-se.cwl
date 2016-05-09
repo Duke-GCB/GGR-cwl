@@ -125,7 +125,7 @@ outputs:
       type: array
       items: File
   - id: "#peak_call_narrowpeak_file"
-    source: "#peak_call.output_peak_file"
+    source: "#peak_call.output_narrowpeak_file"
     description: "Peaks in narrowPeak file format"
     type:
       type: array

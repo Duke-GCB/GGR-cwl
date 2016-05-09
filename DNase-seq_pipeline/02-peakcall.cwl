@@ -29,7 +29,7 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#output_peak_file"
+  - id: "#output_narrowpeak_file"
     source: "#peak-calling-narrow.output_peak_file"
     description: "peakshift/phantomPeak results file"
     type:
@@ -92,10 +92,11 @@ steps:
   - id: "#peak-calling-narrow"
     run: {import: "../peak_calling/macs2-callpeak.cwl"}
     scatter:
-      - "#peak-calling-narrow.treatment_sample_file"
+      - "#peak-calling-narrow.treatment"
     inputs:
-      - id: "#peak-calling-narrow.treatment_sample_file"
+      - id: "#peak-calling-narrow.treatment"
         source: "#input_bam_files"
+        valueFrom: $([self])
       - id: "#peak-calling-narrow.extsize"
         valueFrom: $(200)
       - id: "#peak-calling-narrow.nomodel"

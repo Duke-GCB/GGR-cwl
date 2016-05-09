@@ -35,7 +35,7 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#output_extended_peak_file"
+  - id: "#output_extended_broadpeak_file"
     source: "#peak-calling.output_ext_frag_bdg_file"
     description: "peakshift/phantomPeak extended fragment results file"
     type:
@@ -92,11 +92,13 @@ steps:
   - id: "#peak-calling"
     run: {import: "../peak_calling/macs2-callpeak.cwl"}
     scatter:
+      - "#peak-calling.treatment"
       - "#peak-calling.extsize"
     scatterMethod: dotproduct
     inputs:
-      - id: "#peak-calling.t"
+      - id: "#peak-calling.treatment"
         source: "#input_bam_files"
+        valueFrom: $([self])
       - id: "#peak-calling.broad"
         valueFrom: $(true)
       - id: "#peak-calling.q"
