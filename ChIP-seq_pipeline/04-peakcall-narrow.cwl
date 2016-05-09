@@ -30,19 +30,19 @@ outputs:
       type: array
       items: File
   - id: "#output_narrowpeak_file"
-    source: "#peak-calling-narrow.output_narrowpeak_file"
+    source: "#peak-calling.output_peak_file"
     description: "peakshift/phantomPeak results file"
     type:
       type: array
       items: File
-  - id: "#output_extended_narrowpeak_file"
-    source: "#peak-calling-narrow.output_ext_frag_bdg_file"
+  - id: "#output_extended_peak_file"
+    source: "#peak-calling.output_ext_frag_bdg_file"
     description: "peakshift/phantomPeak extended fragment results file"
     type:
       type: array
       items: File
   - id: "#output_peak_xls_file"
-    source: "#peak-calling-narrow.output_peak_xls_file"
+    source: "#peak-calling.output_peak_xls_file"
     description: "Peak calling report file (*_peaks.xls file produced by MACS2)"
     type:
       type: array
@@ -89,31 +89,32 @@ steps:
         source: "#spp.output_spp_cross_corr"
     outputs:
       - id: "#extract-peak-frag-length.output_best_frag_length"
-  - id: "#peak-calling-narrow"
-    run: {import: "../peak_calling/macs2-callpeak-narrow.cwl"}
+  - id: "#peak-calling"
+    run: {import: "../peak_calling/macs2-callpeak.cwl"}
     scatter:
-      - "#peak-calling-narrow.treatment_sample_file"
-      - "#peak-calling-narrow.extsize"
+      - "#peak-calling.extsize"
     scatterMethod: dotproduct
     inputs:
-      - id: "#peak-calling-narrow.treatment_sample_file"
+      - id: "#peak-calling.t"
         source: "#input_bam_files"
-      - id: "#peak-calling-narrow.extsize"
+      - id: "#peak-calling.extsize"
         source: "#extract-peak-frag-length.output_best_frag_length"
-      - id: "#peak-calling-narrow.nomodel"
-        default: True
-      - id: "#peak-calling-narrow.format"
+      - id: "#peak-calling.nomodel"
+        valueFrom: $(true)
+      - id: "#peak-calling.bdg"
+        valueFrom: $(true)
+      - id: "#peak-calling.format"
         source: "#input_bam_format"
     outputs:
-      - id: "#peak-calling-narrow.output_narrowpeak_file"
-      - id: "#peak-calling-narrow.output_ext_frag_bdg_file"
-      - id: "#peak-calling-narrow.output_peak_xls_file"
+      - id: "#peak-calling.output_peak_file"
+      - id: "#peak-calling.output_ext_frag_bdg_file"
+      - id: "#peak-calling.output_peak_xls_file"
   - id: "#count-reads-filtered"
     run: {import: "../peak_calling/count-reads-after-filtering.cwl"}
     scatter: "#count-reads-filtered.peak_xls_file"
     inputs:
       - id: "#count-reads-filtered.peak_xls_file"
-        source: "#peak-calling-narrow.output_peak_xls_file"
+        source: "#peak-calling.output_peak_xls_file"
     outputs:
       - id: "#count-reads-filtered.read_count_file"
   - id: "#count-peaks"
@@ -121,7 +122,7 @@ steps:
     scatter: "#count-peaks.input_file"
     inputs:
       - id: "#count-peaks.input_file"
-        source: "#peak-calling-narrow.output_narrowpeak_file"
+        source: "#peak-calling.output_peak_file"
       - id: "#count-peaks.output_suffix"
         valueFrom: ".peak_count.within_replicate.txt"
     outputs:
@@ -136,7 +137,7 @@ steps:
       - id: "#filter-reads-in-peaks.input_bam_file"
         source: "#input_bam_files"
       - id: "#filter-reads-in-peaks.input_bedfile"
-        source: "#peak-calling-narrow.output_narrowpeak_file"
+        source: "#peak-calling.output_peak_file"
     outputs:
       - id: "#filter-reads-in-peaks.filtered_file"
   - id: "#extract-count-reads-in-peaks"

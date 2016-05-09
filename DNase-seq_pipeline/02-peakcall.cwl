@@ -29,8 +29,8 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#output_narrowpeak_file"
-    source: "#peak-calling-narrow.output_narrowpeak_file"
+  - id: "#output_peak_file"
+    source: "#peak-calling-narrow.output_peak_file"
     description: "peakshift/phantomPeak results file"
     type:
       type: array
@@ -90,7 +90,7 @@ steps:
     outputs:
       - id: "#extract-peak-frag-length.output_best_frag_length"
   - id: "#peak-calling-narrow"
-    run: {import: "../peak_calling/macs2-callpeak-narrow.cwl"}
+    run: {import: "../peak_calling/macs2-callpeak.cwl"}
     scatter:
       - "#peak-calling-narrow.treatment_sample_file"
     inputs:
@@ -99,15 +99,17 @@ steps:
       - id: "#peak-calling-narrow.extsize"
         valueFrom: $(200)
       - id: "#peak-calling-narrow.nomodel"
-        default: True
+        valueFrom: $(true)
       - id: "#peak-calling-narrow.q"
         valueFrom: $(0.10)
       - id: "#peak-calling-narrow.shift"
         valueFrom: $(-100)
+      - id: "#peak-calling-narrow.bdg"
+        valueFrom: $(true)
       - id: "#peak-calling-narrow.format"
         source: "#input_bam_format"
     outputs:
-      - id: "#peak-calling-narrow.output_narrowpeak_file"
+      - id: "#peak-calling-narrow.output_peak_file"
       - id: "#peak-calling-narrow.output_ext_frag_bdg_file"
       - id: "#peak-calling-narrow.output_peak_xls_file"
   - id: "#count-reads-filtered"
@@ -123,7 +125,7 @@ steps:
     scatter: "#count-peaks.input_file"
     inputs:
       - id: "#count-peaks.input_file"
-        source: "#peak-calling-narrow.output_narrowpeak_file"
+        source: "#peak-calling-narrow.output_peak_file"
       - id: "#count-peaks.output_suffix"
         valueFrom: ".peak_count.within_replicate.txt"
     outputs:
@@ -138,7 +140,7 @@ steps:
       - id: "#filter-reads-in-peaks.input_bam_file"
         source: "#input_bam_files"
       - id: "#filter-reads-in-peaks.input_bedfile"
-        source: "#peak-calling-narrow.output_narrowpeak_file"
+        source: "#peak-calling-narrow.output_peak_file"
     outputs:
       - id: "#filter-reads-in-peaks.filtered_file"
 
