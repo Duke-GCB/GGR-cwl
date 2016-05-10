@@ -76,7 +76,7 @@ outputs:
       items: File
 steps:
   - id: "#spp"
-    run: {import: "../spp/spp{% if 'control' in sample_types %}-with-control{% endif %}.cwl"}
+    run: {import: "../spp/spp.cwl"}
     scatter:
       - "#spp.input_bam"
 {% if 'control' in sample_types %}
@@ -89,10 +89,10 @@ steps:
 {% if 'control' in sample_types %}
       - id: "#spp.control_bam"
         source: "#input_control_bam_files"
-        valueFrom: $(['null', self])
+{#        valueFrom: $(['null', self])#}
 {% endif %}
       - id: "#spp.savp"
-        default: True
+        valueFrom: $(true)
       - id: "#spp.nthreads"
         source: "#nthreads"
     outputs:
