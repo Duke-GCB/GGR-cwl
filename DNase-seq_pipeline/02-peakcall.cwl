@@ -75,7 +75,7 @@ steps:
       - id: "#spp.input_bam"
         source: "#input_bam_files"
       - id: "#spp.savp"
-        default: True
+        valueFrom: $(true)
       - id: "#spp.nthreads"
         source: "#nthreads"
     outputs:

@@ -71,7 +71,7 @@ outputs:
       items: File
 steps:
   - id: "#spp"
-    run: {import: "../spp/spp-with-control.cwl"}
+    run: {import: "../spp/spp.cwl"}
     scatter:
       - "#spp.input_bam"
       - "#spp.control_bam"
@@ -81,9 +81,8 @@ steps:
         source: "#input_bam_files"
       - id: "#spp.control_bam"
         source: "#input_control_bam_files"
-        valueFrom: $(['null', self])
       - id: "#spp.savp"
-        default: True
+        valueFrom: $(true)
       - id: "#spp.nthreads"
         source: "#nthreads"
     outputs:
