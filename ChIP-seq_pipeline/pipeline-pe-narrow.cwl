@@ -220,7 +220,7 @@ outputs:
       items: File
 steps:
   - id: "#qc"
-    run: {import: "01-qc-pe.cwl" }
+    run: {$import: "01-qc-pe.cwl" }
     inputs:
       - { id: "#qc.input_read1_fastq_files", source: "#input_fastq_read1_files" }
       - { id: "#qc.input_read2_fastq_files", source: "#input_fastq_read2_files" }
@@ -238,7 +238,7 @@ steps:
       - { id:  "#qc.output_custom_adapters_read1" }
       - { id:  "#qc.output_custom_adapters_read2" }
   - id: "#trimm"
-    run: {import: "02-trim-pe.cwl" }
+    run: {$import: "02-trim-pe.cwl" }
     inputs:
       - { id: "#trimm.input_read1_fastq_files", source: "#input_fastq_read1_files" }
       - { id: "#trimm.input_read2_fastq_files", source: "#input_fastq_read2_files" }
@@ -253,7 +253,7 @@ steps:
       - { id:  "#trimm.output_trimmed_read1_fastq_read_count" }
       - { id:  "#trimm.output_trimmed_read2_fastq_read_count" }
   - id: "#map"
-    run: {import: "03-map-pe.cwl" }
+    run: {$import: "03-map-pe.cwl" }
     inputs:
       - { id: "#map.input_fastq_read1_files", source: "#trimm.output_data_fastq_read1_trimmed_files" }
       - { id: "#map.input_fastq_read2_files", source: "#trimm.output_data_fastq_read2_trimmed_files" }
@@ -271,7 +271,7 @@ steps:
       - { id:  "#map.output_bowtie_log" }
       - { id:  "#map.output_preseq_c_curve_files" }
   - id: "#peak_call"
-    run: {import: "04-peakcall-narrow.cwl" }
+    run: {$import: "04-peakcall-narrow.cwl" }
     inputs:
       - { id: "#peak_call.input_bam_files", source: "#map.output_data_sorted_dedup_bam_files" }
       - { id: "#peak_call.input_bam_format", valueFrom: "BAMPE" }
@@ -286,7 +286,7 @@ steps:
       - { id: "#peak_call.output_peak_count_within_replicate" }
       - { id: "#peak_call.output_read_in_peak_count_within_replicate" }
   - id: "#quant"
-    run: {import: "05-quantification.cwl" }
+    run: {$import: "05-quantification.cwl" }
     inputs:
       - { id: "#quant.input_bam_files", source: "#map.output_data_sorted_dedup_bam_files" }
       - { id: "#quant.input_pileup_bedgraphs", source: "#peak_call.output_extended_narrowpeak_file" }
