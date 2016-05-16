@@ -21,7 +21,7 @@ cwl-runner \
   --outdir=$OUTDIR \
   --tmp-outdir-prefix=$TMP_OUTDIR_PREFIX \
   --tmpdir-prefix=$TMPDIR_PREFIX \
-  ../GGR-cwl/trimmomatic/trimmomatic-pe.cwl \
+  ../GGR-cwl/trimmomatic/trimmomatic.cwl \
   --threads=1 \
   --quality_score='-phred33' \
   --input_read1_fastq_file /Users/abarrera/data/TEST.t00_rep1.fastq \

@@ -1,10 +1,12 @@
 #!/usr/bin/env cwl-runner
-
+cwlVersion: "cwl:draft-3"
 class: Workflow
 description: "ChIP-seq 02 trimming - reads: {{read_type|upper}}"
 
 requirements:
   - class: ScatterFeatureRequirement
+  - class: StepInputExpressionRequirement
+  - class: InlineJavascriptRequirement
 
 inputs:
 {% if read_type == "pe" %}
@@ -29,7 +31,7 @@ inputs:
       items: File
     description: "Input read 2 adapters files"
 {% else %}
-  - id: "#input_fastq_files"
+  - id: "#input_read1_fastq_files"
     type:
       type: array
       items: File
@@ -60,13 +62,13 @@ inputs:
 outputs:
 {% if read_type == 'pe' %}
   - id: "#output_data_fastq_read1_trimmed_files"
-    source: "#trimmomatic-pe.output_read1_trimmed_paired_file"
+    source: "#trimmomatic.output_read1_trimmed_file"
     description: "Trimmed fastq files for paired read 1"
     type:
       type: array
       items: File
   - id: "#output_data_fastq_read2_trimmed_files"
-    source: "#trimmomatic-pe.output_read2_trimmed_paired_file"
+    source: "#trimmomatic.output_read2_trimmed_paired_file"
     description: "Trimmed fastq files for paired read 2"
     type:
       type: array
@@ -85,7 +87,7 @@ outputs:
       items: File
 {% else %}
   - id: "#output_data_fastq_trimmed_files"
-    source: "#trimmomatic-se.output_trimmed_file"
+    source: "#trimmomatic.output_read1_trimmed_file"
     description: "Trimmed fastq files"
     type:
       type: array
@@ -101,7 +103,7 @@ outputs:
 steps:
 {% if read_type == 'pe' %}
   - id: "#concat_adapters"
-    run: {import: "../utils/concat-files.cwl"}
+    run: {$import: "../utils/concat-files.cwl"}
     scatter:
       - "#concat_adapters.input_file1"
       - "#concat_adapters.input_file2"
@@ -113,110 +115,138 @@ steps:
         source: "#input_read2_adapters_files"
     outputs:
       - id: "#concat_adapters.output_file"
-  - id: "#trimmomatic-pe"
-    run: {import: "../trimmomatic/trimmomatic-pe.cwl"}
+  - id: "#trimmomatic"
+    run: {$import: "../trimmomatic/trimmomatic.cwl"}
     scatter:
-      - "#trimmomatic-pe.input_read1_fastq_file"
-      - "#trimmomatic-pe.input_read2_fastq_file"
-      - "#trimmomatic-pe.input_adapters_file"
+      - "#trimmomatic.input_read1_fastq_file"
+      - "#trimmomatic.input_read2_fastq_file"
+      - "#trimmomatic.input_adapters_file"
     scatterMethod: dotproduct
     inputs:
-      - id: "#trimmomatic-pe.input_read1_fastq_file"
+      - id: "#trimmomatic.input_read1_fastq_file"
         source: "#input_read1_fastq_files"
-      - id: "#trimmomatic-pe.input_read2_fastq_file"
+      - id: "#trimmomatic.input_read2_fastq_file"
         source: "#input_read2_fastq_files"
-      - id: "#trimmomatic-pe.input_adapters_file"
+      - id: "#trimmomatic.input_adapters_file"
         source: "#concat_adapters.output_file"
-      - id: "#trimmomatic-pe.nthreads"
+      - id: "#trimmomatic.nthreads"
         source: "#nthreads"
-      - id: "#trimmomatic-pe.java_opts"
+      - id: "#trimmomatic.java_opts"
         source: "#trimmomatic_java_opts"
-      - id: "#trimmomatic-pe.trimmomatic_jar_path"
+      - id: "#trimmomatic.trimmomatic_jar_path"
         source: "#trimmomatic_jar_path"
+      - id: "#trimmomatic.illuminaclip"
+        valueFrom: "2:30:15"
+      - id: "#trimmomatic.end_mode"
+        valueFrom: "{{ read_type | upper}}"
+      - id: "#trimmomatic.leading"
+        valueFrom: $(3)
+      - id: "#trimmomatic.trailing"
+        valueFrom: $(3)
+      - id: "#trimmomatic.slidingwindow"
+        valueFrom: "4:20"
+      - id: "#trimmomatic.minlen"
+        valueFrom: $(15)
+      - id: "#trimmomatic.phred"
+        valueFrom: "33"
     outputs:
-      - id: "#trimmomatic-pe.output_read1_trimmed_paired_file"
-#      - id: "#trimmomatic-pe.output_read1_trimmed_unpaired_file"
-      - id: "#trimmomatic-pe.output_read2_trimmed_paired_file"
-#      - id: "#trimmomatic-pe.output_read2_trimmed_unpaired_file"
+      - id: "#trimmomatic.output_read1_trimmed_file"
+#      - id: "#trimmomatic.output_read1_trimmed_unpaired_file"
+      - id: "#trimmomatic.output_read2_trimmed_paired_file"
+#      - id: "#trimmomatic.output_read2_trimmed_unpaired_file"
   - id: "#extract_basename_read1"
-    run: {import: "../utils/extract-basename.cwl" }
+    run: {$import: "../utils/extract-basename.cwl" }
     scatter: "#extract_basename_read1.input_file"
     inputs:
       - id: "#extract_basename_read1.input_file"
-        source: "#trimmomatic-pe.output_read1_trimmed_paired_file"
+        source: "#trimmomatic.output_read1_trimmed_file"
     outputs:
       - id: "#extract_basename_read1.output_basename"
   - id: "#extract_basename_read2"
-    run: {import: "../utils/extract-basename.cwl" }
+    run: {$import: "../utils/extract-basename.cwl" }
     scatter: "#extract_basename_read2.input_file"
     inputs:
       - id: "#extract_basename_read2.input_file"
-        source: "#trimmomatic-pe.output_read2_trimmed_paired_file"
+        source: "#trimmomatic.output_read2_trimmed_paired_file"
     outputs:
       - id: "#extract_basename_read2.output_basename"
   - id: "#count_fastq_reads_read1"
-    run: {import: "../utils/count-fastq-reads.cwl" }
+    run: {$import: "../utils/count-fastq-reads.cwl" }
     scatter:
       - "#count_fastq_reads_read1.input_fastq_file"
       - "#count_fastq_reads_read1.input_basename"
     scatterMethod: dotproduct
     inputs:
       - id: "#count_fastq_reads_read1.input_fastq_file"
-        source: "#trimmomatic-pe.output_read1_trimmed_paired_file"
+        source: "#trimmomatic.output_read1_trimmed_file"
       - id: "#count_fastq_reads_read1.input_basename"
         source: "#extract_basename_read1.output_basename"
     outputs:
       - id: "#count_fastq_reads_read1.output_read_count"
   - id: "#count_fastq_reads_read2"
-    run: {import: "../utils/count-fastq-reads.cwl" }
+    run: {$import: "../utils/count-fastq-reads.cwl" }
     scatter:
       - "#count_fastq_reads_read2.input_fastq_file"
       - "#count_fastq_reads_read2.input_basename"
     scatterMethod: dotproduct
     inputs:
       - id: "#count_fastq_reads_read2.input_fastq_file"
-        source: "#trimmomatic-pe.output_read2_trimmed_paired_file"
+        source: "#trimmomatic.output_read2_trimmed_paired_file"
       - id: "#count_fastq_reads_read2.input_basename"
         source: "#extract_basename_read2.output_basename"
     outputs:
       - id: "#count_fastq_reads_read2.output_read_count"
 {% else %}
-  - id: "#trimmomatic-se"
-    run: {import: "../trimmomatic/trimmomatic-se.cwl"}
+  - id: "#trimmomatic"
+    run: {$import: "../trimmomatic/trimmomatic.cwl"}
     scatter:
-      - "#trimmomatic-se.input_fastq_file"
-      - "#trimmomatic-se.input_adapters_file"
+      - "#trimmomatic.input_read1_fastq_file"
+      - "#trimmomatic.input_adapters_file"
     scatterMethod: dotproduct
     inputs:
-      - id: "#trimmomatic-se.input_fastq_file"
-        source: "#input_fastq_files"
-      - id: "#trimmomatic-se.input_adapters_file"
+      - id: "#trimmomatic.input_read1_fastq_file"
+        source: "#input_read1_fastq_files"
+      - id: "#trimmomatic.input_adapters_file"
         source: "#input_adapters_files"
-      - id: "#trimmomatic-se.nthreads"
+      - id: "#trimmomatic.nthreads"
         source: "#nthreads"
-      - id: "#trimmomatic-se.java_opts"
+      - id: "#trimmomatic.java_opts"
         source: "#trimmomatic_java_opts"
-      - id: "#trimmomatic-se.trimmomatic_jar_path"
+      - id: "#trimmomatic.trimmomatic_jar_path"
         source: "#trimmomatic_jar_path"
+      - id: "#trimmomatic.end_mode"
+        valueFrom: "{{ read_type | upper}}"
+      - id: "#trimmomatic.illuminaclip"
+        valueFrom: "2:30:15"
+      - id: "#trimmomatic.leading"
+        valueFrom: $(3)
+      - id: "#trimmomatic.trailing"
+        valueFrom: $(3)
+      - id: "#trimmomatic.slidingwindow"
+        valueFrom: "4:20"
+      - id: "#trimmomatic.minlen"
+        valueFrom: $(15)
+      - id: "#trimmomatic.phred"
+        valueFrom: "33"
     outputs:
-      - id: "#trimmomatic-se.output_trimmed_file"
+      - id: "#trimmomatic.output_read1_trimmed_file"
   - id: "#extract_basename"
-    run: {import: "../utils/extract-basename.cwl" }
+    run: {$import: "../utils/extract-basename.cwl" }
     scatter: "#extract_basename.input_file"
     inputs:
       - id: "#extract_basename.input_file"
-        source: "#trimmomatic-se.output_trimmed_file"
+        source: "#trimmomatic.output_read1_trimmed_file"
     outputs:
       - id: "#extract_basename.output_basename"
   - id: "#count_fastq_reads"
-    run: {import: "../utils/count-fastq-reads.cwl" }
+    run: {$import: "../utils/count-fastq-reads.cwl" }
     scatter:
       - "#count_fastq_reads.input_fastq_file"
       - "#count_fastq_reads.input_basename"
     scatterMethod: dotproduct
     inputs:
       - id: "#count_fastq_reads.input_fastq_file"
-        source: "#trimmomatic-se.output_trimmed_file"
+        source: "#trimmomatic.output_read1_trimmed_file"
       - id: "#count_fastq_reads.input_basename"
         source: "#extract_basename.output_basename"
     outputs:

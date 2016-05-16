@@ -21,7 +21,7 @@ cwl-runner \
   --outdir=$OUTDIR \
   --tmp-outdir-prefix=$TMP_OUTDIR_PREFIX \
   --tmpdir-prefix=$TMPDIR_PREFIX \
-  ../GGR-cwl/ChIP-seq_pipeline/02-trimmomatic-se.cwl \
+  ../GGR-cwl/ChIP-seq_pipeline/02-trimm-se.cwl \
   --input_fastq_files $FASTQ_FILE1 \
   --input_fastq_files $FASTQ_FILE2 \
   --input_adapters_file $ADAPTERS_FILE1 \
