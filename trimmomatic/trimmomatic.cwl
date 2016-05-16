@@ -259,7 +259,7 @@ baseCommand: java
 arguments:
   - valueFrom: $("-Djava.io.tmpdir="+runtime.tmpdir)
     shellQuote: false
-    poition: 1
+    position: 1
   - valueFrom: $(inputs.input_read1_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.trimmed.fastq')
     position: 7
   - valueFrom: |
