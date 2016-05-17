@@ -1,4 +1,5 @@
 #!/usr/bin/env cwl-runner
+cwlVersion: "cwl:draft-3"
 class: Workflow
 description: "ChIP-seq pipeline - reads: SE, region: narrow, samples: treatment and control."
 requirements:
@@ -256,7 +257,7 @@ steps:
   - id: "#trimm_treatment"
     run: {$import: "02-trim-se.cwl" }
     inputs:
-      - { id: "#trimm_treatment.input_fastq_files", source: "#input_treatment_fastq_files" }
+      - { id: "#trimm_treatment.input_read1_fastq_files", source: "#input_treatment_fastq_files" }
       - { id: "#trimm_treatment.input_adapters_files", source: "#qc_treatment.output_custom_adapters" }
       - { id: "#trimm_treatment.nthreads", source: "#nthreads_trimm" }
       - { id: "#trimm_treatment.trimmomatic_jar_path", source: "#trimmomatic_jar_path" }
@@ -296,7 +297,7 @@ steps:
   - id: "#trimm_control"
     run: {$import: "02-trim-se.cwl" }
     inputs:
-      - { id: "#trimm_control.input_fastq_files", source: "#input_control_fastq_files" }
+      - { id: "#trimm_control.input_read1_fastq_files", source: "#input_control_fastq_files" }
       - { id: "#trimm_control.input_adapters_files", source: "#qc_control.output_custom_adapters" }
       - { id: "#trimm_control.nthreads", source: "#nthreads_trimm" }
       - { id: "#trimm_control.trimmomatic_jar_path", source: "#trimmomatic_jar_path" }

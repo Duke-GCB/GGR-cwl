@@ -1,4 +1,5 @@
 #!/usr/bin/env cwl-runner
+cwlVersion: "cwl:draft-3"
 class: Workflow
 description: "ChIP-seq pipeline - reads: SE, region: broad, samples: treatment."
 requirements:
@@ -198,7 +199,7 @@ steps:
   - id: "#trimm"
     run: {$import: "02-trim-se.cwl" }
     inputs:
-      - { id: "#trimm.input_fastq_files", source: "#input_fastq_files" }
+      - { id: "#trimm.input_read1_fastq_files", source: "#input_fastq_files" }
       - { id: "#trimm.input_adapters_files", source: "#qc.output_custom_adapters" }
       - { id: "#trimm.nthreads", source: "#nthreads_trimm" }
       - { id: "#trimm.trimmomatic_jar_path", source: "#trimmomatic_jar_path" }
