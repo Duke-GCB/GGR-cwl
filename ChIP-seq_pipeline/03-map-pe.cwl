@@ -1,10 +1,12 @@
 #!/usr/bin/env cwl-runner
+cwlVersion: "cwl:draft-3"
 class: Workflow
 description: "ChIP-seq 03 mapping - reads: PE"
 requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
   - class: StepInputExpressionRequirement
+  - class: InlineJavascriptRequirement
 inputs:
   - id: "#input_fastq_read1_files"
     type:

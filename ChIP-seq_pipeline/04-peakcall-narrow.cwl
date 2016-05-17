@@ -1,9 +1,11 @@
 #!/usr/bin/env cwl-runner
+cwlVersion: "cwl:draft-3"
 class: Workflow
 description: "ChIP-seq 04 quantification - region: narrow, samples: treatment."
 requirements:
   - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
+  - class: InlineJavascriptRequirement
 inputs:
   - id: "#input_bam_files"
     type:

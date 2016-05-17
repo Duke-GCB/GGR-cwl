@@ -1,4 +1,5 @@
 #!/usr/bin/env cwl-runner
+cwlVersion: "cwl:draft-3"
 class: Workflow
 description: "DNase-seq 01 mapping - reads: SE"
 requirements:

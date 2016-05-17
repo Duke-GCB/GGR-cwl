@@ -1,5 +1,7 @@
 #!/usr/bin/env cwl-runner
 
+cwlVersion: "cwl:draft-3"
+
 class: Workflow
 description: "ChIP-seq 03 mapping - reads: {{read_type|upper}}"
 
@@ -7,6 +9,7 @@ requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
   - class: StepInputExpressionRequirement
+  - class: InlineJavascriptRequirement
 
 inputs:
 {% if read_type == "pe" %}

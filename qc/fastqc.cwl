@@ -1,26 +1,21 @@
 #!/usr/bin/env cwl-runner
 
+cwlVersion: "cwl:draft-3"
 class: CommandLineTool
 
 hints:
   - class: DockerRequirement
     dockerImageId: 'dukegcb/fastqc'
 
+requirements:
+  - class: InlineJavascriptRequirement
+
 inputs:
   - id: "#input_fastq_file"
     type: File
     inputBinding:
       position: 4
-  - id: "#outdir"
-    type: File
-    default: null # Even though we're providing a valueFrom, workflow won't run unless there's a value
-    inputBinding:
-      position: 1
-      prefix: -o
-      valueFrom:
-        engine: "cwl:JsonPointer"
-        script: "outdir"
-  - id: "#noeextract"
+  - id: "#noextract"
     type: boolean
     default: true
     inputBinding:
@@ -38,20 +33,19 @@ inputs:
     inputBinding:
       position: 5
       prefix: "--threads"
-  - id: "#tmpdir"
-    type: string
-    default: null
-    inputBinding:
-      position: 6
-      prefix: "--dir"
-      valueFrom:
-        engine: "cwl:JsonPointer"
-        script: "tmpdir"
+
 
 outputs:
   - id: "#output_qc_report_file"
     type: File
     outputBinding:
-      glob: "*_fastqc.zip"
+      glob: $(inputs.input_fastq_file.path.replace(/^.*[\\\/]/, "").replace(/\.[^/.]+$/, '') + "_fastqc.zip")
 
 baseCommand: fastqc
+arguments:
+  - valueFrom: $(runtime.tmpdir)
+    prefix: "--dir"
+    position: 5
+  - valueFrom: $(runtime.outdir)
+    prefix: "-o"
+    position: 5

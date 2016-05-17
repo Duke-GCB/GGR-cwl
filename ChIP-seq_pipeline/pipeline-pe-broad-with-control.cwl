@@ -1,4 +1,5 @@
 #!/usr/bin/env cwl-runner
+cwlVersion: "cwl:draft-3"
 class: Workflow
 description: "ChIP-seq pipeline - reads: PE, region: broad, samples: treatment and control."
 requirements:
