@@ -67,7 +67,7 @@ steps:
       - id: "#bedtools_genomecov.g"
         source: "#input_genome_sizes"
       - id: "#bedtools_genomecov.bg"
-        default: true
+        valueFrom: $(true)
     outputs:
       - id: "#bedtools_genomecov.output_bedfile"
   - id: "#bedsort_genomecov"
@@ -98,8 +98,14 @@ steps:
         source: "#input_bam_files"
       - id: "#bamcoverage.output_suffix"
         valueFrom: ".norm.bw"
-      - id: "#bamcoverage.nthreads"
+      - id: "#bamcoverage.numberOfProcessors"
         source: "#nthreads"
+      - id: "#bamcoverage.extendReads"
+        valueFrom: $(200)
+      - id: "#bamcoverage.normalizeUsingRPKM"
+        valueFrom: $(true)
+      - id: "#bamcoverage.binSize"
+        valueFrom: $(50)
     outputs:
       - id: "#bamcoverage.output_bam_coverage"
   - id: "#extend-reads"
