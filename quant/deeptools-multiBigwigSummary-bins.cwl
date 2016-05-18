@@ -1,5 +1,9 @@
 #!/usr/bin/env cwl-runner
 
+# Mantainer: alejandro.barrera@duke.edu
+# Partially Auto generated with clihp (https://github.com/portah/clihp, developed by Andrey.Kartashov@cchmc.org)
+# Developed for GGR project (https://github.com/Duke-GCB/GGR-cwl)
+
 cwlVersion: 'cwl:draft-3'
 class: CommandLineTool
 hints:
@@ -119,11 +123,11 @@ inputs:
       position: 1
       prefix: '--outRawCounts'
 outputs:
-  - id: '#matrixFile'
+  - id: matrixFile
     type: File
     outputBinding:
       glob: $(inputs.outMatrixFileName)
-  - id: '#rawCountsFile'
+  - id: rawCountsFile
     type:
       - 'null'
       - File
@@ -139,12 +143,3 @@ description: |
   only exception is the last bin of a chromosome, which is often
   smaller. The output of this mode is commonly used to assess the
   overall similarity of different bigWig files.
-
-
-#multiBigwigSummary bins --binSize 10000 \
-#-b ${SAMPLE}.${IN_SUFFIX} \
-#--outFileName /dev/null \
-#--outRawCounts $$tmp \
-#--chromosomesToSkip $chromosomesToSkip
-#
-#sed 's/nan/0.0/g' $$tmp | egrep -v "chrEBV|chrUn|random" > ${SAMPLE}.${OUT_SUFFIX}; rm $$tmp

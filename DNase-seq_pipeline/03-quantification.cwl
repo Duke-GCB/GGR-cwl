@@ -7,6 +7,7 @@ description: "DNase-seq 03 quantification"
 requirements:
   - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
+  - class: InlineJavascriptRequirement
 
 inputs:
   - id: "#input_bam_files"
@@ -67,7 +68,7 @@ steps:
       - id: "#bedtools_genomecov.g"
         source: "#input_genome_sizes"
       - id: "#bedtools_genomecov.bg"
-        default: true
+        valueFrom: $(true)
     outputs:
       - id: "#bedtools_genomecov.output_bedfile"
   - id: "#bedsort_genomecov"
@@ -96,12 +97,16 @@ steps:
     inputs:
       - id: "#bamcoverage.bam"
         source: "#input_bam_files"
-      - id: "#bamcoverage.normalizeUsingRPKM"
-        valueFrom: $(true)
       - id: "#bamcoverage.output_suffix"
         valueFrom: ".norm.bw"
-      - id: "#bamcoverage.nthreads"
+      - id: "#bamcoverage.numberOfProcessors"
         source: "#nthreads"
+      - id: "#bamcoverage.extendReads"
+        valueFrom: $(200)
+      - id: "#bamcoverage.normalizeUsingRPKM"
+        valueFrom: $(true)
+      - id: "#bamcoverage.binSize"
+        valueFrom: $(50)
     outputs:
       - id: "#bamcoverage.output_bam_coverage"
   - id: "#extend-reads"
@@ -113,7 +118,7 @@ steps:
       - id: "#extend-reads.g"
         source: "#input_genome_sizes"
       - id: "#extend-reads.b"
-        default: 0
+        valueFrom: $(0)
     outputs:
       - id: "#extend-reads.stdoutfile"
   - id: "#clip-off-chrom"
