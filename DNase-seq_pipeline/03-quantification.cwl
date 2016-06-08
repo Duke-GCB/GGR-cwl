@@ -87,7 +87,7 @@ steps:
         source: "#bedsort_genomecov.bed_file_sorted"
       - id: "#bdg2bw-raw.genome_sizes"
         source: "#input_genome_sizes"
-      - id: "bdg2bw-raw.output_suffix"
+      - id: "#bdg2bw-raw.output_suffix"
         valueFrom: ".raw.bw"
     outputs:
       - id: "#bdg2bw-raw.output_bigwig"
@@ -147,7 +147,7 @@ steps:
         source: "#bedsort_clipped_bedfile.bed_file_sorted"
       - id: "#bdg2bw-extend.genome_sizes"
         source: "#input_genome_sizes"
-      - id: "bdg2bw-extend.output_suffix"
+      - id: "#bdg2bw-extend.output_suffix"
         valueFrom: ".fragment_extended.bw"
     outputs:
       - id: "#bdg2bw-extend.output_bigwig"
@@ -180,7 +180,7 @@ steps:
         source: "#bedsort_scaled_bdg.bed_file_sorted"
       - id: "#bdg2bw-extend-norm.genome_sizes"
         source: "#input_genome_sizes"
-      - id: "bdg2bw-extend-norm.output_suffix"
+      - id: "#bdg2bw-extend-norm.output_suffix"
         valueFrom: ".fragment_extended.bw"
     outputs:
       - id: "#bdg2bw-extend-norm.output_bigwig"
