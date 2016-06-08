@@ -1,10 +1,13 @@
 #!/usr/bin/env cwl-runner
 
+cwlVersion: "cwl:draft-3"
+
 class: Workflow
-description: "GGR_ChIP-seq 04 quantification - region: {{ peak_type }}, samples: {{ sample_types|join(' and ') }}."
+description: "ChIP-seq 04 quantification - region: {{ peak_type }}, samples: {{ sample_types|join(' and ') }}."
 requirements:
   - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
+  - class: InlineJavascriptRequirement
 
 inputs:
   - id: "#input_bam_files"
@@ -39,19 +42,19 @@ outputs:
       type: array
       items: File
   - id: "#output_{{ peak_type }}peak_file"
-    source: "#peak-calling-{{ peak_type }}.output_{{ peak_type }}peak_file"
+    source: "#peak-calling.output_peak_file"
     description: "peakshift/phantomPeak results file"
     type:
       type: array
       items: File
   - id: "#output_extended_{{ peak_type }}peak_file"
-    source: "#peak-calling-{{ peak_type }}.output_ext_frag_bdg_file"
+    source: "#peak-calling.output_ext_frag_bdg_file"
     description: "peakshift/phantomPeak extended fragment results file"
     type:
       type: array
       items: File
   - id: "#output_peak_xls_file"
-    source: "#peak-calling-{{ peak_type }}.output_peak_xls_file"
+    source: "#peak-calling.output_peak_xls_file"
     description: "Peak calling report file (*_peaks.xls file produced by MACS2)"
     type:
       type: array
@@ -76,7 +79,7 @@ outputs:
       items: File
 steps:
   - id: "#spp"
-    run: {import: "../spp/spp{% if 'control' in sample_types %}-with-control{% endif %}.cwl"}
+    run: {$import: "../spp/spp.cwl"}
     scatter:
       - "#spp.input_bam"
 {% if 'control' in sample_types %}
@@ -89,68 +92,78 @@ steps:
 {% if 'control' in sample_types %}
       - id: "#spp.control_bam"
         source: "#input_control_bam_files"
+{#        valueFrom: $(['null', self])#}
 {% endif %}
       - id: "#spp.savp"
-        default: True
+        valueFrom: $(true)
       - id: "#spp.nthreads"
         source: "#nthreads"
     outputs:
       - id: "#spp.output_spp_cross_corr"
       - id: "#spp.output_spp_cross_corr_plot"
   - id: "#extract-peak-frag-length"
-    run: {import: "../spp/extract-best-frag-length.cwl"}
+    run: {$import: "../spp/extract-best-frag-length.cwl"}
     scatter: "#extract-peak-frag-length.input_spp_txt_file"
     inputs:
       - id: "#extract-peak-frag-length.input_spp_txt_file"
         source: "#spp.output_spp_cross_corr"
     outputs:
       - id: "#extract-peak-frag-length.output_best_frag_length"
-  - id: "#peak-calling-{{ peak_type }}"
-    run: {import: "../peak_calling/macs2-callpeak-{{ peak_type }}{% if 'control' in sample_types %}-with-control{% endif %}.cwl"}
+  - id: "#peak-calling"
+    run: {$import: "../peak_calling/macs2-callpeak.cwl"}
     scatter:
-      - "#peak-calling-{{ peak_type }}.treatment_sample_file"
+      - "#peak-calling.treatment"
 {% if 'control' in sample_types %}
-      - "#peak-calling-{{ peak_type }}.control_sample_file"
+      - "#peak-calling.control"
 {% endif %}
-      - "#peak-calling-{{ peak_type }}.extsize"
+      - "#peak-calling.extsize"
     scatterMethod: dotproduct
     inputs:
-      - id: "#peak-calling-{{ peak_type }}.treatment_sample_file"
+      - id: "#peak-calling.treatment"
         source: "#input_bam_files"
+        valueFrom: $([self])
 {% if 'control' in sample_types %}
-      - id: "#peak-calling-{{ peak_type }}.control_sample_file"
+      - id: "#peak-calling.control"
         source: "#input_control_bam_files"
 {% endif %}
-      - id: "#peak-calling-{{ peak_type }}.extsize"
+{% if 'broad' == peak_type %}
+      - id: "#peak-calling.broad"
+        valueFrom: $(true)
+      - id: "#peak-calling.q"
+        valueFrom: $(0.1)
+{% endif %}
+      - id: "#peak-calling.extsize"
         source: "#extract-peak-frag-length.output_best_frag_length"
-      - id: "#peak-calling-{{ peak_type }}.nomodel"
-        default: True
-      - id: "#peak-calling-{{ peak_type }}.format"
+      - id: "#peak-calling.nomodel"
+        valueFrom: $(true)
+      - id: "#peak-calling.bdg"
+        valueFrom: $(true)
+      - id: "#peak-calling.format"
         source: "#input_bam_format"
     outputs:
-      - id: "#peak-calling-{{ peak_type }}.output_{{ peak_type }}peak_file"
-      - id: "#peak-calling-{{ peak_type }}.output_ext_frag_bdg_file"
-      - id: "#peak-calling-{{ peak_type }}.output_peak_xls_file"
+      - id: "#peak-calling.output_peak_file"
+      - id: "#peak-calling.output_ext_frag_bdg_file"
+      - id: "#peak-calling.output_peak_xls_file"
   - id: "#count-reads-filtered"
-    run: {import: "../peak_calling/count-reads-after-filtering.cwl"}
+    run: {$import: "../peak_calling/count-reads-after-filtering.cwl"}
     scatter: "#count-reads-filtered.peak_xls_file"
     inputs:
       - id: "#count-reads-filtered.peak_xls_file"
-        source: "#peak-calling-{{ peak_type }}.output_peak_xls_file"
+        source: "#peak-calling.output_peak_xls_file"
     outputs:
       - id: "#count-reads-filtered.read_count_file"
   - id: "#count-peaks"
-    run: {import: "../utils/count-with-output-suffix.cwl"}
+    run: {$import: "../utils/count-with-output-suffix.cwl"}
     scatter: "#count-peaks.input_file"
     inputs:
       - id: "#count-peaks.input_file"
-        source: "#peak-calling-{{ peak_type }}.output_{{ peak_type }}peak_file"
+        source: "#peak-calling.output_peak_file"
       - id: "#count-peaks.output_suffix"
         valueFrom: ".peak_count.within_replicate.txt"
     outputs:
       - id: "#count-peaks.output_counts"
   - id: "#filter-reads-in-peaks"
-    run: {import: "../peak_calling/samtools-filter-in-bedfile.cwl"}
+    run: {$import: "../peak_calling/samtools-filter-in-bedfile.cwl"}
     scatter:
       - "#filter-reads-in-peaks.input_bam_file"
       - "#filter-reads-in-peaks.input_bedfile"
@@ -159,11 +172,11 @@ steps:
       - id: "#filter-reads-in-peaks.input_bam_file"
         source: "#input_bam_files"
       - id: "#filter-reads-in-peaks.input_bedfile"
-        source: "#peak-calling-{{ peak_type }}.output_{{ peak_type }}peak_file"
+        source: "#peak-calling.output_peak_file"
     outputs:
       - id: "#filter-reads-in-peaks.filtered_file"
   - id: "#extract-count-reads-in-peaks"
-    run: {import: "../peak_calling/samtools-extract-number-mapped-reads.cwl"}
+    run: {$import: "../peak_calling/samtools-extract-number-mapped-reads.cwl"}
     scatter: "#extract-count-reads-in-peaks.input_bam_file"
     inputs:
       - id: "#extract-count-reads-in-peaks.input_bam_file"

@@ -1,6 +1,6 @@
 #!/usr/bin/env cwl-runner
 
-cwlVersion: 'cwl:draft-3.dev3'
+cwlVersion: 'cwl:draft-3'
 class: CommandLineTool
 hints:
   - class: DockerRequirement
@@ -306,8 +306,9 @@ outputs:
   - id: '#file_wo_blacklist_regions'
     type: File
     outputBinding:
-      glob: $(inputs.output_basename_file + '.dedup_filtered.bam')
-stdout: $(inputs.output_basename_file + '.dedup_filtered.bam')
+      glob: $(inputs.output_basename_file + '.masked.bam')
+
+stdout: $(inputs.output_basename_file + '.masked.bam')
 baseCommand:
   - bedtools
   - intersect

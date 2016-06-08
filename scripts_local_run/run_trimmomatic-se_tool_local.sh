@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Example to run GGR_ChIP-seq_pipeline/01-qc.cwl
+# Example to run ChIP-seq_pipeline/01-qc.cwl
 # Requires cwltool and docker
 #   https://github.com/common-workflow-language/cwltool
 #   https://www.docker.com
@@ -21,7 +21,7 @@ cwl-runner \
   --outdir=$OUTDIR \
   --tmp-outdir-prefix=$TMP_OUTDIR_PREFIX \
   --tmpdir-prefix=$TMPDIR_PREFIX \
-  /Users/abarrera/workspace/GGR-cwl/trimmomatic/trimmomatic-se.cwl \
+  /Users/abarrera/workspace/GGR-cwl/trimmomatic/trimmomatic.cwl \
   --threads=1 \
   --quality_score='-phred33' \
   --input_fastq_file /Users/abarrera/data/TEST.t00_rep1.fastq \

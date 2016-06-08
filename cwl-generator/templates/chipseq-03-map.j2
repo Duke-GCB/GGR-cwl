@@ -1,11 +1,15 @@
 #!/usr/bin/env cwl-runner
 
+cwlVersion: "cwl:draft-3"
+
 class: Workflow
-description: "GGR_ChIP-seq 03 mapping - reads: {{read_type|upper}}"
+description: "ChIP-seq 03 mapping - reads: {{read_type|upper}}"
 
 requirements:
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
+  - class: StepInputExpressionRequirement
+  - class: InlineJavascriptRequirement
 
 inputs:
 {% if read_type == "pe" %}
@@ -91,11 +95,29 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#output_read_count_mapped"
+    source: "#mapped_reads_count.output"
+    description: "Read counts of the mapped BAM files"
+    type:
+      type: array
+      items: File
+  - id: "#output_read_count_mapped_filtered"
+    source: "#mapped_filtered_reads_count.output_read_count"
+    description: "Read counts of the mapped and filtered BAM files"
+    type:
+      type: array
+      items: File
+  - id: "#output_percentage_uniq_reads"
+    source: "#percent_uniq_reads.output"
+    description: "Percentage of uniq reads from preseq c_curve output"
+    type:
+      type: array
+      items: File
 
 steps:
 
   - id: "#extract_basename_1"
-    run: {import: "../utils/extract-basename.cwl" }
+    run: {$import: "../utils/extract-basename.cwl" }
     scatter: "#extract_basename_1.input_file"
     inputs:
       - id: "#extract_basename_1.input_file"
@@ -103,7 +125,7 @@ steps:
     outputs:
       - id: "#extract_basename_1.output_basename"
   - id: "#extract_basename_2"
-    run: {import: "../utils/remove-extension.cwl" }
+    run: {$import: "../utils/remove-extension.cwl" }
     scatter: "#extract_basename_2.file_path"
     inputs:
       - id: "#extract_basename_2.file_path"
@@ -111,7 +133,7 @@ steps:
     outputs:
       - id: "#extract_basename_2.output_path"
   - id: "#bowtie-{{ read_type }}"
-    run: {import: "../map/bowtie-{{ read_type }}.cwl"}
+    run: {$import: "../map/bowtie-{{ read_type }}.cwl"}
     scatter:
 {% if read_type == "pe" %}
       - "#bowtie-{{ read_type }}.input_fastq_read1_file"
@@ -137,11 +159,15 @@ steps:
         source: "#genome_ref_first_index_file"
       - id: "#bowtie-{{ read_type }}.nthreads"
         source: "#nthreads"
+      - id: "#bowtie-{{ read_type }}.X"
+        valueFrom: $(2000)
+      - id: "#bowtie-{{ read_type }}.v"
+        valueFrom: $(2)
     outputs:
       - id: "#bowtie-{{ read_type }}.output_aligned_file"
       - id: "#bowtie-{{ read_type }}.output_bowtie_log"
   - id: "#sam2bam"
-    run: {import: "../map/samtools2bam.cwl"}
+    run: {$import: "../map/samtools2bam.cwl"}
     scatter:
       - "#sam2bam.input_file"
     inputs:
@@ -152,7 +178,7 @@ steps:
     outputs:
       - id: "#sam2bam.bam_file"
   - id: "#sort_bams"
-    run: {import: "../map/samtools-sort.cwl"}
+    run: {$import: "../map/samtools-sort.cwl"}
     scatter:
       - "#sort_bams.input_file"
     inputs:
@@ -163,7 +189,7 @@ steps:
     outputs:
       - id: "#sort_bams.sorted_file"
   - id: "#filter-unmapped"
-    run: {import: "../map/samtools-filter-unmapped.cwl"}
+    run: {$import: "../map/samtools-filter-unmapped.cwl"}
     scatter:
       - "#filter-unmapped.input_file"
       - "#filter-unmapped.output_filename"
@@ -176,7 +202,7 @@ steps:
     outputs:
       - id: "#filter-unmapped.filtered_file"
   - id: "#filtered2sorted"
-    run: {import: "../map/samtools-sort.cwl"}
+    run: {$import: "../map/samtools-sort.cwl"}
     scatter:
       - "#filtered2sorted.input_file"
     inputs:
@@ -187,7 +213,7 @@ steps:
     outputs:
       - id: "#filtered2sorted.sorted_file"
   - id: "#preseq-c-curve"
-    run: {import: "../map/preseq-c_curve.cwl"}
+    run: {$import: "../map/preseq-c_curve.cwl"}
     scatter:
       - "#preseq-c-curve.input_sorted_file"
       - "#preseq-c-curve.output_file_basename"
@@ -204,7 +230,7 @@ steps:
     outputs:
       - id: "#preseq-c-curve.output_file"
 #  - id: "#preseq-lc-extrap"
-#    run: {import: "../map/preseq-lc_extrap.cwl"}
+#    run: {$import: "../map/preseq-lc_extrap.cwl"}
 #    scatter:
 #      - "#preseq-lc-extrap.input_sorted_file"
 #      - "#preseq-lc-extrap.output_file_basename"
@@ -223,7 +249,7 @@ steps:
 #    outputs:
 #      - id: "#preseq-lc-extrap.output_file"
   - id: "#execute_pcr_bottleneck_coef"
-    run: {import: "../map/pcr-bottleneck-coef.cwl"}
+    run: {$import: "../map/pcr-bottleneck-coef.cwl"}
     inputs:
       - id: "#execute_pcr_bottleneck_coef.input_bam_files"
         source: "#filtered2sorted.sorted_file"
@@ -234,7 +260,7 @@ steps:
     outputs:
       - id: "#execute_pcr_bottleneck_coef.pbc_file"
   - id: "#remove_duplicates"
-    run: {import: "../map/picard-MarkDuplicates.cwl"}
+    run: {$import: "../map/picard-MarkDuplicates.cwl"}
     scatter:
       - "#remove_duplicates.input_file"
       - "#remove_duplicates.output_filename"
@@ -251,8 +277,16 @@ steps:
     outputs:
       - id: "#remove_duplicates.output_metrics_file"
       - id: "#remove_duplicates.output_dedup_bam_file"
+  - id: "#mapped_file_basename"
+    run: {$import: "../utils/extract-basename.cwl" }
+    scatter: "#mapped_file_basename.input_file"
+    inputs:
+      - id: "#mapped_file_basename.input_file"
+        source: "#remove_duplicates.output_dedup_bam_file"
+    outputs:
+      - id: "#mapped_file_basename.output_basename"
   - id: "#remove_encode_blacklist"
-    run: {import: "../map/bedtools-intersect.cwl"}
+    run: {$import: "../map/bedtools-intersect.cwl"}
     scatter:
       - "#remove_encode_blacklist.a"
       - "#remove_encode_blacklist.output_basename_file"
@@ -261,7 +295,7 @@ steps:
       - id: "#remove_encode_blacklist.v"
         default: true
       - id: "#remove_encode_blacklist.output_basename_file"
-        source: "#extract_basename_2.output_path"
+        source: "#mapped_file_basename.output_basename"
       - id: "#remove_encode_blacklist.a"
         source: "#remove_duplicates.output_dedup_bam_file"
       - id: "#remove_encode_blacklist.b"
@@ -269,7 +303,7 @@ steps:
     outputs:
       - id: "#remove_encode_blacklist.file_wo_blacklist_regions"
   - id: "#sort_dedup_bams"
-    run: {import: "../map/samtools-sort.cwl"}
+    run: {$import: "../map/samtools-sort.cwl"}
     scatter:
       - "#sort_dedup_bams.input_file"
     inputs:
@@ -280,7 +314,7 @@ steps:
     outputs:
       - id: "#sort_dedup_bams.sorted_file"
   - id: "#index_dedup_bams"
-    run: {import: "../map/samtools-index.cwl"}
+    run: {$import: "../map/samtools-index.cwl"}
     scatter:
       - "#index_dedup_bams.input_file"
     inputs:
@@ -288,4 +322,30 @@ steps:
         source: "#sort_dedup_bams.sorted_file"
     outputs:
       - id: "#index_dedup_bams.index_file"
+  - id: "#mapped_reads_count"
+    run: {$import: "../map/bowtie-log-read-count.cwl"}
+    scatter: "#mapped_reads_count.bowtie_log"
+    inputs:
+      - id: "#mapped_reads_count.bowtie_log"
+        source: "#bowtie-{{ read_type }}.output_bowtie_log"
+    outputs:
+      - id: "#mapped_reads_count.output"
+  - id: "#percent_uniq_reads"
+    run: {$import: "../map/preseq-percent-uniq-reads.cwl"}
+    scatter: "#percent_uniq_reads.preseq_c_curve_outfile"
+    inputs:
+      - id: "#percent_uniq_reads.preseq_c_curve_outfile"
+        source: "#preseq-c-curve.output_file"
+    outputs:
+      - id: "#percent_uniq_reads.output"
+  - id: "#mapped_filtered_reads_count"
+    run: {$import: "../peak_calling/samtools-extract-number-mapped-reads.cwl"}
+    scatter: "#mapped_filtered_reads_count.input_bam_file"
+    inputs:
+      - id: "#mapped_filtered_reads_count.input_bam_file"
+        source: "#sort_dedup_bams.sorted_file"
+      - id: "#mapped_filtered_reads_count.output_suffix"
+        valueFrom: ".mapped_and_filtered.read_count.txt"
+    outputs:
+      - id: "#mapped_filtered_reads_count.output_read_count"
 

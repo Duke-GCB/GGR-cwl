@@ -6,7 +6,8 @@ description: "Extracts the base name of a file"
 hints:
   - class: DockerRequirement
     dockerImageId: 'dukegcb/workflow-utils'
-
+requirements:
+  - class: InlineJavascriptRequirement
 inputs:
   - id: "#input_file"
     type: File

@@ -1,7 +1,7 @@
 #!/usr/bin/env cwl-runner
 
 class: Workflow
-description: "GGR_ChIP-seq - map - PCR Bottleneck Coefficients"
+description: "ChIP-seq - map - PCR Bottleneck Coefficients"
 
 requirements:
   - class: ScatterFeatureRequirement
@@ -27,7 +27,7 @@ outputs:
 
 steps:
   - id: "#bedtools_genomecov"
-    run: {import: "bedtools-genomecov.cwl"}
+    run: {$import: "bedtools-genomecov.cwl"}
     scatter: "#bedtools_genomecov.ibam"
     inputs:
       - id: "#bedtools_genomecov.ibam"
@@ -39,7 +39,7 @@ steps:
     outputs:
       - id: "#bedtools_genomecov.output_bedfile"
   - id: "#compute_pbc"
-    run: {import: "compute-pbc.cwl"}
+    run: {$import: "compute-pbc.cwl"}
     scatter:
       - "#compute_pbc.bedgraph_file"
       - "#compute_pbc.output_filename"

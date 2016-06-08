@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Example to run GGR_ChIP-seq_pipeline/01-qc.cwl
+# Example to run ChIP-seq_pipeline/01-qc.cwl
 # Requires cwltool and docker
 #   https://github.com/common-workflow-language/cwltool
 #   https://www.docker.com

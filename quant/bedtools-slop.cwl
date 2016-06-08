@@ -2,7 +2,7 @@
 # Author: Andrey.Kartashov@cchmc.org (http://orcid.org/0000-0001-9102-5681) / Dr. Barski Lab / Cincinnati Children’s Hospital Medical Center
 # Developed for CWL consortium http://commonwl.org/
 
-cwlVersion: 'cwl:draft-3.dev3'
+cwlVersion: 'cwl:draft-3'
 class: CommandLineTool
 hints:
   - class: DockerRequirement
