@@ -1,0 +1,106 @@
+Sequencing core user	Sequencing core project	Sequencing core password	Sequencing core library name	Name	Iter num	Paired-end or single-end	Peak type	Control	IP control 1	IP control 2
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_Illumina-ChIP-dualbeadSS-rep1	Illumina-ChIP-dualbeadSS.tX_rep1	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_Illumina-ChIP-dualbeadSS-rep2	Illumina-ChIP-dualbeadSS.tX_rep2	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_Illumina-ChIP-dualbeadSS-rep3	Illumina-ChIP-dualbeadSS.tX_rep3	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_Illumina-ChIP-gelSS-rep1	Illumina-ChIP-gelSS.tX_rep1	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_Illumina-ChIP-gelSS-rep2	Illumina-ChIP-gelSS.tX_rep2	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_Illumina-ChIP-gelSS-rep3	Illumina-ChIP-gelSS.tX_rep3	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_JunD-10uM-1	Sample_JunD-10uM.tX_rep1	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_JunD-10uM-2	Sample_JunD-10uM.tX_rep2	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_JunD-20uM-1	Sample_JunD-20uM.tX_rep1	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_JunD-20uM-2	Sample_JunD-20uM.tX_rep2	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_JunD-40uM-1	Sample_JunD-40uM.tX_rep1	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_JunD-40uM-2	Sample_JunD-40uM.tX_rep2	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_JunD-DMSO-1	Sample_JunD-DMSO.tX_rep1	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_Kapa-ChIP-dualbeadSS-rep1	Kapa-ChIP-dualbeadSS.tX_rep1	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_Kapa-ChIP-dualbeadSS-rep2	Kapa-ChIP-dualbeadSS.tX_rep2	iter-1	se	narrow	NA	NA	NA
+dippolito_2819	Project_DIPPOLITO_2819_150923B4	TfFT63o6E7aB	Sample_Kapa-ChIP-dualbeadSS-rep3	Kapa-ChIP-dualbeadSS.tX_rep3	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_20M-CTCF-30-30-R1	CTCF_2015_10_01-30-30_20M.tX_rep1	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_20M-CTCF-30-30-R2	CTCF_2015_10_01-30-30_20M.tX_rep2	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_20M-CTCF-45-30-R1	CTCF_2015_10_01-45-30_20M.tX_rep1	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_20M-CTCF-45-30-R2	CTCF_2015_10_01-45-30_20M.tX_rep2	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_20M-H3K27ac-30-30-R1	H3K27ac_2015_10_01-30-30_20M.tX_rep1	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_20M-H3K27ac-30-30-R2	H3K27ac_2015_10_01-30-30_20M.tX_rep2	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_20M-H3K27ac-45-30-R1	H3K27ac_2015_10_01-45-30_20M.tX_rep1	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_20M-H3K27ac-45-30-R2	H3K27ac_2015_10_01-45-30_20M.tX_rep2	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_60M-CTCF-R1	CTCF_2015_10_01_60M.tX_rep1	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_60M-CTCF-R2	CTCF_2015_10_01_60M.tX_rep2	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_60M-H3K27ac-R1	H3K27ac_2015_10_01_60M.tX_rep1	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_60M-H3K27ac-R2	H3K27ac_2015_10_01_60M.tX_rep2	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_CEBPD	CEBPD_2015_10_01.tX_repX	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_CTCF	CTCF_2015_10_01.tX_repX	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_FOSB	FOSB_2015_10_01.tX_repX	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_FOS	FOS_2015_10_01.tX_repX	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_FOSL1	FOSL1_2015_10_01.tX_repX	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_FOXA2	FOXA2_2015_10_01.tX_repX	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_JUNB	JUNB_2015_10_01.tX_repX	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_JUND	JUND_2015_10_01.tX_repX	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_JUN	JUN_2015_10_01.tX_repX	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_MAFK	MAFK_2015_10_01.tX_repX	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_SP1	SP1_2015_10_01.tX_repX	iter-1	se	narrow	NA	NA	NA
+hong_2842	Project_Hong_2842_150929A3	MZj8ihuwLrk8	Sample_TFAP2C	TFAP2C_2015_10_01.tX_repX	iter-1	se	narrow	NA	NA	NA
+leichter_2906	Project_LERCHTER_2906_151104B4	PYzUkcyHdJ75	Sample_SL-L1-1	CTCF_2015_11_09.tX_repX	iter-1	se	narrow	NA	NA	NA
+leichter_2906	Project_LERCHTER_2906_151104B4	PYzUkcyHdJ75	Sample_SL-L1-2	H3K4me1_2015_11_09.tX_repX	iter-1	se	narrow	NA	NA	NA
+leichter_2906	Project_LERCHTER_2906_151104B4	PYzUkcyHdJ75	Sample_SL-L1-3	H3K4me2_2015_11_09.tX_repX	iter-1	se	narrow	NA	NA	NA
+leichter_2906	Project_LERCHTER_2906_151104B4	PYzUkcyHdJ75	Sample_SL-L1-4	H3K4me3_2015_11_09.tX_repX	iter-1	se	narrow	NA	NA	NA
+leichter_2906	Project_LERCHTER_2906_151104B4	PYzUkcyHdJ75	Sample_SL-L1-5	H3K27ac_2015_11_09.tX_repX	iter-1	se	narrow	NA	NA	NA
+leichter_2906	Project_LERCHTER_2906_151104B4	PYzUkcyHdJ75	Sample_SL-L1-6	H3K9me3_2015_11_09.tX_repX	iter-1	se	narrow	NA	NA	NA
+leichter_2906	Project_LERCHTER_2906_151104B4	PYzUkcyHdJ75	Sample_SL-L2-1	EP300_2015_11_09.tX_repX	iter-1	se	narrow	NA	NA	NA
+leichter_2906	Project_LERCHTER_2906_151104B4	PYzUkcyHdJ75	Sample_SL-L2-2	CEBPB_2015_11_09.tX_repX	iter-1	se	narrow	NA	NA	NA
+leichter_2906	Project_LERCHTER_2906_151104B4	PYzUkcyHdJ75	Sample_SL-L2-3	BCL3_2015_11_09.tX_repX	iter-1	se	narrow	NA	NA	NA
+leichter_2906	Project_LERCHTER_2906_151104B4	PYzUkcyHdJ75	Sample_SL-L2-4	GR_2015_11_09.tX_repX	iter-1	se	narrow	NA	NA	NA
+leichter_2906	Project_LERCHTER_2906_151104B4	PYzUkcyHdJ75	Sample_SL-L2-5	CEBPD_2015_11_09.tX_repX	iter-1	se	narrow	NA	NA	NA
+NA	GR_CTCF_test_2015_10_26	NA	CTCF-test-settings_S2	CTCF_2015_10_26.tX_repX	iter-1	pe	narrow	NA	NA
+NA	July_22_2015	NA	BCL3_S6	BCL3_2015_07_22.tX_repX	iter-1	pe	narrow	NA	NA
+NA	July_22_2015	NA	CEBPB_S5	CEBPB_2015_07_22.tX_repX	iter-1	pe	narrow	NA	NA
+NA	July_22_2015	NA	CTCF_S1	CTCF_2015_07_22.tX_repX	iter-1	pe	narrow	NA	NA
+NA	July_22_2015	NA	EP300_S4	EP300_2015_07_22.tX_repX	iter-1	pe	narrow	NA	NA
+NA	July_22_2015	NA	FOXA2_S2	FOXA2_2015_07_22.tX_repX	iter-1	pe	narrow	NA	NA
+NA	July_22_2015	NA	SP1_S3	SP1_2015_07_22.tX_repX	iter-1	pe	narrow	NA	NA
+NA	July_27_2015	NA	H3K27ac_S4	H3K27ac_2015_07_27.tX_repX	iter-1	pe	narrow	NA	NA
+NA	July_27_2015	NA	H3K4me1_S1	H3K4me1_2015_07_27.tX_repX	iter-1	pe	narrow	NA	NA
+NA	July_27_2015	NA	H3K4me2_S2	H3K4me2_2015_07_27.tX_repX	iter-1	pe	narrow	NA	NA
+NA	July_27_2015	NA	H3K4me3_S3	H3K4me3_2015_07_27.tX_repX	iter-1	pe	narrow	NA	NA
+NA	July_27_2015	NA	H3K9me3_S5	H3K9me3_2015_07_27.tX_repX	iter-1	pe	broad	NA	NA
+NA	July_27_2015	NA	MAFK_S6	MAFK_2015_07_27.tX_repX	iter-1	pe	narrow	NA	NA
+NA	July_9_2015	NA	CEBPD-test_S2	CEBPD-test_S2	iter-1	pe	narrow	NA	NA
+NA	July_9_2015	NA	FOSL1-test_S5	FOSL1-test_S5	iter-1	pe	narrow	NA	NA
+NA	July_9_2015	NA	FOSL2-test_S6	FOSL2-test_S6	iter-1	pe	narrow	NA	NA
+NA	July_9_2015	NA	GR-1hr-test_S1	GR-1hr-test_S1	iter-1	pe	narrow	NA	NA
+NA	July_9_2015	NA	JUN-test_S4	JUN-test_S4	iter-1	pe	narrow	NA	NA
+NA	validation	NA	BCL3_R1	BCL3_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	BCL3_R2	BCL3_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	CEBPB_R1	CEBPB_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	CEBPB_R2	CEBPB_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	CEBPD_test_R1	CEBPD_test_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	CEBPD_test_R2	CEBPD_test_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	CTCF_R1	CTCF_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	CTCF_R2	CTCF_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	EP300_R1	EP300_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	EP300_R2	EP300_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	FOSL1_test_R1	FOSL1_test_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	FOSL1_test_R2	FOSL1_test_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	FOSL2_test_R1	FOSL2_test_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	FOSL2_test_R2	FOSL2_test_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	FOXA2_R1	FOXA2_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	FOXA2_R2	FOXA2_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	GR_1hr_test_R1	GR_1hr_test_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	GR_1hr_test_R2	GR_1hr_test_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	H3K27ac_R1	H3K27ac_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	H3K27ac_R2	H3K27ac_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	H3K4me1_R1	H3K4me1_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	H3K4me1_R2	H3K4me1_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	H3K4me2_R1	H3K4me2_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	H3K4me2_R2	H3K4me2_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	H3K4me3_R1	H3K4me3_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	H3K4me3_R2	H3K4me3_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	H3K9me3_R1	H3K9me3_2014_07_29.tX_rep1	iter-1	se	broad	NA	NA	NA
+NA	validation	NA	H3K9me3_R2	H3K9me3_2014_07_29.tX_rep2	iter-1	se	broad	NA	NA	NA
+NA	validation	NA	JUN_test_R1	JUN_test_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	JUN_test_R2	JUN_test_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	MAFK_R1	MAFK_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	MAFK_R2	MAFK_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	SP1_R1	SP1_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	SP1_R2	SP1_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	TFAP2A_test_R1	TFAP2A_test_2014_07_29.tX_rep1	iter-1	se	narrow	NA	NA	NA
+NA	validation	NA	TFAP2A_test_R2	TFAP2A_test_2014_07_29.tX_rep2	iter-1	se	narrow	NA	NA	NA

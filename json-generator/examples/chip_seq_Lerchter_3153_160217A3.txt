@@ -1,0 +1,25 @@
+Sequencing core user	Sequencing core project	Sequencing core password	Sequencing core library name	Name	Iter num	Paired-end or single-end	Peak type	Control	IP control 1	IP control 2
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K9me3-t00-rep3	H3K9me3.t00_rep3	iter0	se	broad	ctrl_003.t00_rep3	GR_IPctrl_003.t00_t05_003	CTCF_IPctrl_003.t00_t05
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K9me3-t8-rep3	H3K9me3.t8_rep3	iter0	se	broad	ctrl_003.t8_rep3	GR_IPctrl_003.t7_t8_003	CTCF_IPctrl_003.t7_t8
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K9me3-t6-rep3	H3K9me3.t6_rep3	iter0	se	broad	ctrl_003.t6_rep3	GR_IPctrl_003.t4_t5_t6_003	CTCF_IPctrl_003.t4_t5_t6
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K9me3-t3-rep3	H3K9me3.t3_rep3	iter0	se	broad	ctrl_003.t3_rep3	GR_IPctrl_003.t1_t2_t3_003	CTCF_IPctrl_003.t1_t2_t3
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K9me3-t12-rep3	H3K9me3.t12_rep3	iter0	se	broad	ctrl_003.t12_rep3	GR_IPctrl_003.t10_t12_003	CTCF_IPctrl_003.t10_t12
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K9me3-t7-rep3	H3K9me3.t7_rep3	iter0	se	broad	ctrl_003.t7_rep3	GR_IPctrl_003.t7_t8_003	CTCF_IPctrl_003.t7_t8
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K9me3-t5-rep3	H3K9me3.t5_rep3	iter0	se	broad	ctrl_003.t5_rep3	GR_IPctrl_003.t4_t5_t6_003	CTCF_IPctrl_003.t4_t5_t6
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K9me3-t4-rep3	H3K9me3.t4_rep3	iter0	se	broad	ctrl_003.t4_rep3	GR_IPctrl_003.t4_t5_t6_003	CTCF_IPctrl_003.t4_t5_t6
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K9me3-t1-rep3	H3K9me3.t1_rep3	iter0	se	broad	ctrl_003.t1_rep3	GR_IPctrl_003.t1_t2_t3_003	CTCF_IPctrl_003.t1_t2_t3
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K9me3-t10-rep3	H3K9me3.t10_rep3	iter0	se	broad	ctrl_003.t10_rep3	GR_IPctrl_003.t10_t12_003	CTCF_IPctrl_003.t10_t12
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K9me3-t2-rep3	H3K9me3.t2_rep3	iter0	se	broad	ctrl_003.t2_rep3	GR_IPctrl_003.t1_t2_t3_003	CTCF_IPctrl_003.t1_t2_t3
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K9me3-t05-rep3	H3K9me3.t05_rep3	iter0	se	broad	ctrl_003.t05_rep3	GR_IPctrl_003.t00_t05_003	CTCF_IPctrl_003.t00_t05
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K27ac-t12-rep3	H3K27ac.t12_rep3	iter0	se	narrow	ctrl_003.t12_rep3	GR_IPctrl_003.t10_t12_003	CTCF_IPctrl_003.t10_t12
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K27ac-t6-rep3	H3K27ac.t6_rep3	iter0	se	narrow	ctrl_003.t6_rep3	GR_IPctrl_003.t4_t5_t6_003	CTCF_IPctrl_003.t4_t5_t6
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K27ac-t00-rep3	H3K27ac.t00_rep3	iter0	se	narrow	ctrl_003.t00_rep3	GR_IPctrl_003.t00_t05_003	CTCF_IPctrl_003.t00_t05
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K27ac-t5-rep3	H3K27ac.t5_rep3	iter0	se	narrow	ctrl_003.t5_rep3	GR_IPctrl_003.t4_t5_t6_003	CTCF_IPctrl_003.t4_t5_t6
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K27ac-t8-rep3	H3K27ac.t8_rep3	iter0	se	narrow	ctrl_003.t8_rep3	GR_IPctrl_003.t7_t8_003	CTCF_IPctrl_003.t7_t8
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K27ac-t3-rep3	H3K27ac.t3_rep3	iter0	se	narrow	ctrl_003.t3_rep3	GR_IPctrl_003.t1_t2_t3_003	CTCF_IPctrl_003.t1_t2_t3
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K27ac-t2-rep3	H3K27ac.t2_rep3	iter0	se	narrow	ctrl_003.t2_rep3	GR_IPctrl_003.t1_t2_t3_003	CTCF_IPctrl_003.t1_t2_t3
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K27ac-t1-rep3	H3K27ac.t1_rep3	iter0	se	narrow	ctrl_003.t1_rep3	GR_IPctrl_003.t1_t2_t3_003	CTCF_IPctrl_003.t1_t2_t3
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K27ac-t4-rep3	H3K27ac.t4_rep3	iter0	se	narrow	ctrl_003.t4_rep3	GR_IPctrl_003.t4_t5_t6_003	CTCF_IPctrl_003.t4_t5_t6
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K27ac-t10-rep3	H3K27ac.t10_rep3	iter0	se	narrow	ctrl_003.t10_rep3	GR_IPctrl_003.t10_t12_003	CTCF_IPctrl_003.t10_t12
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K27ac-t05-rep3	H3K27ac.t05_rep3	iter0	se	narrow	ctrl_003.t05_rep3	GR_IPctrl_003.t00_t05_003	CTCF_IPctrl_003.t00_t05
+leichter_3153	Lerchter_3153_160217A3	udTA5PqwZYDj	H3K27ac-t7-rep3	H3K27ac.t7_rep3	iter0	se	narrow	ctrl_003.t7_rep3	GR_IPctrl_003.t7_t8_003	CTCF_IPctrl_003.t7_t8

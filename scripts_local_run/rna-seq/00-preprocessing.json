@@ -1,0 +1,8 @@
+{
+  "genome_fasta_files": [{
+    "class": "File",
+    "path": "/Users/abarrera/data/GCA_000001405.15_GRCh38_no_alt_analysis_set.TEST.fna"
+  }],
+  "annotation_file": {"class": "File", "path": "/Users/abarrera/data/gencode.v22.annotation.TEST.gtf"},
+  "sjdbOverhang": "49"
+}
