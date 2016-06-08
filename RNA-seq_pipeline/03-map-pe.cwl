@@ -115,7 +115,7 @@ steps:
     outputs:
       - id: "#zip_fastq_files.zipped_list"
   - id: "#star_pass1"
-    run: {$import: "../common-workflow-language/workflows/tools/STAR.cwl" }
+    run: {$import: "../workflows/tools/STAR.cwl" }
     scatter:
       - "#star_pass1.readFilesIn"
       - "#star_pass1.outFileNamePrefix"
@@ -202,7 +202,7 @@ steps:
       - id: "#create_sjdb.sjdb_out"
 
   - id: "#generate_genome"
-    run: {$import: "../common-workflow-language/workflows/tools/STAR.cwl" }
+    run: {$import: "../workflows/tools/STAR.cwl" }
     inputs:
       - { id: "#generate_genome.runMode", valueFrom: "genomeGenerate"}
       - { id: "#generate_genome.runThreadN", source: "#nthreads"}
@@ -217,7 +217,7 @@ steps:
       - id: "#generate_genome.indices"
 
   - id: "#star_pass2"
-    run: {$import: "../common-workflow-language/workflows/tools/STAR.cwl" }
+    run: {$import: "../workflows/tools/STAR.cwl" }
     scatter:
       - "#star_pass2.readFilesIn"
       - "#star_pass2.outFileNamePrefix"
@@ -272,7 +272,7 @@ steps:
       - id: "#mapped_reads_count_star2.output"
 
   - id: "#rsem_star_pass2"
-    run: {$import: "../common-workflow-language/workflows/tools/STAR.cwl" }
+    run: {$import: "../workflows/tools/STAR.cwl" }
     scatter:
       - "#rsem_star_pass2.readFilesIn"
       - "#rsem_star_pass2.outFileNamePrefix"

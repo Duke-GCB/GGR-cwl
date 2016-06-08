@@ -30,7 +30,7 @@ outputs:
 
 steps:
   - id: "#generate_genome_star"
-    run: {$import: "../common-workflow-language/workflows/tools/STAR.cwl" }
+    run: {$import: "../workflows/tools/STAR.cwl" }
     inputs:
       - { id: "#generate_genome_star.runMode", valueFrom: "genomeGenerate"}
       - { id: "#generate_genome_star.sjdbGTFfile", source: "#annotation_file"}
