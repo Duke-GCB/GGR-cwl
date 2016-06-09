@@ -16,10 +16,40 @@ def save_or_print_json(json_str, outdir, json_name):
 
 
 class MetadataParser(object):
-    def __init__(self, file_path):
-        self.file_path = file_path
-        self.experiment_type = os.path.splitext(os.path.basename(file_path))[0].split('_')[0].split('.')[0].split('-')[0]
+    def __init__(self, **kwargs):
+        self.nthreads = kwargs['nthreads']
+        self.mem = kwargs['mem']
+        self.file_path = kwargs['file_path']
         self.records = self.load_file()
+
+    def render_json(self, wf_conf, samples_list, data_dir, template_name):
+        pass
+
+    def parse_metadata(self, data_dir):
+        pass
+
+    def load_file(self):
+        rows = []
+        with open(self.file_path, 'rb') as f:
+            reader = csv.DictReader(f, delimiter='\t')
+            for row in reader:
+                rows.append(row)
+        return rows
+
+
+def generateMetadataParser(args):
+    return MetadataParser(file_path=args.meta_file,
+                          nthreads= args.nthreads,
+                          mem=args.mem)
+
+
+class MetadataParserChipseq(object):
+    def __init__(self, **kwargs):
+        self.obj = generateMetadataParser(kwargs['args_obj'])
+        self.experiment_type = kwargs['exp_type']
+
+    def __getattr__(self, attr):
+        return getattr(self.obj, attr)
 
     def render_json(self, wf_conf, samples_list, data_dir, template_name):
         env = Environment(loader=PackageLoader(package_name='json-generator'))
@@ -44,13 +74,39 @@ class MetadataParser(object):
         for wf_key, samples_list in samples_dict.iteritems():
             yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir, self.experiment_type), wf_key
 
-    def load_file(self):
-        rows = []
-        with open(self.file_path, 'rb') as f:
-            reader = csv.DictReader(f, delimiter='\t')
-            for row in reader:
-                rows.append(row)
-        return rows
+
+class MetadataParserRnaseq(object):
+    def __init__(self, **kwargs):
+        self.obj = generateMetadataParser(kwargs['args_obj'])
+        self.experiment_type = kwargs['exp_type']
+
+    def __getattr__(self, attr):
+        return getattr(self.obj, attr)
+
+    def render_json(self, wf_conf, samples_list, data_dir, template_name):
+        env = Environment(loader=PackageLoader(package_name='json-generator'))
+        template = env.get_template(template_name + '.j2')
+        json_str = template.render({'wf_conf': wf_conf,
+                                    'samples_list': samples_list,
+                                    'data_dir': data_dir,
+                                    'nthreads': self.nthreads,
+                                    'mem': self.mem
+                                    })
+        json_str = '\n'.join([l for l in json_str.split('\n') if l.strip() != ''])  # Remove empty lines
+        return json_str
+
+    def parse_metadata(self, data_dir):
+        samples_dict = defaultdict(list)
+        wf_conf_dict = {}
+        for r in self.records:
+            read_type = r['Paired-end or single-end'].lower()
+            sample_name = r['Name']
+            wf_key = '-'.join([read_type])
+            wf_conf_dict[wf_key] = {'iter': r['Iter num'], 'rt': read_type, 'sn': sample_name}
+            samples_dict[wf_key].append(sample_name)
+        for wf_key, samples_list in samples_dict.iteritems():
+            yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir, self.experiment_type), wf_key
+
 
 
 def main():
@@ -70,6 +126,10 @@ def main():
     parser.add_argument('-d', '--data-dir', dest='data_dir',
                         default='/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads',
                         help='Project directory containing the fastq data files.')
+    parser.add_argument('-t', '--metadata-type', dest='data_type', choices=['chip-seq', 'rna-seq'],
+                        default='chip-seq', help='Experiment type for the metadata.')
+    parser.add_argument('--nthreads', dest='nthreads', default=16, help='Number of threads.')
+    parser.add_argument('--mem', dest='mem', default=16000, help='Memory for Java based CLT.')
 
     # Parse input
     args = parser.parse_args()
@@ -82,8 +142,11 @@ def main():
     if args.outdir and not os.path.exists(args.outdir):
         os.mkdir(args.outdir)
 
-    # Generate outputs
-    meta_parser = MetadataParser(args.meta_file)
+    if args.data_type == 'chip-seq':
+        meta_parser = MetadataParserChipseq(args_obj=args, exp_type=args.data_type)
+    elif args.data_type == 'rna-seq':
+        meta_parser = MetadataParserRnaseq(args_obj=args, exp_type=args.data_type)
+
     file_basename = os.path.splitext(os.path.basename(args.meta_file))[0]
     for json_str, conf_name in meta_parser.parse_metadata(args.data_dir.rstrip('/')):
         save_or_print_json(json_str, args.outdir, file_basename + '-' + conf_name)
