@@ -1,0 +1,17 @@
+{
+  "paired-end": true,
+  "no-bam-output": true,
+  "strand-specific": true,
+  "time": true,
+  "seed": 1234,
+  "bam": { "class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-star2/TEST.rnaseq.t00_rep1.rsem.star2.Aligned.toTranscriptome.out.sorted.bam"},
+  "reference_name": "out-rsem5",
+  "sample_name": "rsem-expr-test",
+  "reference_files": [
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.transcripts.fa"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.ti"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.seq"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.grp"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.chrlist"}
+  ]
+}

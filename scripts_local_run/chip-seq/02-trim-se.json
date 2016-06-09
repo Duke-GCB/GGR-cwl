@@ -1,0 +1,14 @@
+{
+  "input_read1_fastq_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/chipseq-test/GR.t00_rep1.0-001.fastq"
+    }
+  ],
+   "input_adapters_files": [{
+     "class": "File",
+     "path": "/Users/abarrera/data/adapters.fa"
+  }],
+  "trimmomatic_java_opts": "-Xms128m -Xmx512m"
+}
+

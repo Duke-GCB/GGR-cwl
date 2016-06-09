@@ -7,12 +7,12 @@ requirements:
   - class: StepInputExpressionRequirement
   - class: InlineJavascriptRequirement
 inputs:
-  - id: "#input_read1_fastq_files"
+  - id: "#input_fastq_read1_files"
     type:
       type: array
       items: File
     description: "Input read 1 fastq files"
-  - id: "#input_read2_fastq_files"
+  - id: "#input_fastq_read2_files"
     type:
       type: array
       items: File
@@ -91,9 +91,9 @@ steps:
     scatterMethod: dotproduct
     inputs:
       - id: "#trimmomatic.input_read1_fastq_file"
-        source: "#input_read1_fastq_files"
+        source: "#input_fastq_read1_files"
       - id: "#trimmomatic.input_read2_fastq_file"
-        source: "#input_read2_fastq_files"
+        source: "#input_fastq_read2_files"
       - id: "#trimmomatic.input_adapters_file"
         source: "#concat_adapters.output_file"
       - id: "#trimmomatic.nthreads"

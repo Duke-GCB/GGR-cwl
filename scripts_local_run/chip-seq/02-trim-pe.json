@@ -1,0 +1,24 @@
+{
+  "input_read1_fastq_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/TEST_1.ERR242959_R1.fastq"
+    }
+  ],
+  "input_read2_fastq_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/TEST_1.ERR242959_R2.fastq"
+    }
+  ],
+   "input_read1_adapters_files": [{
+     "class": "File",
+     "path": "/Users/abarrera/data/adapters.fa"
+  }],
+   "input_read2_adapters_files": [{
+     "class": "File",
+     "path": "/Users/abarrera/data/adapters.fa"
+  }],
+  "trimmomatic_java_opts": "-Xms128m -Xmx512m"
+}
+

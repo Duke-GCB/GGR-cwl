@@ -1,0 +1,31 @@
+{
+  "input_control_fastq_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/chipseq-test/ctrl_001.t00_rep1.0-001.fastq"
+    }
+  ],
+  "input_treatment_fastq_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/chipseq-test/GR.t00_rep1.0-001.fastq"
+    }
+  ],
+  "default_adapters_file":
+  {
+    "class": "File",
+    "path": "/Users/abarrera/data/adapters.fa"
+  },
+  "genome_ref_first_index_file": {
+    "class": "File",
+    "path": "/Users/abarrera/data/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.1.ebwt"
+  },
+  "genome_sizes_file": {"class": "File", "path": "/Users/abarrera/data/hg38.genome.noheader.sizes"},
+  "ENCODE_blacklist_bedfile": {"class": "File", "path": "/Users/abarrera/data/wgEncodeDacMapabilityConsensusExcludable.hg38.bed"},
+  "nthreads_qc": 1,
+  "nthreads_trimm": 1,
+  "nthreads_map": 1,
+
+  "trimmomatic_java_opts": "-Xms1000m -Xmx1000m",
+  "trimmomatic_jar_path": "/usr/share/java/trimmomatic.jar"
+}

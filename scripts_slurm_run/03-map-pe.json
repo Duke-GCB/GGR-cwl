@@ -1,0 +1,21 @@
+{
+  "input_fastq_read1_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/output/TEST_1.ERR242959_R1.R1.paired.trimmed.fastq"
+    }
+  ],
+  "input_fastq_read2_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/output/TEST_1.ERR242959_R2.R2.paired.trimmed.fastq"
+    }
+  ],
+  "genome_ref_first_index_file":
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.1.ebwt"
+    },
+  "genome_sizes_file": {"class": "File", "path": "/Users/abarrera/data/hg38.genome.sizes"},
+  "ENCODE_blacklist_bedfile": {"class": "File", "path": "/Users/abarrera/data/wgEncodeDacMapabilityConsensusExcludable.hg38.bed"}
+}
