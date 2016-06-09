@@ -8,10 +8,10 @@ requirements:
   - class: StepInputExpressionRequirement
 inputs:
 
-  - id: "#input_read1_fastq_files"
+  - id: "#input_fastq_read1_files"
     type: {type: array, items: File}
     description: "Input read1 fastq files"
-  - id: "#input_read2_fastq_files"
+  - id: "#input_fastq_read2_files"
     type: {type: array, items: File}
     description: "Input read2 fastq files"
 
@@ -120,7 +120,7 @@ outputs:
     source: "#trim.output_trimmed_read2_fastq_read_count"
     description: "Trimmed read counts of paired read 2 fastq files"
     type: {type: array, items: File}
-      
+
   - id: "#star_aligned_unsorted_file"
     source: "#map.star_aligned_unsorted_file"
     description: "STAR mapped unsorted file."
@@ -213,12 +213,12 @@ outputs:
 
 steps:
 
-    
+
   - id: "#qc"
     run: {$import: "01-qc-pe.cwl" }
     inputs:
-      - { id: "#qc.input_read1_fastq_files", source: "#input_read1_fastq_files" }
-      - { id: "#qc.input_read2_fastq_files", source: "#input_read2_fastq_files" }
+      - { id: "#qc.input_fastq_read1_files", source: "#input_fastq_read1_files" }
+      - { id: "#qc.input_fastq_read2_files", source: "#input_fastq_read2_files" }
       - { id: "#qc.default_adapters_file", source: "#default_adapters_file" }
       - { id: "#qc.nthreads", source: "#nthreads_qc" }
     outputs:
@@ -235,8 +235,8 @@ steps:
   - id: "#trim"
     run: {$import: "02-trim-pe.cwl" }
     inputs:
-      - { id: "#trim.input_read1_fastq_files", source: "#input_read1_fastq_files" }
-      - { id: "#trim.input_read2_fastq_files", source: "#input_read2_fastq_files" }
+      - { id: "#trim.input_fastq_read1_files", source: "#input_fastq_read1_files" }
+      - { id: "#trim.input_fastq_read2_files", source: "#input_fastq_read2_files" }
       - { id: "#trim.input_read1_adapters_files", source: "#qc.output_custom_adapters_read1" }
       - { id: "#trim.input_read2_adapters_files", source: "#qc.output_custom_adapters_read2" }
       - { id: "#trim.trimmomatic_jar_path", source: "#trimmomatic_jar_path" }
