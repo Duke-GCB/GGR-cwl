@@ -1,0 +1,9 @@
+{
+  "input_bam_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/dnaseseq-test/out_pmap/dnaseq.t12_rep2.0-01.dedup_filtered.filtered.sorted.bam"
+    }
+  ],
+  "input_bam_format": "BAM"
+}

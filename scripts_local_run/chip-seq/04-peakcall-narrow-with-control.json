@@ -1,0 +1,15 @@
+{
+  "input_bam_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/chipseq-test/out_map/GR.dedup_filtered.sorted.bam"
+    }
+  ],
+  "input_control_bam_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/chipseq-test/out_map/ctrl_001.dedup_filtered.sorted.bam"
+    }
+  ],
+  "input_bam_format": "BAM"
+}
