@@ -7,12 +7,12 @@ requirements:
   - class: StepInputExpressionRequirement
   - class: InlineJavascriptRequirement
 inputs:
-  - id: "#input_read1_fastq_files"
+  - id: "#input_fastq_read1_files"
     type:
       type: array
       items: File
     description: "Input read1 fastq files"
-  - id: "#input_read2_fastq_files"
+  - id: "#input_fastq_read2_files"
     type:
       type: array
       items: File
@@ -84,7 +84,7 @@ steps:
     scatter: "#extract_basename_read1.input_file"
     inputs:
       - id: "#extract_basename_read1.input_file"
-        source: "#input_read1_fastq_files"
+        source: "#input_fastq_read1_files"
     outputs:
       - id: "#extract_basename_read1.output_basename"
   - id: "#extract_basename_read2"
@@ -92,7 +92,7 @@ steps:
     scatter: "#extract_basename_read2.input_file"
     inputs:
       - id: "#extract_basename_read2.input_file"
-        source: "#input_read2_fastq_files"
+        source: "#input_fastq_read2_files"
     outputs:
       - id: "#extract_basename_read2.output_basename"
   - id: "#count_raw_reads_read1"
@@ -103,7 +103,7 @@ steps:
     scatterMethod: dotproduct
     inputs:
       - id: "#count_raw_reads_read1.input_fastq_file"
-        source: "#input_read1_fastq_files"
+        source: "#input_fastq_read1_files"
       - id: "#count_raw_reads_read1.input_basename"
         source: "#extract_basename_read1.output_basename"
     outputs:
@@ -116,7 +116,7 @@ steps:
     scatterMethod: dotproduct
     inputs:
       - id: "#count_raw_reads_read2.input_fastq_file"
-        source: "#input_read2_fastq_files"
+        source: "#input_fastq_read2_files"
       - id: "#count_raw_reads_read2.input_basename"
         source: "#extract_basename_read2.output_basename"
     outputs:
@@ -126,7 +126,7 @@ steps:
     scatter: "#fastqc_read1.input_fastq_file"
     inputs:
       - id: "#fastqc_read1.input_fastq_file"
-        source: "#input_read1_fastq_files"
+        source: "#input_fastq_read1_files"
       - id: "#fastqc.threads"
         source: "#nthreads"
     outputs:
@@ -136,7 +136,7 @@ steps:
     scatter: "#fastqc_read2.input_fastq_file"
     inputs:
       - id: "#fastqc_read2.input_fastq_file"
-        source: "#input_read2_fastq_files"
+        source: "#input_fastq_read2_files"
       - id: "#fastqc.threads"
         source: "#nthreads"
     outputs:
