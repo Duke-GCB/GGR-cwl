@@ -18,7 +18,6 @@ inputs:
   - id: "#sjdb_name"
     type: string
     default: "ggr.SJ.out.all.tab"
-
   - id: "#genome_sizes_file"
     type: File
     description: "Genome sizes tab-delimited file"
@@ -35,7 +34,6 @@ inputs:
   - id: "#nthreads"
     type: int
     default: 1
-
   - id: "#annotation_file"
     type: File
     description: "GTF annotation file"
@@ -59,10 +57,18 @@ outputs:
     source: "#index_star_pass2_bam.index_file"
     description: "STAR mapped unsorted file."
     type: {type: array, items: File}
-  - id: "#star_stat_files"
+  - id: "#star1_stat_files"
     source: "#star_pass1.mappingstats"
-    description: "STAR stat files."
+    description: "STAR pass-1 stat files."
     type: {type: array, items: ['null', {items: File, type: array}]}
+  - id: "#star2_stat_files"
+    source: "#star_pass2.mappingstats"
+    description: "STAR pass-2 stat files."
+    type: {type: array, items: ['null', {items: File, type: array}]}
+  - id: "#star2_readspergene_file"
+    source: "#star_pass2.readspergene"
+    description: "STAR pass-2 reads per gene counts file."
+    type: ['null', {type: array, items: File}]
   - id: "#read_count_mapped_star1"
     source: "#mapped_reads_count_star1.output"
     description: "Read counts of the mapped BAM files after STAR pass1"
@@ -83,14 +89,21 @@ outputs:
     source: "#generate_genome.indices"
     description: "STAR generated genome files"
     type: {type: array, items: File}
-
-  - id: "#rsem_star_aligned_sorted_file"
-    source: "#sort_rsem_star_pass2_bam.sorted_file"
+  - id: "#transcriptome_star_aligned_sorted_file"
+    source: "#sort_transcriptome_star_pass2_bam.sorted_file"
     description: "STAR mapped unsorted file."
     type: {type: array, items: File}
-  - id: "#rsem_star_aligned_sorted_index_file"
-    source: "#index_rsem_star_pass2_bam.index_file"
+  - id: "#transcriptome_star_aligned_sorted_index_file"
+    source: "#index_transcriptome_star_pass2_bam.index_file"
     description: "STAR mapped unsorted file."
+    type: {type: array, items: File}
+  - id: "#transcriptome_star_stat_files"
+    source: "#transcriptome_star_pass2.mappingstats"
+    description: "STAR pass-2 aligned to transcriptome stat files."
+    type: {type: array, items: ['null', {items: File, type: array}]}
+  - id: "#read_count_transcriptome_mapped_star2"
+    source: "#transcriptome_mapped_reads_count_star2.output"
+    description: "Read counts of the mapped to transcriptome BAM files with STAR pass2"
     type: {type: array, items: File}
 
 
@@ -271,53 +284,64 @@ steps:
     outputs:
       - id: "#mapped_reads_count_star2.output"
 
-  - id: "#rsem_star_pass2"
+  - id: "#transcriptome_star_pass2"
     run: {$import: "../workflows/tools/STAR.cwl" }
     scatter:
-      - "#rsem_star_pass2.readFilesIn"
-      - "#rsem_star_pass2.outFileNamePrefix"
+      - "#transcriptome_star_pass2.readFilesIn"
+      - "#transcriptome_star_pass2.outFileNamePrefix"
     scatterMethod: dotproduct
     inputs:
-      - { id: "#rsem_star_pass2.quantMode", valueFrom: "TranscriptomeSAM" }
-      - { id: "#rsem_star_pass2.readFilesIn", source: "#zip_fastq_files.zipped_list"}
-      - { id: "#rsem_star_pass2.sjdbOverhang", source: "#sjdbOverhang", valueFrom: $(parseInt(self))}
-      - { id: "#rsem_star_pass2.genomeDir", source: "#generate_genome.indices" } #TODO: See previous TODO
-      - { id: "#rsem_star_pass2.outSAMattributes", valueFrom: "NH HI AS NM MD" }
-      - { id: "#rsem_star_pass2.outSAMunmapped", valueFrom: "Within" }
-      - { id: "#rsem_star_pass2.outFilterType", valueFrom: "BySJout" }
-      - { id: "#rsem_star_pass2.outFiterIntronMotifs", valueFrom: "RemoveNoncanonical" }
-      - { id: "#rsem_star_pass2.outFiterMultimapNmax", valueFrom: $(20) }
-      - { id: "#rsem_star_pass2.outFilterMismatchNmax", valueFrom: $(999) }
-      - { id: "#rsem_star_pass2.outFilterMismatchNoverReadLmax", valueFrom: $(0.04) }
-      - { id: "#rsem_star_pass2.alignIntronMin", valueFrom: $(20)}
-      - { id: "#rsem_star_pass2.alignIntronMax", valueFrom: $(1000000)}
-      - { id: "#rsem_star_pass2.alignMatesGapMax", valueFrom: $(1000000)}
-      - { id: "#rsem_star_pass2.alignSJoverhangMin", valueFrom: $(8)}
-      - { id: "#rsem_star_pass2.alignSJDBoverhangMin", valueFrom: $(1)}
-      - { id: "#rsem_star_pass2.sjdbScore", valueFrom: $(1)}
-      - { id: "#rsem_star_pass2.runThreadN", source: "#nthreads"}
-      - id: "#rsem_star_pass2.outFileNamePrefix"
+      - { id: "#transcriptome_star_pass2.quantMode", valueFrom: "TranscriptomeSAM" }
+      - { id: "#transcriptome_star_pass2.readFilesIn", source: "#zip_fastq_files.zipped_list"}
+      - { id: "#transcriptome_star_pass2.sjdbOverhang", source: "#sjdbOverhang", valueFrom: $(parseInt(self))}
+      - { id: "#transcriptome_star_pass2.genomeDir", source: "#generate_genome.indices" } #TODO: See previous TODO
+      - { id: "#transcriptome_star_pass2.outSAMattributes", valueFrom: "NH HI AS NM MD" }
+      - { id: "#transcriptome_star_pass2.outSAMunmapped", valueFrom: "Within" }
+      - { id: "#transcriptome_star_pass2.outFilterType", valueFrom: "BySJout" }
+      - { id: "#transcriptome_star_pass2.outFiterIntronMotifs", valueFrom: "RemoveNoncanonical" }
+      - { id: "#transcriptome_star_pass2.outFiterMultimapNmax", valueFrom: $(20) }
+      - { id: "#transcriptome_star_pass2.outFilterMismatchNmax", valueFrom: $(999) }
+      - { id: "#transcriptome_star_pass2.outFilterMismatchNoverReadLmax", valueFrom: $(0.04) }
+      - { id: "#transcriptome_star_pass2.alignIntronMin", valueFrom: $(20)}
+      - { id: "#transcriptome_star_pass2.alignIntronMax", valueFrom: $(1000000)}
+      - { id: "#transcriptome_star_pass2.alignMatesGapMax", valueFrom: $(1000000)}
+      - { id: "#transcriptome_star_pass2.alignSJoverhangMin", valueFrom: $(8)}
+      - { id: "#transcriptome_star_pass2.alignSJDBoverhangMin", valueFrom: $(1)}
+      - { id: "#transcriptome_star_pass2.sjdbScore", valueFrom: $(1)}
+      - { id: "#transcriptome_star_pass2.runThreadN", source: "#nthreads"}
+      - id: "#transcriptome_star_pass2.outFileNamePrefix"
         source: "#basename.basename"
-        valueFrom: $(self + ".rsem.star2.")
-      - id: "#rsem_star_pass2.outSAMtype"
+        valueFrom: $(self + ".transcriptome.star2.")
+      - id: "#transcriptome_star_pass2.outSAMtype"
         valueFrom:  $(['BAM', 'Unsorted'])
     outputs:
-      - id: "#rsem_star_pass2.transcriptomesam"
+      - id: "#transcriptome_star_pass2.transcriptomesam"
+      - id: "#transcriptome_star_pass2.mappingstats"
 
-  - id: "#sort_rsem_star_pass2_bam"
+  - id: "#sort_transcriptome_star_pass2_bam"
     run: {$import: "../map/samtools-sort.cwl"}
-    scatter: "#sort_rsem_star_pass2_bam.input_file"
+    scatter: "#sort_transcriptome_star_pass2_bam.input_file"
     inputs:
-      - {id: "#sort_rsem_star_pass2_bam.input_file", source: "#rsem_star_pass2.transcriptomesam"}
-      - {id: "#sort_rsem_star_pass2_bam.nthreads", source: "#nthreads"}
+      - {id: "#sort_transcriptome_star_pass2_bam.input_file", source: "#transcriptome_star_pass2.transcriptomesam"}
+      - {id: "#sort_transcriptome_star_pass2_bam.nthreads", source: "#nthreads"}
     outputs:
-      - id: "#sort_rsem_star_pass2_bam.sorted_file"
+      - id: "#sort_transcriptome_star_pass2_bam.sorted_file"
 
-  - id: "#index_rsem_star_pass2_bam"
+  - id: "#index_transcriptome_star_pass2_bam"
     run: {$import: "../map/samtools-index.cwl"}
     scatter:
-      - "#index_rsem_star_pass2_bam.input_file"
+      - "#index_transcriptome_star_pass2_bam.input_file"
     inputs:
-      - { id: "#index_rsem_star_pass2_bam.input_file", source: "#sort_rsem_star_pass2_bam.sorted_file" }
+      - { id: "#index_transcriptome_star_pass2_bam.input_file", source: "#sort_transcriptome_star_pass2_bam.sorted_file" }
     outputs:
-      - id: "#index_rsem_star_pass2_bam.index_file"
+      - id: "#index_transcriptome_star_pass2_bam.index_file"
+
+  - id: "#transcriptome_mapped_reads_count_star2"
+    run: {$import: "../map/star-log-read-count.cwl"}
+    scatter: "#transcriptome_mapped_reads_count_star2.star_log"
+    inputs:
+      - id: "#transcriptome_mapped_reads_count_star2.star_log"
+        source: "#transcriptome_star_pass2.mappingstats"
+        valueFrom: $(self[0])
+    outputs:
+      - id: "#transcriptome_mapped_reads_count_star2.output"
