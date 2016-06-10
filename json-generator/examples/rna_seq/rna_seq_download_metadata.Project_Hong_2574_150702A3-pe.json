@@ -91,8 +91,6 @@
         {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_49/chrNameLength.txt"},
         {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_49/chrStart.txt"},
         {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_49/exonGeTrInfo.tab"},
-        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_49/exonInfo-240305264.tab"},
-        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_49/exonInfo-483605442.tab"},
         {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_49/exonInfo.tab"},
         {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_49/geneInfo.tab"},
         {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_49/genomeParameters.txt"},
