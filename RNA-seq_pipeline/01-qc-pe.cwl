@@ -162,7 +162,7 @@ steps:
     scatterMethod: dotproduct
     inputs:
       - id: "#extract_fastqc_data_read2.input_qc_report_file"
-        source: "#fastqc_read1.output_qc_report_file"
+        source: "#fastqc_read2.output_qc_report_file"
       - id: "#extract_fastqc_data_read2.input_basename"
         source: "#extract_basename_read2.output_basename"
     outputs:
