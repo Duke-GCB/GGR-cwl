@@ -133,10 +133,18 @@ outputs:
     source: "#map.star_aligned_sorted_index_file"
     description: "STAR mapped unsorted file."
     type: {type: array, items: File}
-  - id: "#star_stat_files"
-    source: "#map.star_stat_files"
-    description: "STAR stat files."
+  - id: "#star1_stat_files"
+    source: "#map.star1_stat_files"
+    description: "STAR pass-1 stat files."
     type: {type: array, items: ['null', {items: File, type: array}]}
+  - id: "#star2_stat_files"
+    source: "#map.star2_stat_files"
+    description: "STAR pass-2 stat files."
+    type: {type: array, items: ['null', {items: File, type: array}]}
+  - id: "#star2_readspergene_file"
+    source: "#map.star2_readspergene_file"
+    description: "STAR pass-2 reads per gene counts file."
+    type: ['null', {type: array, items: File}]
   - id: "#read_count_mapped_star1"
     source: "#map.read_count_mapped_star1"
     description: "Read counts of the mapped BAM files after STAR pass1"
@@ -157,13 +165,21 @@ outputs:
     source: "#map.generated_genome_files"
     description: "STAR generated genome files"
     type: {type: array, items: File}
-  - id: "#rsem_star_aligned_sorted_file"
-    source: "#map.rsem_star_aligned_sorted_file"
+  - id: "#transcriptome_star_aligned_sorted_file"
+    source: "#map.transcriptome_star_aligned_sorted_file"
     description: "STAR mapped unsorted file."
     type: {type: array, items: File}
-  - id: "#rsem_star_aligned_sorted_index_file"
-    source: "#map.rsem_star_aligned_sorted_index_file"
+  - id: "#transcriptome_star_aligned_sorted_index_file"
+    source: "#map.transcriptome_star_aligned_sorted_index_file"
     description: "STAR mapped unsorted file."
+    type: {type: array, items: File}
+  - id: "#transcriptome_star_stat_files"
+    source: "#map.transcriptome_star_stat_files"
+    description: "STAR pass-2 aligned to transcriptome stat files."
+    type: {type: array, items: ['null', {items: File, type: array}]}
+  - id: "#read_count_transcriptome_mapped_star2"
+    source: "#map.read_count_transcriptome_mapped_star2"
+    description: "Read counts of the mapped to transcriptome BAM files after STAR pass1"
     type: {type: array, items: File}
 
   - id: "#featurecounts_counts"
@@ -263,20 +279,24 @@ steps:
       - id: "#map.star_aligned_unsorted_file"
       - id: "#map.star_aligned_sorted_file"
       - id: "#map.star_aligned_sorted_index_file"
-      - id: "#map.star_stat_files"
+      - id: "#map.star1_stat_files"
+      - id: "#map.star2_stat_files"
+      - id: "#map.star2_readspergene_file"
       - id: "#map.read_count_mapped_star1"
       - id: "#map.read_count_mapped_star2"
       - id: "#map.percentage_uniq_reads_star1"
       - id: "#map.star_1pass_sjdb"
       - id: "#map.generated_genome_files"
-      - id: "#map.rsem_star_aligned_sorted_file"
-      - id: "#map.rsem_star_aligned_sorted_index_file"
+      - id: "#map.transcriptome_star_aligned_sorted_file"
+      - id: "#map.transcriptome_star_aligned_sorted_index_file"
+      - id: "#map.transcriptome_star_stat_files"
+      - id: "#map.read_count_transcriptome_mapped_star2"
 
   - id: "#quant"
     run: {$import: "04-quantification-pe.cwl" }
     inputs:
       - { id: "#quant.input_bam_files", source: "#map.star_aligned_sorted_file" }
-      - { id: "#quant.input_transcripts_bam_files", source: "#map.rsem_star_aligned_sorted_file" }
+      - { id: "#quant.input_transcripts_bam_files", source: "#map.transcriptome_star_aligned_sorted_file" }
       - { id: "#quant.annotation_file", source: "#annotation_file" }
       - { id: "#quant.input_genome_sizes", source: "#genome_sizes_file" }
       - { id: "#quant.rsem_reference_files", source: "#rsem_reference_files" }
