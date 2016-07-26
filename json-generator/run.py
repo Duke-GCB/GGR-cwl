@@ -54,7 +54,12 @@ class MetadataParserChipseq(object):
     def render_json(self, wf_conf, samples_list, data_dir, template_name):
         env = Environment(loader=PackageLoader(package_name='json-generator'))
         template = env.get_template(template_name + '.j2')
-        json_str = template.render({'wf_conf': wf_conf, 'samples_list': samples_list, 'data_dir': data_dir})
+        json_str = template.render({'wf_conf': wf_conf,
+                                    'samples_list': samples_list,
+                                    'data_dir': data_dir,
+                                    'nthreads': self.nthreads,
+                                    'mem': self.mem
+                                    })
         json_str = '\n'.join([l for l in json_str.split('\n') if l.strip() != ''])  # Remove empty lines
         return json_str
 
@@ -64,13 +69,16 @@ class MetadataParserChipseq(object):
         for r in self.records:
             read_type = r['Paired-end or single-end'].lower()
             peak_type = r['Peak type'].lower()
-            sample_names = {'treatment': r['Name']}
+            sample_info = {'treatment': r['Name'],
+                           'iter': r['Iter num']}
             wf_key = '-'.join([read_type, peak_type])
             if 'Control' in r.keys() and r['Control'] and r['Control'].upper() != 'NA':
-                sample_names['control'] = r['Control']
+                sample_info['control'] = r['Control']
                 wf_key += '-with-control'
-            wf_conf_dict[wf_key] = {'iter': r['Iter num'], 'rt': read_type, 'pt': peak_type, 'st': sample_names.keys()}
-            samples_dict[wf_key].append(sample_names)
+            wf_conf_dict[wf_key] = {'rt': read_type,
+                                    'pt': peak_type,
+                                    'st': sample_info.keys()}
+            samples_dict[wf_key].append(sample_info)
         for wf_key, samples_list in samples_dict.iteritems():
             yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir, self.experiment_type), wf_key
 
@@ -128,8 +136,8 @@ def main():
                         help='Project directory containing the fastq data files.')
     parser.add_argument('-t', '--metadata-type', dest='data_type', choices=['chip-seq', 'rna-seq'],
                         default='chip-seq', help='Experiment type for the metadata.')
-    parser.add_argument('--nthreads', dest='nthreads', default=16, help='Number of threads.')
-    parser.add_argument('--mem', dest='mem', default=16000, help='Memory for Java based CLT.')
+    parser.add_argument('--nthreads', type=int, dest='nthreads', default=16, help='Number of threads.')
+    parser.add_argument('--mem', type=int, dest='mem', default=16000, help='Memory for Java based CLT.')
 
     # Parse input
     args = parser.parse_args()
