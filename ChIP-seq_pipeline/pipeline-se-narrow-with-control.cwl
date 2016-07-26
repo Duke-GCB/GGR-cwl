@@ -283,7 +283,7 @@ steps:
       - { id: "#map_treatment.output_bowtie_log" }
       - { id: "#map_treatment.output_preseq_c_curve_files" }
   - id: "#qc_control"
-    run: {$import: "01-qc-se.cwl" }
+    run: {$import: "01-qc-se-control.cwl" }
     inputs:
       - { id: "#qc_control.input_fastq_files", source: "#input_control_fastq_files" }
       - { id: "#qc_control.default_adapters_file", source: "#default_adapters_file" }
@@ -295,7 +295,7 @@ steps:
       - { id: "#qc_control.output_fastqc_data_files" }
       - { id: "#qc_control.output_custom_adapters" }
   - id: "#trimm_control"
-    run: {$import: "02-trim-se.cwl" }
+    run: {$import: "02-trim-se-control.cwl" }
     inputs:
       - { id: "#trimm_control.input_read1_fastq_files", source: "#input_control_fastq_files" }
       - { id: "#trimm_control.input_adapters_files", source: "#qc_control.output_custom_adapters" }
@@ -306,7 +306,7 @@ steps:
       - { id: "#trimm_control.output_data_fastq_trimmed_files" }
       - { id: "#trimm_control.trimmed_fastq_read_count" }
   - id: "#map_control"
-    run: {$import: "03-map-se.cwl" }
+    run: {$import: "03-map-se-control.cwl" }
     inputs:
       - { id: "#map_control.input_fastq_files", source: "#trimm_control.output_data_fastq_trimmed_files" }
       - { id: "#map_control.genome_ref_first_index_file", source: "#genome_ref_first_index_file" }
