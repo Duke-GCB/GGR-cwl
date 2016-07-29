@@ -110,8 +110,8 @@ class MetadataParserRnaseq(object):
             read_type = r['Paired-end or single-end'].lower()
             sample_name = r['Name']
             wf_key = '-'.join([read_type])
-            wf_conf_dict[wf_key] = {'iter': r['Iter num'], 'rt': read_type, 'sn': sample_name}
-            samples_dict[wf_key].append(sample_name)
+            wf_conf_dict[wf_key] = {'rt': read_type, 'sn': sample_name}
+            samples_dict[wf_key].append({'name': sample_name, 'iter': r['Iter num']})
         for wf_key, samples_list in samples_dict.iteritems():
             yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir, self.experiment_type), wf_key
 

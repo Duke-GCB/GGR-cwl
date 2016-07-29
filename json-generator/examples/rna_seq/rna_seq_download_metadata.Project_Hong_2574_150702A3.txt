@@ -1,5 +1,5 @@
 Sequencing core user	Sequencing core project	Sequencing core password	Sequencing core library name	Barcode	Name	Iter num	Paired-end or single-end
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	CGTGAT	t1_rep1	iter0	pe
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	CGTGAT	t1_rep1	iter1	pe
 hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	ACATCG	t2_rep1	iter0	pe
 hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	GCCTAA	t3_rep1	iter0	pe
 hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	TGGTCA	t4_rep1	iter0	pe
