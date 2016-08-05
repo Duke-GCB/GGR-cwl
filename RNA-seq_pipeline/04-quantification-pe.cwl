@@ -114,7 +114,15 @@ steps:
       - { id: "#featurecounts.T", source: "#nthreads" }
     outputs:
       - id: "#featurecounts.output_files"
-
+  - id: "#convert-sam-for-rsem"
+    run: {$import: "../quant/convert-sam-for-rsem.cwl"}
+    scatter:
+      - "#convert-sam-for-rsem.input_file"
+    scatterMethod: dotproduct
+    inputs:
+      - { id: "#convert-sam-for-rsem.input_file", source: "#input_transcripts_bam_files"}
+    outputs:
+      - id: "#convert-sam-for-rsem.output_file"
   - id: "#rsem-calc-expr"
     run: {$import: "../quant/rsem-calculate-expression.cwl"}
     scatter:
@@ -122,7 +130,7 @@ steps:
       - "#rsem-calc-expr.sample_name"
     scatterMethod: dotproduct
     inputs:
-      - { id: "#rsem-calc-expr.bam", source: "#input_transcripts_bam_files"}
+      - { id: "#rsem-calc-expr.bam", source: "#convert-sam-for-rsem.output_file"}
       - { id: "#rsem-calc-expr.reference_files", source: "#rsem_reference_files"}
       - id: "#rsem-calc-expr.sample_name"
         source: "#basename.basename"
