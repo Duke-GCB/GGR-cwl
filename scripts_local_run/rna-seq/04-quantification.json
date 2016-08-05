@@ -30,5 +30,6 @@
     {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.grp"},
     {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.n2g.idx.fa"},
     {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.chrlist"}
-  ]
+  ],
+  "strand_specific": 2
 }

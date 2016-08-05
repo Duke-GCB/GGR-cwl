@@ -32,6 +32,13 @@ inputs:
   - id: "#nthreads"
     type: int
     default: 1
+  - id: "#strand_specific"
+    type: int
+    default: 1
+    description: |
+      Indicate if strand-specific read counting should be performed.
+      It has three possible values:  0 (unstranded), 1 (stranded) and
+      2 (reversely stranded).
 
 outputs:
   - id: "#featurecounts_counts"
@@ -110,7 +117,7 @@ steps:
       - { id: "#featurecounts.B", valueFrom: $(true) }
       - { id: "#featurecounts.t", valueFrom: "exon" }
       - { id: "#featurecounts.g", valueFrom: "gene_id" }
-      - { id: "#featurecounts.s", valueFrom: $(1) }
+      - { id: "#featurecounts.s", source: "#strand_specific" }
       - { id: "#featurecounts.T", source: "#nthreads" }
     outputs:
       - id: "#featurecounts.output_files"

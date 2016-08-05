@@ -87,16 +87,18 @@ class MetadataParserRnaseq(object):
     def __init__(self, **kwargs):
         self.obj = generateMetadataParser(kwargs['args_obj'])
         self.experiment_type = kwargs['exp_type']
+        self.strand_specific = kwargs['strand_specific']
 
     def __getattr__(self, attr):
         return getattr(self.obj, attr)
 
-    def render_json(self, wf_conf, samples_list, data_dir, template_name):
+    def render_json(self, wf_conf, samples_list, data_dir):
         env = Environment(loader=PackageLoader(package_name='json-generator'))
-        template = env.get_template(template_name + '.j2')
+        template = env.get_template(self.experiment_type + '.j2')
         json_str = template.render({'wf_conf': wf_conf,
                                     'samples_list': samples_list,
                                     'data_dir': data_dir,
+                                    'strand_specific': self.strand_specific,
                                     'nthreads': self.nthreads,
                                     'mem': self.mem
                                     })
@@ -113,7 +115,7 @@ class MetadataParserRnaseq(object):
             wf_conf_dict[wf_key] = {'iter': r['Iter num'], 'rt': read_type, 'sn': sample_name}
             samples_dict[wf_key].append(sample_name)
         for wf_key, samples_list in samples_dict.iteritems():
-            yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir, self.experiment_type), wf_key
+            yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir), wf_key
 
 
 
@@ -137,6 +139,7 @@ def main():
     parser.add_argument('-t', '--metadata-type', dest='data_type', choices=['chip-seq', 'rna-seq'],
                         default='chip-seq', help='Experiment type for the metadata.')
     parser.add_argument('--nthreads', type=int, dest='nthreads', default=16, help='Number of threads.')
+    parser.add_argument('--strand-specific', type=int, default=1, help='0 (unstranded), 1 (stranded) and 2 (reversely stranded)')
     parser.add_argument('--mem', type=int, dest='mem', default=16000, help='Memory for Java based CLT.')
 
     # Parse input
@@ -153,7 +156,7 @@ def main():
     if args.data_type == 'chip-seq':
         meta_parser = MetadataParserChipseq(args_obj=args, exp_type=args.data_type)
     elif args.data_type == 'rna-seq':
-        meta_parser = MetadataParserRnaseq(args_obj=args, exp_type=args.data_type)
+        meta_parser = MetadataParserRnaseq(args_obj=args, exp_type=args.data_type, strand_specific=args.strand_specific)
 
     file_basename = os.path.splitext(os.path.basename(args.meta_file))[0]
     for json_str, conf_name in meta_parser.parse_metadata(args.data_dir.rstrip('/')):

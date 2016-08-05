@@ -44,6 +44,7 @@
   ],
   "bamtools_reverse_filter_file": {"class": "File", "path": "/Users/abarrera/data/reverse_filter.txt"},
   "bamtools_forward_filter_file": {"class": "File", "path": "/Users/abarrera/data/forward_filter.txt"},
+  "strand_specific": 2,
   "nthreads_qc": 1,
   "nthreads_trimm": 1,
   "nthreads_map": 1,

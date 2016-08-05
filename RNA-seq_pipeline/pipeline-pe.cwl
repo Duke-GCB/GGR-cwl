@@ -53,6 +53,9 @@ inputs:
   - id: "#bamtools_reverse_filter_file"
     type: File
     description: "JSON filter file for reverse strand used in bamtools (see bamtools-filter command)"
+  - id: "#strand_specific"
+    type: int
+    description: "0 (unstranded), 1 (stranded) and 2 (reversely stranded)"
 
   - id: "#nthreads_qc"
     description: "Number of threads - qc."
@@ -303,6 +306,7 @@ steps:
       - { id: "#quant.bamtools_forward_filter_file", source: "#bamtools_forward_filter_file" }
       - { id: "#quant.bamtools_reverse_filter_file", source: "#bamtools_reverse_filter_file" }
       - { id: "#quant.nthreads", source: "#nthreads_quant" }
+      - { id: "#quant.strand_specific", source: "#strand_specific" }
     outputs:
       - id: "#quant.featurecounts_counts"
       - id: "#quant.rsem_isoforms_files"
