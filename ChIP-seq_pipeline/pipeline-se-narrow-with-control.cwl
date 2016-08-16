@@ -344,7 +344,7 @@ steps:
       - { id: "#quant.input_bam_files", source: "#map_treatment.output_data_sorted_dedup_bam_files" }
       - { id: "#quant.input_pileup_bedgraphs", source: "#peak_call.output_extended_narrowpeak_file" }
       - { id: "#quant.input_peak_xls_files", source: "#peak_call.output_peak_xls_file" }
-      - { id: "#quant.input_read_count_dedup_files", source: "#peak_call.output_read_in_peak_count_within_replicate" }
+      - { id: "#quant.input_read_count_dedup_files", source: "#peak_call.output_filtered_read_count_file" }
       - { id: "#quant.input_genome_sizes", source: "#genome_sizes_file" }
       - { id: "#quant.nthreads", source: "#nthreads_quant" }
     outputs:

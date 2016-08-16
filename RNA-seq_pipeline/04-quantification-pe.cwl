@@ -32,6 +32,13 @@ inputs:
   - id: "#nthreads"
     type: int
     default: 1
+  - id: "#strand_specific"
+    type: int
+    default: 1
+    description: |
+      Indicate if strand-specific read counting should be performed.
+      It has three possible values:  0 (unstranded), 1 (stranded) and
+      2 (reversely stranded).
 
 outputs:
   - id: "#featurecounts_counts"
@@ -110,11 +117,19 @@ steps:
       - { id: "#featurecounts.B", valueFrom: $(true) }
       - { id: "#featurecounts.t", valueFrom: "exon" }
       - { id: "#featurecounts.g", valueFrom: "gene_id" }
-      - { id: "#featurecounts.s", valueFrom: $(1) }
+      - { id: "#featurecounts.s", source: "#strand_specific" }
       - { id: "#featurecounts.T", source: "#nthreads" }
     outputs:
       - id: "#featurecounts.output_files"
-
+  - id: "#convert-sam-for-rsem"
+    run: {$import: "../quant/convert-sam-for-rsem.cwl"}
+    scatter:
+      - "#convert-sam-for-rsem.input_file"
+    scatterMethod: dotproduct
+    inputs:
+      - { id: "#convert-sam-for-rsem.input_file", source: "#input_transcripts_bam_files"}
+    outputs:
+      - id: "#convert-sam-for-rsem.output_file"
   - id: "#rsem-calc-expr"
     run: {$import: "../quant/rsem-calculate-expression.cwl"}
     scatter:
@@ -122,7 +137,7 @@ steps:
       - "#rsem-calc-expr.sample_name"
     scatterMethod: dotproduct
     inputs:
-      - { id: "#rsem-calc-expr.bam", source: "#input_transcripts_bam_files"}
+      - { id: "#rsem-calc-expr.bam", source: "#convert-sam-for-rsem.output_file"}
       - { id: "#rsem-calc-expr.reference_files", source: "#rsem_reference_files"}
       - id: "#rsem-calc-expr.sample_name"
         source: "#basename.basename"
