@@ -25,6 +25,7 @@
   "nthreads_qc": 1,
   "nthreads_trimm": 1,
   "nthreads_map": 1,
+  "nthreads_quant": 1,
   "nthreads_peakcall": 1,
 
   "trimmomatic_java_opts": "-Xms1000m -Xmx1000m",
