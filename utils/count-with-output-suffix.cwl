@@ -14,4 +14,6 @@ outputs:
         glob: $(inputs.input_file.path.replace(/^.*[\\\/]/, '') + inputs.output_suffix)
 stdin: $(inputs.input_file.path)
 stdout: $(inputs.input_file.path.replace(/^.*[\\\/]/, '') + inputs.output_suffix)
-baseCommand: wc
+baseCommand:
+ - wc
+ - "-l"

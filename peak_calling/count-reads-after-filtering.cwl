@@ -3,6 +3,9 @@
 class: CommandLineTool
 description: "Count number of dedup-ed reads used in peak calling"
 
+requirements:
+  - class: InlineJavascriptRequirement
+
 hints:
   - class: DockerRequirement
     dockerImageId: 'dukegcb/workflow-utils'
