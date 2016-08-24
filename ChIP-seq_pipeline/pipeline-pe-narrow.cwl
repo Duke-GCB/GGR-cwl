@@ -141,6 +141,18 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#map_preseq_percentage_uniq_reads"
+    source: "#map.output_percentage_uniq_reads"
+    description: "Preseq percentage of uniq reads"
+    type:
+      type: array
+      items: File
+  - id: "#map_read_count_mapped"
+    source: "#map.output_read_count_mapped"
+    description: "Read counts of the mapped BAM files"
+    type:
+      type: array
+      items: File
   - id: "#map_bowtie_log_files"
     source: "#map.output_bowtie_log"
     description: "Bowtie log file with mapping stats"
@@ -271,6 +283,8 @@ steps:
       - { id:  "#map.output_pbc_files" }
       - { id:  "#map.output_bowtie_log" }
       - { id:  "#map.output_preseq_c_curve_files" }
+      - { id:  "#map.output_percentage_uniq_reads" }
+      - { id:  "#map.output_read_count_mapped" }
   - id: "#peak_call"
     run: {$import: "04-peakcall-narrow.cwl" }
     inputs:
