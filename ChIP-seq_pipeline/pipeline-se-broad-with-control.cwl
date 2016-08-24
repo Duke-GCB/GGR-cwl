@@ -109,6 +109,18 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#map_treatment_preseq_percentage_uniq_reads"
+    source: "#map_treatment.output_percentage_uniq_reads"
+    description: "Preseq percentage of uniq reads"
+    type:
+      type: array
+      items: File
+  - id: "#map_treatment_read_count_mapped"
+    source: "#map_treatment.output_read_count_mapped"
+    description: "Read counts of the mapped BAM files"
+    type:
+      type: array
+      items: File
   - id: "#map_treatment_bowtie_log_files"
     source: "#map_treatment.output_bowtie_log"
     description: "Bowtie log file with mapping stats for treatment"
@@ -160,6 +172,18 @@ outputs:
   - id: "#map_control_preseq_c_curve_files"
     source: "#map_control.output_preseq_c_curve_files"
     description: "Preseq c_curve output files for control"
+    type:
+      type: array
+      items: File
+  - id: "#map_control_preseq_percentage_uniq_reads"
+    source: "#map_control.output_percentage_uniq_reads"
+    description: "Preseq percentage of uniq reads"
+    type:
+      type: array
+      items: File
+  - id: "#map_control_read_count_mapped"
+    source: "#map_control.output_read_count_mapped"
+    description: "Read counts of the mapped BAM files"
     type:
       type: array
       items: File
@@ -282,6 +306,8 @@ steps:
       - { id: "#map_treatment.output_pbc_files" }
       - { id: "#map_treatment.output_bowtie_log" }
       - { id: "#map_treatment.output_preseq_c_curve_files" }
+      - { id: "#map_treatment.output_percentage_uniq_reads" }
+      - { id: "#map_treatment.output_read_count_mapped" }
   - id: "#qc_control"
     run: {$import: "01-qc-se.cwl" }
     inputs:
@@ -322,6 +348,8 @@ steps:
       - { id: "#map_control.output_pbc_files" }
       - { id: "#map_control.output_bowtie_log" }
       - { id: "#map_control.output_preseq_c_curve_files" }
+      - { id: "#map_control.output_percentage_uniq_reads" }
+      - { id: "#map_control.output_read_count_mapped" }
   - id: "#peak_call"
     run: {$import: "04-peakcall-broad-with-control.cwl" }
     inputs:
