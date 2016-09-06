@@ -245,7 +245,7 @@ steps:
         source: "#remove_duplicates.output_dedup_bam_file"
     outputs:
       - id: "#mapped_file_basename.output_basename"
- - id: "#sort_dedup_bams"
+  - id: "#sort_dedup_bams"
     run: {$import: "../map/samtools-sort.cwl"}
     scatter:
       - "#sort_dedup_bams.input_file"
