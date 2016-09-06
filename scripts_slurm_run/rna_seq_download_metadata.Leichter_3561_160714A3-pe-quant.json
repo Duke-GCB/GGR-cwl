@@ -1,0 +1,36 @@
+{
+  "input_bam_files": [
+    { "class": "File", "path": "/data/reddylab/Alex/GGR/rna-seq/map_checkpoint/THP1t00_rep1.star2.Aligned.out.sorted.bam" },
+    { "class": "File", "path": "/data/reddylab/Alex/GGR/rna-seq/map_checkpoint/THP1t00_rep2.star2.Aligned.out.sorted.bam" },
+    { "class": "File", "path": "/data/reddylab/Alex/GGR/rna-seq/map_checkpoint/THP1t00_rep3.star2.Aligned.out.sorted.bam" },
+    { "class": "File", "path": "/data/reddylab/Alex/GGR/rna-seq/map_checkpoint/THP1t1_rep1.star2.Aligned.out.sorted.bam" },
+    { "class": "File", "path": "/data/reddylab/Alex/GGR/rna-seq/map_checkpoint/THP1t1_rep2.star2.Aligned.out.sorted.bam" },
+    { "class": "File", "path": "/data/reddylab/Alex/GGR/rna-seq/map_checkpoint/THP1t1_rep3.star2.Aligned.out.sorted.bam" }
+  ],
+  "input_transcripts_bam_files": [
+    { "class": "File", "path": "/data/reddylab/Alex/GGR/rna-seq/map_checkpoint/THP1t00_rep1.transcriptome.star2.Aligned.toTranscriptome.out.sorted.bam" },
+    { "class": "File", "path": "/data/reddylab/Alex/GGR/rna-seq/map_checkpoint/THP1t00_rep2.transcriptome.star2.Aligned.toTranscriptome.out.sorted.bam" },
+    { "class": "File", "path": "/data/reddylab/Alex/GGR/rna-seq/map_checkpoint/THP1t00_rep3.transcriptome.star2.Aligned.toTranscriptome.out.sorted.bam" },
+    { "class": "File", "path": "/data/reddylab/Alex/GGR/rna-seq/map_checkpoint/THP1t1_rep1.transcriptome.star2.Aligned.toTranscriptome.out.sorted.bam" },
+    { "class": "File", "path": "/data/reddylab/Alex/GGR/rna-seq/map_checkpoint/THP1t1_rep2.transcriptome.star2.Aligned.toTranscriptome.out.sorted.bam" },
+    { "class": "File", "path": "/data/reddylab/Alex/GGR/rna-seq/map_checkpoint/THP1t1_rep3.transcriptome.star2.Aligned.toTranscriptome.out.sorted.bam" }
+   ],
+  "input_genome_sizes":{ "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/hg38.sizes" },
+  "annotation_file": {"class": "File", "path": "/data/reddylab/Reference_Data/Gencode/v22/gencode.v22.annotation.gtf"},
+  "bamtools_forward_filter_file": {"class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/quantification/forward_filter.txt"},
+  "bamtools_reverse_filter_file": {"class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/quantification/reverse_filter.txt"},
+    "genome_fasta_files": [
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna"}
+    ],
+    "rsem_reference_files": [
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.transcripts.fa"},
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.ti"},
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.seq"},
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.idx.fa"},
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.grp"},
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.n2g.idx.fa"},
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.chrlist"}
+    ],
+    "strand_specific": 2,
+    "nthreads": 32
+}

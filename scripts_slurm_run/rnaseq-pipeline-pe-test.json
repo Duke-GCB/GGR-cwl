@@ -1,0 +1,50 @@
+{
+  "input_fastq_read1_files": [
+    { "class": "File","path": "/data/reddylab/Alex/data-tests/rna-seq/TEST.rnaseq.t00_rep1.R1.fastq" }
+  ],
+  "input_fastq_read2_files": [
+    { "class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/TEST.rnaseq.t00_rep1.R2.fastq" }
+  ],
+  "default_adapters_file": { "class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/adapters.fa" },
+  "trimmomatic_java_opts": "-Xms4000m -Xmx4000m",
+  "trimmomatic_jar_path": "/data/reddylab/software/trimmomatic/binary/Trimmomatic-0.32/trimmomatic-0.32.jar",
+  "genome_sizes_file": { "class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/hg38.genome.noheader.sizes" },
+  "sjdbOverhang": "49",
+  "annotation_file": {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/gencode.v22.annotation.TEST.gtf"},
+  "genome_fasta_files": [
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/GCA_000001405.15_GRCh38_no_alt_analysis_set.TEST.fna"}
+  ],
+  "genomeDirFiles": [
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/Genome"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/SA"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/SAindex"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/chrLength.txt"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/chrName.txt"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/chrNameLength.txt"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/chrStart.txt"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/exonGeTrInfo.tab"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/exonInfo.tab"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/geneInfo.tab"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/genomeParameters.txt"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/sjdbInfo.txt"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/sjdbList.fromGTF.out.tab"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/sjdbList.out.tab"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/transcriptInfo.tab"}
+  ],
+  "rsem_reference_files": [
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/out-rsem5.transcripts.fa"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/out-rsem5.ti"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/out-rsem5.seq"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/out-rsem5.idx.fa"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/out-rsem5.grp"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/out-rsem5.n2g.idx.fa"},
+    {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/out-rsem5.chrlist"}
+  ],
+  "bamtools_reverse_filter_file": {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/reverse_filter.txt"},
+  "bamtools_forward_filter_file": {"class": "File", "path": "/data/reddylab/Alex/data-tests/rna-seq/forward_filter.txt"},
+  "nthreads_qc": 2,
+  "nthreads_trimm": 2,
+  "nthreads_map": 2,
+  "nthreads_quant": 2
+}
+

@@ -1,0 +1,16 @@
+{
+  "input_read1_fastq_file": 
+    {
+      "class": "File",
+      "path": "/data/reddylab/Alex/chipseq-test/ctrl_001.t00_rep1.0-0001.fastq"
+    }
+  ,
+   "input_adapters_file": {
+     "class": "File",
+     "path": "/data/reddylab/projects/GGR/auxiliary/adapters/default_adapters.fasta"
+  },
+  "illuminaclip": "2:30:15",
+  "end_mode": "SE",
+  "trimmomatic_java_opts": "-Xms128m -Xmx512m",
+  "trimmomatic_jar_path": "/data/reddylab/software/Trimmomatic-0.32/trimmomatic-0.32.jar"
+}

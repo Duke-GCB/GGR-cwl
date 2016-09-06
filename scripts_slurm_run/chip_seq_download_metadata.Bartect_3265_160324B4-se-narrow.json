@@ -1,0 +1,28 @@
+{
+    "input_fastq_files": [
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter-1/CTCF_sc5916_G2414_160302_S10.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter-1/FOX01_NB100_2312_A2_160309_S17.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter-1/GR_sc1003_B1915_ipctrl_160302_S8.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter-1/GR_sc1003_B1915_ipctrl_160309_S11.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter-1/HDAC1_ab7028_GR188529_3_160309_S14.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter-1/KLF6_sc7158_L0114_160302_S9.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter-1/Med14_A301_044A_A301_044A_1_160309_S12.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter-1/Med14_ab72141_GR141302_5_160309_S13.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter-1/NCoA3_ab2831_GR233129_4_160309_S16.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter-1/SRC1_ab2859_GR220236_6_160309_S18.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter-1/Sox4_ab86809_GR229591_2_160309_S15.tX_repX.fastq" }
+    ],
+    "default_adapters_file": { "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/adapters/default_adapters.fasta" },
+    "genome_ref_first_index_file": { "class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.1.ebwt"},
+    "genome_sizes_file": { "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/hg38.sizes" },
+    "ENCODE_blacklist_bedfile": { "class": "File", "path": "/data/reddylab/Reference_Data/ENCODE/wgEncodeDacMapabilityConsensusExcludable.hg38.bed" },
+    "nthreads_qc": 16,
+    "nthreads_trimm": 16,
+    "nthreads_map": 16,
+    "nthreads_peakcall": 16,
+    "nthreads_quant": 16,
+    "trimmomatic_jar_path": "/data/reddylab/software/Trimmomatic-0.32/trimmomatic-0.32.jar",
+    "trimmomatic_java_opts": "-Xms8000m -Xmx15000m",
+    "picard_jar_path": "/data/reddylab/software/picard/dist/picard.jar",
+    "picard_java_opts": "-Xms8000m -Xmx15000m"
+}

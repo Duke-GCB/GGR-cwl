@@ -1,0 +1,29 @@
+{
+    "input_fastq_files": [
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/raw_reads/Bartlett_3583_160812B4/iter-1/CellSignaling-2hr-160721.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/raw_reads/Bartlett_3583_160812B4/iter-1/CellSignaling-DEX-2hr-160721.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/raw_reads/Bartlett_3583_160812B4/iter-1/CellSignaling-DEX-ON-160721.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/raw_reads/Bartlett_3583_160812B4/iter-1/CellSignaling-ON-160721.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/raw_reads/Bartlett_3583_160812B4/iter-1/Sigma-2hr-160721.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/raw_reads/Bartlett_3583_160812B4/iter-1/Sigma-DEX-2hr-160721.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/raw_reads/Bartlett_3583_160812B4/iter-1/Sigma-DEX-ON-160721.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/raw_reads/Bartlett_3583_160812B4/iter-1/Sigma-ON-160721.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/raw_reads/Bartlett_3583_160812B4/iter-1/Thermo-2hr-160721.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/raw_reads/Bartlett_3583_160812B4/iter-1/Thermo-DEX-2hr-160721.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/raw_reads/Bartlett_3583_160812B4/iter-1/Thermo-DEX-ON-160721.tX_repX.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/raw_reads/Bartlett_3583_160812B4/iter-1/Thermo-ON-160721.tX_repX.fastq" }
+    ],
+    "default_adapters_file": { "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/adapters/default_adapters.fasta" },
+    "genome_ref_first_index_file": { "class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.1.ebwt"},
+    "genome_sizes_file": { "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/hg38.sizes" },
+    "ENCODE_blacklist_bedfile": { "class": "File", "path": "/data/reddylab/Reference_Data/ENCODE/wgEncodeDacMapabilityConsensusExcludable.hg38.bed" },
+    "nthreads_qc": 32,
+    "nthreads_trimm": 32,
+    "nthreads_map": 32,
+    "nthreads_peakcall": 32,
+    "nthreads_quant": 32,
+    "trimmomatic_jar_path": "/data/reddylab/software/Trimmomatic-0.32/trimmomatic-0.32.jar",
+    "trimmomatic_java_opts": "-Xms16000m -Xmx32000m",
+    "picard_jar_path": "/data/reddylab/software/picard/dist/picard.jar",
+    "picard_java_opts": "-Xms16000m -Xmx32000m"
+}
