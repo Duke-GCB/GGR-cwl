@@ -19,9 +19,9 @@ inputs:
   - id: "#genome_sizes_file"
     type: File
     description: "Genome sizes tab-delimited file (used in samtools)"
-  - id: "#ENCODE_blacklist_bedfile"
-    type: File
-    description: "Bedfile containing ENCODE consensus blacklist regions to be excluded."
+#  - id: "#ENCODE_blacklist_bedfile"
+#    type: File
+#    description: "Bedfile containing ENCODE consensus blacklist regions to be excluded."
   - id: "#nthreads"
     type: int
     default: 1
@@ -245,30 +245,13 @@ steps:
         source: "#remove_duplicates.output_dedup_bam_file"
     outputs:
       - id: "#mapped_file_basename.output_basename"
-  - id: "#remove_encode_blacklist"
-    run: {$import: "../map/bedtools-intersect.cwl"}
-    scatter:
-      - "#remove_encode_blacklist.a"
-      - "#remove_encode_blacklist.output_basename_file"
-    scatterMethod: dotproduct
-    inputs:
-      - id: "#remove_encode_blacklist.v"
-        default: true
-      - id: "#remove_encode_blacklist.output_basename_file"
-        source: "#mapped_file_basename.output_basename"
-      - id: "#remove_encode_blacklist.a"
-        source: "#remove_duplicates.output_dedup_bam_file"
-      - id: "#remove_encode_blacklist.b"
-        source: "#ENCODE_blacklist_bedfile"
-    outputs:
-      - id: "#remove_encode_blacklist.file_wo_blacklist_regions"
-  - id: "#sort_dedup_bams"
+ - id: "#sort_dedup_bams"
     run: {$import: "../map/samtools-sort.cwl"}
     scatter:
       - "#sort_dedup_bams.input_file"
     inputs:
       - id: "#sort_dedup_bams.input_file"
-        source: "#remove_encode_blacklist.file_wo_blacklist_regions"
+        source: "#remove_duplicates.output_dedup_bam_file"
       - id: "#sort_dedup_bams.nthreads"
         source: "#nthreads"
     outputs:
