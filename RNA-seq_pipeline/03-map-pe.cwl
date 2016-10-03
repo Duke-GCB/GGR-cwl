@@ -298,8 +298,8 @@ steps:
       - { id: "#transcriptome_star_pass2.outSAMattributes", valueFrom: "NH HI AS NM MD" }
       - { id: "#transcriptome_star_pass2.outSAMunmapped", valueFrom: "Within" }
       - { id: "#transcriptome_star_pass2.outFilterType", valueFrom: "BySJout" }
-      - { id: "#transcriptome_star_pass2.outFiterIntronMotifs", valueFrom: "RemoveNoncanonical" }
-      - { id: "#transcriptome_star_pass2.outFiterMultimapNmax", valueFrom: $(20) }
+      - { id: "#transcriptome_star_pass2.outFilterIntronMotifs", valueFrom: "RemoveNoncanonical" }
+      - { id: "#transcriptome_star_pass2.outFilterMultimapNmax", valueFrom: $(20) }
       - { id: "#transcriptome_star_pass2.outFilterMismatchNmax", valueFrom: $(999) }
       - { id: "#transcriptome_star_pass2.outFilterMismatchNoverReadLmax", valueFrom: $(0.04) }
       - { id: "#transcriptome_star_pass2.alignIntronMin", valueFrom: $(20)}
