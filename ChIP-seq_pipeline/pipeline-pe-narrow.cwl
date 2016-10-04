@@ -87,6 +87,30 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#qc_fastqc_report_files_read1"
+    source: "#qc.output_fastqc_report_files_read1"
+    description: "FastQC reports in zip format for paired read 1"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_report_files_read2"
+    source: "#qc.output_fastqc_report_files_read2"
+    description: "FastQC reports in zip format for paired read 2"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_data_files_read1"
+    source: "#qc.output_fastqc_data_files_read1"
+    description: "FastQC data files for paired read 1"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_data_files_read2"
+    source: "#qc.output_fastqc_data_files_read2"
+    description: "FastQC data files for paired read 2"
+    type:
+      type: array
+      items: File
   - id: "#trimm_raw_counts_read1"
     source: "#trimm.output_trimmed_read1_fastq_read_count"
     description: "Raw read counts for R1 of fastq files after TRIMM"

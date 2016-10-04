@@ -63,6 +63,18 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#qc_fastqc_report_files"
+    source: "#qc.output_fastqc_report_files"
+    description: "FastQC reports in zip format"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_data_files"
+    source: "#qc.output_fastqc_data_files"
+    description: "FastQC data files"
+    type:
+      type: array
+      items: File
   - id: "#trimm_raw_read_counts"
     source: "#trimm.trimmed_fastq_read_count"
     description: "Raw read counts of fastq files after TRIMM"
