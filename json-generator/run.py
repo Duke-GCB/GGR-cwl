@@ -2,8 +2,13 @@ import textwrap
 import csv
 import argparse
 from collections import defaultdict
-from jinja2 import Environment, PackageLoader
+
+import sys
+from jinja2 import Environment, PackageLoader, FileSystemLoader
 import os
+
+encoding = sys.getfilesystemencoding()
+EXEC_DIR = os.path.dirname(unicode(__file__, encoding)) + "/"
 
 
 def save_or_print_json(json_str, outdir, json_name):
@@ -52,7 +57,7 @@ class MetadataParserChipseq(object):
         return getattr(self.obj, attr)
 
     def render_json(self, wf_conf, samples_list, data_dir, template_name):
-        env = Environment(loader=PackageLoader(package_name='json-generator'))
+        env = Environment(extensions=["jinja2.ext.do"], loader=FileSystemLoader(os.path.join(EXEC_DIR, "templates/")))
         template = env.get_template(template_name + '.j2')
         json_str = template.render({'wf_conf': wf_conf,
                                     'samples_list': samples_list,
