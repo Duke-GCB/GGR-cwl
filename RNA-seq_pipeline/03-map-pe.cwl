@@ -89,14 +89,14 @@ outputs:
     source: "#generate_genome.indices"
     description: "STAR generated genome files"
     type: {type: array, items: File}
-  - id: "#transcriptome_star_aligned_sorted_file"
-    source: "#sort_transcriptome_star_pass2_bam.sorted_file"
+  - id: "#transcriptome_star_aligned_file"
+    source: "#transcriptome_star_pass2.transcriptomesam"
     description: "STAR mapped unsorted file."
     type: {type: array, items: File}
-  - id: "#transcriptome_star_aligned_sorted_index_file"
-    source: "#index_transcriptome_star_pass2_bam.index_file"
-    description: "STAR mapped unsorted file."
-    type: {type: array, items: File}
+#  - id: "#transcriptome_star_aligned_sorted_index_file"
+#    source: "#index_transcriptome_star_pass2_bam.index_file"
+#    description: "STAR mapped unsorted file."
+#    type: {type: array, items: File}
   - id: "#transcriptome_star_stat_files"
     source: "#transcriptome_star_pass2.mappingstats"
     description: "STAR pass-2 aligned to transcriptome stat files."
@@ -312,29 +312,29 @@ steps:
       - id: "#transcriptome_star_pass2.outFileNamePrefix"
         source: "#basename.basename"
         valueFrom: $(self + ".transcriptome.star2.")
-      - id: "#transcriptome_star_pass2.outSAMtype"
-        valueFrom:  $(['BAM', 'Unsorted'])
+#      - id: "#transcriptome_star_pass2.outSAMtype"
+#        valueFrom:  $(['BAM', 'Unsorted'])
     outputs:
       - id: "#transcriptome_star_pass2.transcriptomesam"
       - id: "#transcriptome_star_pass2.mappingstats"
 
-  - id: "#sort_transcriptome_star_pass2_bam"
-    run: {$import: "../map/samtools-sort.cwl"}
-    scatter: "#sort_transcriptome_star_pass2_bam.input_file"
-    inputs:
-      - {id: "#sort_transcriptome_star_pass2_bam.input_file", source: "#transcriptome_star_pass2.transcriptomesam"}
-      - {id: "#sort_transcriptome_star_pass2_bam.nthreads", source: "#nthreads"}
-    outputs:
-      - id: "#sort_transcriptome_star_pass2_bam.sorted_file"
-
-  - id: "#index_transcriptome_star_pass2_bam"
-    run: {$import: "../map/samtools-index.cwl"}
-    scatter:
-      - "#index_transcriptome_star_pass2_bam.input_file"
-    inputs:
-      - { id: "#index_transcriptome_star_pass2_bam.input_file", source: "#sort_transcriptome_star_pass2_bam.sorted_file" }
-    outputs:
-      - id: "#index_transcriptome_star_pass2_bam.index_file"
+#  - id: "#sort_transcriptome_star_pass2_bam"
+#    run: {$import: "../map/samtools-sort.cwl"}
+#    scatter: "#sort_transcriptome_star_pass2_bam.input_file"
+#    inputs:
+#      - {id: "#sort_transcriptome_star_pass2_bam.input_file", source: "#transcriptome_star_pass2.transcriptomesam"}
+#      - {id: "#sort_transcriptome_star_pass2_bam.nthreads", source: "#nthreads"}
+#    outputs:
+#      - id: "#sort_transcriptome_star_pass2_bam.sorted_file"
+#
+#  - id: "#index_transcriptome_star_pass2_bam"
+#    run: {$import: "../map/samtools-index.cwl"}
+#    scatter:
+#      - "#index_transcriptome_star_pass2_bam.input_file"
+#    inputs:
+#      - { id: "#index_transcriptome_star_pass2_bam.input_file", source: "#sort_transcriptome_star_pass2_bam.sorted_file" }
+#    outputs:
+#      - id: "#index_transcriptome_star_pass2_bam.index_file"
 
   - id: "#transcriptome_mapped_reads_count_star2"
     run: {$import: "../map/star-log-read-count.cwl"}

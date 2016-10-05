@@ -24,6 +24,12 @@ def get_cwl_name(template_name, conf_obj):
         return "02-trim-%s" % conf_obj['read_type']
     if 'chipseq-01-qc' == template_name:
         return "01-qc-%s" % conf_obj['read_type']
+
+    if 'rnaseq-04-quantification' == template_name:
+        return "04-quantification-%s" % '-'.join([conf_obj['read_type'], conf_obj['strandness']])
+    if 'rnaseq-pipeline' == template_name:
+        return "pipeline-%s" % '-'.join([conf_obj['read_type'], conf_obj['strandness']])
+
     return None
 
 

@@ -53,9 +53,9 @@ inputs:
   - id: "#bamtools_reverse_filter_file"
     type: File
     description: "JSON filter file for reverse strand used in bamtools (see bamtools-filter command)"
-  - id: "#strand_specific"
-    type: int
-    description: "0 (unstranded), 1 (stranded) and 2 (reversely stranded)"
+{#  - id: "#strand_specific"#}
+{#    type: int#}
+{#    description: "0 (unstranded), 1 (stranded) and 2 (reversely stranded)"#}
 
   - id: "#nthreads_qc"
     description: "Number of threads - qc."
@@ -168,14 +168,14 @@ outputs:
     source: "#map.generated_genome_files"
     description: "STAR generated genome files"
     type: {type: array, items: File}
-  - id: "#transcriptome_star_aligned_sorted_file"
-    source: "#map.transcriptome_star_aligned_sorted_file"
+  - id: "#transcriptome_star_aligned_file"
+    source: "#map.transcriptome_star_aligned_file"
     description: "STAR mapped unsorted file."
     type: {type: array, items: File}
-  - id: "#transcriptome_star_aligned_sorted_index_file"
-    source: "#map.transcriptome_star_aligned_sorted_index_file"
-    description: "STAR mapped unsorted file."
-    type: {type: array, items: File}
+#  - id: "#transcriptome_star_aligned_sorted_index_file"
+#    source: "#map.transcriptome_star_aligned_sorted_index_file"
+#    description: "STAR mapped unsorted file."
+#    type: {type: array, items: File}
   - id: "#transcriptome_star_stat_files"
     source: "#map.transcriptome_star_stat_files"
     description: "STAR pass-2 aligned to transcriptome stat files."
@@ -290,13 +290,13 @@ steps:
       - id: "#map.percentage_uniq_reads_star1"
       - id: "#map.star_1pass_sjdb"
       - id: "#map.generated_genome_files"
-      - id: "#map.transcriptome_star_aligned_sorted_file"
-      - id: "#map.transcriptome_star_aligned_sorted_index_file"
+      - id: "#map.transcriptome_star_aligned_file"
+#      - id: "#map.transcriptome_star_aligned_sorted_index_file"
       - id: "#map.transcriptome_star_stat_files"
       - id: "#map.read_count_transcriptome_mapped_star2"
 
   - id: "#quant"
-    run: {$import: "04-quantification-pe.cwl" }
+    run: {$import: "04-quantification-pe-{{ strandness }}.cwl" }
     inputs:
       - { id: "#quant.input_bam_files", source: "#map.star_aligned_sorted_file" }
       - { id: "#quant.input_transcripts_bam_files", source: "#map.transcriptome_star_aligned_sorted_file" }
@@ -306,7 +306,7 @@ steps:
       - { id: "#quant.bamtools_forward_filter_file", source: "#bamtools_forward_filter_file" }
       - { id: "#quant.bamtools_reverse_filter_file", source: "#bamtools_reverse_filter_file" }
       - { id: "#quant.nthreads", source: "#nthreads_quant" }
-      - { id: "#quant.strand_specific", source: "#strand_specific" }
+{#      - { id: "#quant.strand_specific", source: "#strand_specific" }#}
     outputs:
       - id: "#quant.featurecounts_counts"
       - id: "#quant.rsem_isoforms_files"
