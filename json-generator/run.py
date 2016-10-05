@@ -98,7 +98,7 @@ class MetadataParserRnaseq(object):
         return getattr(self.obj, attr)
 
     def render_json(self, wf_conf, samples_list, data_dir):
-        env = Environment(loader=PackageLoader(package_name='json-generator'))
+        env = Environment(extensions=["jinja2.ext.do"], loader=FileSystemLoader(os.path.join(EXEC_DIR, "templates/")))
         template = env.get_template(self.experiment_type + '.j2')
         json_str = template.render({'wf_conf': wf_conf,
                                     'samples_list': samples_list,
