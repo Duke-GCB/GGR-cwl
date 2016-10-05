@@ -87,6 +87,7 @@ class MetadataParserRnaseq(object):
     def __init__(self, **kwargs):
         self.obj = generateMetadataParser(kwargs['args_obj'])
         self.experiment_type = kwargs['exp_type']
+        self.strand_specific = kwargs['strand_specific']
 
     def __getattr__(self, attr):
         return getattr(self.obj, attr)
@@ -109,7 +110,7 @@ class MetadataParserRnaseq(object):
         for r in self.records:
             read_type = r['Paired-end or single-end'].lower()
             sample_name = r['Name']
-            wf_key = '-'.join([read_type])
+            wf_key = '-'.join([read_type,  self.strand_specific])
             wf_conf_dict[wf_key] = {'iter': r['Iter num'], 'rt': read_type, 'sn': sample_name}
             samples_dict[wf_key].append(sample_name)
         for wf_key, samples_list in samples_dict.iteritems():
@@ -136,6 +137,8 @@ def main():
                         help='Project directory containing the fastq data files.')
     parser.add_argument('-t', '--metadata-type', dest='data_type', choices=['chip-seq', 'rna-seq'],
                         default='chip-seq', help='Experiment type for the metadata.')
+    parser.add_argument('-s', '-strand-specific', dest='strand_specific', required=True,
+                        type=str, choices=('unstranded', 'stranded', 'revstranded'))
     parser.add_argument('--nthreads', type=int, dest='nthreads', default=16, help='Number of threads.')
     parser.add_argument('--mem', type=int, dest='mem', default=16000, help='Memory for Java based CLT.')
 
@@ -153,7 +156,7 @@ def main():
     if args.data_type == 'chip-seq':
         meta_parser = MetadataParserChipseq(args_obj=args, exp_type=args.data_type)
     elif args.data_type == 'rna-seq':
-        meta_parser = MetadataParserRnaseq(args_obj=args, exp_type=args.data_type)
+        meta_parser = MetadataParserRnaseq(args_obj=args, exp_type=args.data_type, strand_specific=args.strand_specific)
 
     file_basename = os.path.splitext(os.path.basename(args.meta_file))[0]
     for json_str, conf_name in meta_parser.parse_metadata(args.data_dir.rstrip('/')):
