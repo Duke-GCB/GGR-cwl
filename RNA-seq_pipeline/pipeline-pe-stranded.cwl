@@ -282,7 +282,7 @@ steps:
     run: {$import: "04-quantification-pe-stranded.cwl" }
     inputs:
       - { id: "#quant.input_bam_files", source: "#map.star_aligned_sorted_file" }
-      - { id: "#quant.input_transcripts_bam_files", source: "#map.transcriptome_star_aligned_sorted_file" }
+      - { id: "#quant.input_transcripts_bam_files", source: "#map.transcriptome_star_aligned_file" }
       - { id: "#quant.annotation_file", source: "#annotation_file" }
       - { id: "#quant.input_genome_sizes", source: "#genome_sizes_file" }
       - { id: "#quant.rsem_reference_files", source: "#rsem_reference_files" }

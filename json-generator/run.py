@@ -122,7 +122,6 @@ class MetadataParserRnaseq(object):
             yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir), wf_key
 
 
-
 def main():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
                                      description=textwrap.dedent('''
