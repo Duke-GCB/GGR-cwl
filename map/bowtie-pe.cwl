@@ -50,13 +50,6 @@ inputs:
     inputBinding:
       position: 1
       prefix: "-t"
-  - id: "#t"
-    type: boolean
-    default: true
-    description: "Print wall-clock time taken by search phases"
-    inputBinding:
-      position: 1
-      prefix: "-t"
   - id: "#m"
     type: int
     default: 1

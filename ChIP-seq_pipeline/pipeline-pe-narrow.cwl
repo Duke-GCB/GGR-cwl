@@ -63,13 +63,13 @@ inputs:
       - string
     description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
 outputs:
-   - id: "#qc_count_raw_reads_read1"
+  - id: "#qc_count_raw_reads_read1"
     source: "#qc.output_count_raw_reads_read1"
     description: "Raw read counts of fastq files for read 1 after QC"
     type:
       type: array
       items: File
- - id: "#qc_count_raw_reads_read2"
+  - id: "#qc_count_raw_reads_read2"
     source: "#qc.output_count_raw_reads_read2"
     description: "Raw read counts of fastq files for read 2 after QC"
     type:
