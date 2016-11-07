@@ -132,6 +132,7 @@ steps:
       - { id: "#rsem-calc-expr.strand-specific", valueFrom: $(true) }
       - { id: "#rsem-calc-expr.seed", valueFrom: $(1234) }
       - { id: "#rsem-calc-expr.num-threads", source: "#nthreads" }
+      - { id: "#rsem-calc-expr.quiet", valueFrom: $(true) }
     outputs:
       - id: "#rsem-calc-expr.isoforms"
       - id: "#rsem-calc-expr.genes"
