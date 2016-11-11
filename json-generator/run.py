@@ -37,7 +37,7 @@ class MetadataParser(object):
     def load_file(self):
         rows = []
         with open(self.file_path, 'rb') as f:
-            reader = csv.DictReader(f, delimiter='\t')
+            reader = csv.DictReader(filter(lambda row: row[0] != '#', f), delimiter='\t')
             for row in reader:
                 rows.append(row)
         return rows
