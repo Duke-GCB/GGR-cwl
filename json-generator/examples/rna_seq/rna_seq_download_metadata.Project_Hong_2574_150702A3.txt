@@ -1,37 +1,37 @@
-Sequencing core user	Sequencing core project	Sequencing core password	Sequencing core library name	Barcode	Name	Iter num	Paired-end or single-end
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	CGTGAT	t1_rep1	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	ACATCG	t2_rep1	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	GCCTAA	t3_rep1	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	TGGTCA	t4_rep1	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	CACTGT	t5_rep1	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	ATTGGC	t6_rep1	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	GATCTG	t1_rep2	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	TCAAGT	t2_rep2	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	CTGATC	t3_rep2	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	AAGCTA	t4_rep2	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	GTAGCC	t5_rep2	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	TACAAG	t6_rep2	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	CGTGAT	t1_rep3	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	ACATCG	t2_rep3	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	GCCTAA	t3_rep3	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	TGGTCA	t4_rep3	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	CACTGT	t5_rep3	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	ATTGGC	t6_rep3	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	GATCTG	t12_rep1	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	TCAAGT	t10_rep1	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	CTGATC	t8_rep1	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	AAGCTA	t7_rep1	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	GTAGCC	t05_rep1	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	TACAAG	t00_rep1	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	CGTGAT	t12_rep2	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	ACATCG	t10_rep2	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	GCCTAA	t8_rep2	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	TGGTCA	t7_rep2	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	CACTGT	t05_rep2	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	ATTGGC	t00_rep2	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	GATCTG	t12_rep3	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	TCAAGT	t10_rep3	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	CTGATC	t8_rep3	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	AAGCTA	t7_rep3	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	GTAGCC	t05_rep3	iter0	pe
-hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	TACAAG	t00_rep3	iter0	pe
+Sequencing core user	Sequencing core project	Sequencing core password	Sequencing core library name	Barcode	Name	Iter num	Paired-end or single-end	Strand specificity
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	CGTGAT	t1_rep1	iter0	pe	unstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	ACATCG	t2_rep1	iter0	pe	stranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	GCCTAA	t3_rep1	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	TGGTCA	t4_rep1	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	CACTGT	t5_rep1	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	ATTGGC	t6_rep1	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	GATCTG	t1_rep2	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	TCAAGT	t2_rep2	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	CTGATC	t3_rep2	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	AAGCTA	t4_rep2	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	GTAGCC	t5_rep2	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	TACAAG	t6_rep2	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	CGTGAT	t1_rep3	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	ACATCG	t2_rep3	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	GCCTAA	t3_rep3	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	TGGTCA	t4_rep3	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	CACTGT	t5_rep3	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	ATTGGC	t6_rep3	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	GATCTG	t12_rep1	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	TCAAGT	t10_rep1	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	CTGATC	t8_rep1	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	AAGCTA	t7_rep1	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	GTAGCC	t05_rep1	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L1	TACAAG	t00_rep1	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	CGTGAT	t12_rep2	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	ACATCG	t10_rep2	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	GCCTAA	t8_rep2	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	TGGTCA	t7_rep2	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	CACTGT	t05_rep2	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L2	ATTGGC	t00_rep2	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	GATCTG	t12_rep3	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	TCAAGT	t10_rep3	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	CTGATC	t8_rep3	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	AAGCTA	t7_rep3	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	GTAGCC	t05_rep3	iter0	pe	revstranded
+hong_2574	Project_Hong_2574_150702A3	mjmN1EDH5AD7	Sample-LH-L3	TACAAG	t00_rep3	iter0	pe	revstranded
