@@ -22,12 +22,12 @@ def save_or_print_json(json_str, outdir, json_name):
 
 class MetadataParser(object):
     def __init__(self, args):
+        self.experiment_type = args.data_type
         self.nthreads = args.nthreads
         self.mem = args.mem
         self.file_path = args.meta_file
         self.records = self.load_file()
         self.separate_jsons = args.separate_jsons
-        self.genomeDir = args.genomeDir
 
     def render_json(self, wf_conf, samples_list, data_dir, template_name):
         pass
@@ -51,7 +51,6 @@ def generateMetadataParser(args):
 class MetadataParserChipseq(object):
     def __init__(self, **kwargs):
         self.obj = generateMetadataParser(kwargs['args_obj'])
-        self.experiment_type = kwargs['exp_type']
 
     def __getattr__(self, attr):
         return getattr(self.obj, attr)
@@ -95,7 +94,8 @@ class MetadataParserChipseq(object):
 class MetadataParserRnaseq(object):
     def __init__(self, **kwargs):
         self.obj = generateMetadataParser(kwargs['args_obj'])
-        self.experiment_type = kwargs['exp_type']
+        self.genomeDir = kwargs['args_obj'].genomeDir
+        self.skip_star_2pass = kwargs['args_obj'].skip_star_2pass
 
     def __getattr__(self, attr):
         return getattr(self.obj, attr)
@@ -120,7 +120,10 @@ class MetadataParserRnaseq(object):
             read_type = r['Paired-end or single-end'].lower()
             sample_name = r['Name']
             strand_specific = r['Strand specificity']
-            wf_key = '-'.join([read_type,  strand_specific])
+            kws = [read_type,  strand_specific]
+            if self.skip_star_2pass:
+                kws.append('with-sjdb')
+            wf_key = '-'.join(kws)
             wf_conf_dict[wf_key] = {'iter': r['Iter num'], 'rt': read_type, 'sn': sample_name}
             samples_dict[wf_key].append(sample_name)
         for wf_key, samples_list in samples_dict.iteritems():
@@ -154,7 +157,12 @@ def main():
     parser.add_argument('--mem', type=int, dest='mem', default=16000, help='Memory for Java based CLT.')
     parser.add_argument('--separate-jsons', action='store_true', help='Create one JSON per sample in the metadata.')
     parser.add_argument('--genomeDir', default='/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_49',
-                        help='Directory containing the STAR Genome files (indices).')
+                        help='[RNA-seq only] Directory containing the STAR Genome files (indices).')
+    parser.add_argument('--skip-star-2pass', action='store_true', default=False,
+                        help='''[RNA-seq only]
+                             Skip the STAR 2-pass step and use the genomeDir index for mapping.
+                             By default, a STAR 2-pass strategy if implemented to create a splice junctions
+                             file used to create a new STAR genome.''')
 
     # Parse input
     args = parser.parse_args()
@@ -167,13 +175,11 @@ def main():
         os.mkdir(args.outdir)
 
     if args.data_type == 'chip-seq':
-        meta_parser = MetadataParserChipseq(args_obj=args, exp_type=args.data_type)
+        meta_parser = MetadataParserChipseq(args_obj=args)
     elif args.data_type == 'rna-seq':
-        # if args.separate_jsons:
-        #     print "[ERROR] :: The RNA-seq pipeline needs all samples together in order to correctly perform" \
-        #           "the 2-pass STAR alignment. Consider creating multiple metadata tables with fewer members instead."
-        #     sys.exit(1)
-        meta_parser = MetadataParserRnaseq(args_obj=args, exp_type=args.data_type)
+        meta_parser = MetadataParserRnaseq(args_obj=args)
+    else:
+        raise Exception('Unrecognized Experiment Type: %s' % args.data_type)
 
     file_basename = os.path.splitext(os.path.basename(args.meta_file))[0]
     for json_str, conf_name, idx in meta_parser.parse_metadata(args.data_dir.rstrip('/')):
