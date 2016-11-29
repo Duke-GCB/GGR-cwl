@@ -128,25 +128,9 @@ outputs:
     source: "#map.star1_stat_files"
     description: "STAR pass-1 stat files."
     type: {type: array, items: ['null', {items: File, type: array}]}
-  - id: "#star2_stat_files"
-    source: "#map.star2_stat_files"
-    description: "STAR pass-2 stat files."
-    type: {type: array, items: ['null', {items: File, type: array}]}
-  - id: "#star2_readspergene_file"
-    source: "#map.star2_readspergene_file"
-    description: "STAR pass-2 reads per gene counts file."
-    type: ['null', {type: array, items: File}]
   - id: "#read_count_mapped_star1"
     source: "#map.read_count_mapped_star1"
     description: "Read counts of the mapped BAM files after STAR pass1"
-    type: {type: array, items: File}
-  - id: "#read_count_mapped_star2"
-    source: "#map.read_count_mapped_star2"
-    description: "Read counts of the mapped BAM files after STAR pass2"
-    type: {type: array, items: File}
-  - id: "#percentage_uniq_reads_star1"
-    source: "#map.percentage_uniq_reads_star1"
-    description: "Percentage of uniq reads from preseq c_curve output"
     type: {type: array, items: File}
   - id: "#star_1pass_sjdb"
     source: "#map.star_1pass_sjdb"
@@ -155,6 +139,26 @@ outputs:
   - id: "#generated_genome_files"
     source: "#map.generated_genome_files"
     description: "STAR generated genome files"
+    type: {type: array, items: File}
+  - id: "#pcr_bottleneck_coef_file"
+    source: "#map.pcr_bottleneck_coef_file"
+    description: "PCR Bottleneck Coefficient"
+    type: {type: array, items: File}
+  - id: "#percentage_uniq_reads_star1"
+    source: "#map.percentage_uniq_reads_star1"
+    description: "Percentage of uniq reads from preseq c_curve output"
+    type: {type: array, items: File}
+  - id: "#star2_stat_files"
+    source: "#map.star2_stat_files"
+    description: "STAR pass-2 stat files."
+    type: {type: array, items: ['null', {items: File, type: array}]}
+  - id: "#star2_readspergene_file"
+    source: "#map.star2_readspergene_file"
+    description: "STAR pass-2 reads per gene counts file."
+    type: ['null', {type: array, items: File}]
+  - id: "#read_count_mapped_star2"
+    source: "#map.read_count_mapped_star2"
+    description: "Read counts of the mapped BAM files after STAR pass2"
     type: {type: array, items: File}
   - id: "#transcriptome_star_aligned_file"
     source: "#map.transcriptome_star_aligned_file"
@@ -259,25 +263,26 @@ steps:
       - { id: "#map.genome_fasta_files", source: "#genome_fasta_files" }
       - { id: "#map.annotation_file", source: "#annotation_file" }
       - { id: "#map.sjdbOverhang", source: "#sjdbOverhang" }
-      - { id: "#map.sjdb_name", source: "#sjdb_name" }
       - { id: "#map.genomeDirFiles", source: "#genomeDirFiles" }
       - { id: "#map.nthreads", source: "#nthreads_map" }
+      - { id: "#map.sjdb_name", source: "#sjdb_name" }
     outputs:
       - id: "#map.star_aligned_unsorted_file"
       - id: "#map.star_aligned_sorted_file"
       - id: "#map.star_aligned_sorted_index_file"
-      - id: "#map.star1_stat_files"
       - id: "#map.star2_stat_files"
       - id: "#map.star2_readspergene_file"
-      - id: "#map.read_count_mapped_star1"
       - id: "#map.read_count_mapped_star2"
-      - id: "#map.percentage_uniq_reads_star1"
-      - id: "#map.star_1pass_sjdb"
-      - id: "#map.generated_genome_files"
       - id: "#map.transcriptome_star_aligned_file"
 #      - id: "#map.transcriptome_star_aligned_sorted_index_file"
       - id: "#map.transcriptome_star_stat_files"
       - id: "#map.read_count_transcriptome_mapped_star2"
+      - id: "#map.percentage_uniq_reads_star1"
+      - id: "#map.pcr_bottleneck_coef_file"
+      - id: "#map.generated_genome_files"
+      - id: "#map.star1_stat_files"
+      - id: "#map.read_count_mapped_star1"
+      - id: "#map.star_1pass_sjdb"
   - id: "#quant"
     run: {$import: "04-quantification-pe-stranded.cwl" }
     inputs:

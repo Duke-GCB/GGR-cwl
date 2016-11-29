@@ -25,9 +25,15 @@ def get_cwl_name(template_name, conf_obj):
     if 'chipseq-01-qc' == template_name:
         return "01-qc-%s" % conf_obj['read_type']
 
+    if 'rnaseq-03-map' == template_name:
+        if conf_obj['star2pass']:
+            return "03-map-%s" % '-'.join([conf_obj['read_type']])
+        return "03-map-%s-with-sjdb" % '-'.join([conf_obj['read_type']])
     if 'rnaseq-04-quantification' == template_name:
         return "04-quantification-%s" % '-'.join([conf_obj['read_type'], conf_obj['strandness']])
     if 'rnaseq-pipeline' == template_name:
+        if not conf_obj['star2pass']:
+            return "pipeline-%s-with-sjdb" % '-'.join([conf_obj['read_type'], conf_obj['strandness']])
         return "pipeline-%s" % '-'.join([conf_obj['read_type'], conf_obj['strandness']])
 
     return None

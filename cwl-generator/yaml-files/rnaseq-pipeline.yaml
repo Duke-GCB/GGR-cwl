@@ -1,9 +1,24 @@
 -
   read_type: pe
   strandness: unstranded
+  star2pass: no
 -
   read_type: pe
   strandness: stranded
+  star2pass: no
 -
   read_type: pe
   strandness: revstranded
+  star2pass: no
+-
+  read_type: pe
+  strandness: unstranded
+  star2pass: yes
+-
+  read_type: pe
+  strandness: stranded
+  star2pass: yes
+-
+  read_type: pe
+  strandness: revstranded
+  star2pass: yes

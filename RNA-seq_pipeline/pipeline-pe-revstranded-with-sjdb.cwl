@@ -37,9 +37,6 @@ inputs:
   - id: "#genomeDirFiles"
     type: {type: array, items: File}
     description: "STAR genome reference/indices files."
-  - id: "#sjdb_name"
-    type: string
-    default: "ggr.SJ.out.all.tab"
   - id: "#rsem_reference_files"
     type: {type: array, items: File}
     description: "RSEM genome reference files - generated with the rsem-prepare-reference command"
@@ -124,28 +121,12 @@ outputs:
     source: "#map.star_aligned_sorted_index_file"
     description: "STAR mapped unsorted file."
     type: {type: array, items: File}
-  - id: "#star1_stat_files"
-    source: "#map.star1_stat_files"
-    description: "STAR pass-1 stat files."
-    type: {type: array, items: ['null', {items: File, type: array}]}
-  - id: "#read_count_mapped_star1"
-    source: "#map.read_count_mapped_star1"
-    description: "Read counts of the mapped BAM files after STAR pass1"
-    type: {type: array, items: File}
-  - id: "#star_1pass_sjdb"
-    source: "#map.star_1pass_sjdb"
-    description: "SJDB from union of STAR 1st pass"
-    type: File
-  - id: "#generated_genome_files"
-    source: "#map.generated_genome_files"
-    description: "STAR generated genome files"
-    type: {type: array, items: File}
   - id: "#pcr_bottleneck_coef_file"
     source: "#map.pcr_bottleneck_coef_file"
     description: "PCR Bottleneck Coefficient"
     type: {type: array, items: File}
-  - id: "#percentage_uniq_reads_star1"
-    source: "#map.percentage_uniq_reads_star1"
+  - id: "#percentage_uniq_reads_star2"
+    source: "#map.percentage_uniq_reads_star2"
     description: "Percentage of uniq reads from preseq c_curve output"
     type: {type: array, items: File}
   - id: "#star2_stat_files"
@@ -255,7 +236,7 @@ steps:
       - id: "#trim.output_trimmed_read1_fastq_read_count"
       - id: "#trim.output_trimmed_read2_fastq_read_count"
   - id: "#map"
-    run: {$import: "03-map-pe.cwl" }
+    run: {$import: "03-map-pe-with-sjdb.cwl" }
     inputs:
       - { id: "#map.input_fastq_read1_files", source: "#trim.output_data_fastq_read1_trimmed_files" }
       - { id: "#map.input_fastq_read2_files", source: "#trim.output_data_fastq_read2_trimmed_files" }
@@ -265,7 +246,6 @@ steps:
       - { id: "#map.sjdbOverhang", source: "#sjdbOverhang" }
       - { id: "#map.genomeDirFiles", source: "#genomeDirFiles" }
       - { id: "#map.nthreads", source: "#nthreads_map" }
-      - { id: "#map.sjdb_name", source: "#sjdb_name" }
     outputs:
       - id: "#map.star_aligned_unsorted_file"
       - id: "#map.star_aligned_sorted_file"
@@ -277,12 +257,8 @@ steps:
 #      - id: "#map.transcriptome_star_aligned_sorted_index_file"
       - id: "#map.transcriptome_star_stat_files"
       - id: "#map.read_count_transcriptome_mapped_star2"
-      - id: "#map.percentage_uniq_reads_star1"
+      - id: "#map.percentage_uniq_reads_star2"
       - id: "#map.pcr_bottleneck_coef_file"
-      - id: "#map.generated_genome_files"
-      - id: "#map.star1_stat_files"
-      - id: "#map.read_count_mapped_star1"
-      - id: "#map.star_1pass_sjdb"
   - id: "#quant"
     run: {$import: "04-quantification-pe-revstranded.cwl" }
     inputs:
