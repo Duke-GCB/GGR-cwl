@@ -3,6 +3,10 @@
 
 [![Join the chat at https://gitter.im/alexbarrera/GGR-cwl](https://badges.gitter.im/alexbarrera/GGR-cwl.svg)](https://gitter.im/alexbarrera/GGR-cwl?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+GGR pipelines created using the [Common Worflow Language](http://www.commonwl.org/) `draft-3` specification. 
+The workflows are parametrized with values that best suit the GGR samples, 
+   but they can be easily tailored for specific needs.
+
 ### [ChIP-seq](ChIP-seq_pipeline):
 
 #### Pipelines
@@ -50,7 +54,12 @@
 ### [RNA-seq](RNA-seq_pipeline):
 
 #### Pipelines
-[PE](RNA-seq_pipeline/pipeline-pe.cwl)
+* [PE - Unstranded](RNA-seq_pipeline/pipeline-pe-unstranded.cwl)
+* [PE - Unstranded - w/sjdb](RNA-seq_pipeline/pipeline-pe-unstranded-with-sjdb.cwl)
+* [PE - Stranded](RNA-seq_pipeline/pipeline-pe-stranded.cwl)
+* [PE - Stranded - w/sjdb](RNA-seq_pipeline/pipeline-pe-stranded-with-sjdb.cwl)
+* [PE - Revstranded](RNA-seq_pipeline/pipeline-pe-revstranded.cwl)
+* [PE - Revstranded - w/sjdb](RNA-seq_pipeline/pipeline-pe-revstranded-with-sjdb.cwl)
 
 #### Steps
 * 00 - Genome files generation for STAR and RSEM:
@@ -61,16 +70,30 @@
     * 02 - [Trimming step - PE](RNA-seq_pipeline/02-trim-pe.cwl)
 * 03 - Mapping step:
     * 03 - [Mapping step - PE](RNA-seq_pipeline/03-map-pe.cwl)
+    * 03 - [Mapping step - PE - w/sjdb](RNA-seq_pipeline/03-map-pe.cwl)
 * 04 - Quantification step:
-    * 04 - [Quantification step - PE](RNA-seq_pipeline/04-quantification-pe.cwl)
+    * 04 - [Quantification step - PE - Unstranded](RNA-seq_pipeline/04-quantification-pe-unstranded.cwl)
+    * 04 - [Quantification step - PE - Stranded](RNA-seq_pipeline/04-quantification-pe-stranded.cwl)
+    * 04 - [Quantification step - PE - Revstranded](RNA-seq_pipeline/04-quantification-pe-revstranded.cwl)
 
+----------------------------------------------------------------------------------------------------------
 ##### Workflow differences legend 
 Depending on the experiments, there might be small differences in the workflows which will be determined by:
 
-- Type of read:
-    - SE: Single End reads
-    - PE: Paired-End reads
-- Type of region targeted:
-    - Narrow: Narrow (also known as Point-Source) peaks. Limited region bound (e.g. TFs).
-    - Broad: Broad peaks. Wide region bound (e.g. Histone modifications)
-- If a control sample is available (with control when applicable).
+- All
+    - Type of read:
+        - SE: Single End reads
+        - PE: Paired-End reads
+- ChIP-seq & DNase-seq
+    - Type of region targeted:
+        - Narrow: Narrow (also known as Point-Source) peaks. Limited region bound (e.g. TFs).
+        - Broad: Broad peaks. Wide region bound (e.g. Histone modifications)
+- ChIP-seq only
+    - With or without control. If a control sample is available `-with-control` or not.
+- RNA-seq only
+    - Strand specificity:
+        - Unstranded: reads are not strand-specific, is not possible to know from which DNA strand they come.
+        - Stranded: reads are strand-specific and can be map to the Watson and Crick strands. 
+        - Reverse Stranded: reads come from cDNA, which switches the mapping of the forward and reverse strand. 
+    - Custom SJDB: By default the STAR 2-pass mapping strategy is implemented in which a first pass of STAR is run to generate a large pool of novel splice junctions (referred as SJDB). These junctions are used to generate a genome index which is employed in the mapping step. However, this 2-pass strategy can be skipped, using a custom genome index Because typically this genome would be created with a precomputed SJDB, this option is denoted with `-with-sjdb`.
+    
