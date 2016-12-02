@@ -4,7 +4,7 @@ cwlVersion: 'cwl:draft-3'
 class: CommandLineTool
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/bedtools'
+    dockerPull: 'dukegcb/bedtools'
 
 requirements:
   - class: InlineJavascriptRequirement

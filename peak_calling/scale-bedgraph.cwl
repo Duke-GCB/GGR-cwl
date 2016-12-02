@@ -5,7 +5,7 @@ description: "Scale BedGraph file by scaling factor computed using the number of
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/workflow-utils'
+    dockerPull: 'dukegcb/workflow-utils'
 
 inputs:
   - id: "#bedgraph_file"

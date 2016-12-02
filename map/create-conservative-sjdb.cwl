@@ -8,7 +8,7 @@ description: |
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/star-utils'
+    dockerPull: 'dukegcb/star-utils'
 
 requirements:
   - class: InlineJavascriptRequirement

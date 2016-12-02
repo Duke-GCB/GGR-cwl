@@ -9,7 +9,7 @@ class: CommandLineTool
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/deeptools'
+    dockerPull: 'dukegcb/deeptools'
 
 requirements:
   - class: InlineJavascriptRequirement

@@ -5,7 +5,7 @@ description: "Filter out reads from a BED file that are too concentrated within 
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/windowtrimmer'
+    dockerPull: 'dukegcb/windowtrimmer'
 
 requirements:
   - class: InlineJavascriptRequirement

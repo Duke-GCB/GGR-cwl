@@ -5,7 +5,7 @@ description: "Compares 2 files"
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/workflow-utils'
+    dockerPull: 'dukegcb/workflow-utils'
 
 inputs:
   - id: "#file1"

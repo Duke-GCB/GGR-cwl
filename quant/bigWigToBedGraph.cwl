@@ -6,7 +6,7 @@ class: CommandLineTool
 description: "Convert from bigWig to bedGraph format."
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dleehr/docker-hubutils'
+    dockerPull: 'dleehr/docker-hubutils'
 
 requirements:
   - class: InlineJavascriptRequirement

@@ -4,7 +4,7 @@ class: CommandLineTool
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/samtools'
+    dockerPull: 'dukegcb/samtools'
 
 requirements:
   - class: InlineJavascriptRequirement

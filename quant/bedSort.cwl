@@ -4,7 +4,7 @@ cwlVersion: 'cwl:draft-3'
 class: CommandLineTool
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dleehr/docker-hubutils'
+    dockerPull: 'dleehr/docker-hubutils'
 
 requirements:
   - class: InlineJavascriptRequirement
