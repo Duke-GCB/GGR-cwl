@@ -4,7 +4,7 @@
 
 CWL tools and workflows associated with the Genomics of Gene Regulation (GGR) project
 
-GGR pipelines created using the [Common Worflow Language](http://www.commonwl.org/) `draft-3` specification. 
+GGR pipelines created using the [Common Workflow Language](http://www.commonwl.org/) `draft-3` specification. 
 The workflows are parametrized with values that best suit the GGR samples, but they can be easily tailored for specific needs.
 
 For a detail User Guide to the CWL workflows, please see the [wiki](https://github.com/Duke-GCB/GGR-cwl/wiki).
