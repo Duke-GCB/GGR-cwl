@@ -11,10 +11,7 @@ requirements:
 inputs:
   - id: "#input_fastq_read1_files"
     type: {type: array, items: File}
-    description: "Input fastq paired-end read 1 files"
-  - id: "#input_fastq_read2_files"
-    type: {type: array, items: File}
-    description: "Input fastq paired-end read 2 files"
+    description: "Input fastq files"
   - id: "#sjdb_name"
     type: string
     default: "ggr.SJ.out.all.tab"
@@ -116,16 +113,9 @@ steps:
         source: "#input_fastq_read1_files"
         valueFrom: $(self.path)
       - id: "#sep"
-        valueFrom: '[\.|_]R1'
+        valueFrom: '.fastq'
     outputs:
       - id: "#basename.basename"
-  - id: "#zip_fastq_files"
-    run: {$import: "../utils/zip_arrays.cwl"}
-    inputs:
-      - {id: "#zip_fastq_files.reads1", source: "#input_fastq_read1_files"}
-      - {id: "#zip_fastq_files.reads2", source: "#input_fastq_read2_files"}
-    outputs:
-      - id: "#zip_fastq_files.zipped_list"
   - id: "#star_pass1"
     run: {$import: "../workflows/tools/STAR.cwl" }
     scatter:
@@ -134,7 +124,8 @@ steps:
     scatterMethod: dotproduct
     inputs:
       - id: "#star_pass1.readFilesIn"
-        source: "#zip_fastq_files.zipped_list"
+        source: "#input_fastq_read1_files"
+        valueFrom: $([self])
       - { id: "#star_pass1.sjdbOverhang", source: "#sjdbOverhang", valueFrom: $(parseInt(self))}
       - { id: "#star_pass1.genomeDir", source: "#genomeDirFiles" }
       - { id: "#star_pass1.outSAMattributes", valueFrom: "All" }
@@ -201,7 +192,8 @@ steps:
     inputs:
       - { id: "#star_pass2.quantMode", valueFrom: "GeneCounts" }
       - id: "#star_pass2.readFilesIn"
-        source: "#zip_fastq_files.zipped_list"
+        source: "#input_fastq_read1_files"
+        valueFrom: $([self])
       - { id: "#star_pass2.sjdbOverhang", source: "#sjdbOverhang", valueFrom: $(parseInt(self))}
       - { id: "#star_pass2.genomeDir", source: "#generate_genome.indices" } #TODO: This is my solution for the current challange that STAR presents, given that it needs a folder here...
       - { id: "#star_pass2.outSAMattributes", valueFrom: "All" }
@@ -279,7 +271,8 @@ steps:
     inputs:
       - { id: "#transcriptome_star_pass2.quantMode", valueFrom: "TranscriptomeSAM" }
       - id: "#transcriptome_star_pass2.readFilesIn"
-        source: "#zip_fastq_files.zipped_list"
+        source: "#input_fastq_read1_files"
+        valueFrom: $([self])
       - { id: "#transcriptome_star_pass2.sjdbOverhang", source: "#sjdbOverhang", valueFrom: $(parseInt(self))}
       - { id: "#transcriptome_star_pass2.genomeDir", source: "#generate_genome.indices" } #TODO: See previous TODO
       - { id: "#transcriptome_star_pass2.outSAMattributes", valueFrom: "NH HI AS NM MD" }

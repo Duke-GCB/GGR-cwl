@@ -11,10 +11,12 @@ requirements:
 inputs:
   - id: "#input_fastq_read1_files"
     type: {type: array, items: File}
-    description: "Input fastq paired-end read 1 files"
+    description: {% if read_type == 'pe' %}"Input fastq paired-end read 1 files"{% else %}"Input fastq files"{% endif %}
+{% if read_type == 'pe' %}
   - id: "#input_fastq_read2_files"
     type: {type: array, items: File}
     description: "Input fastq paired-end read 2 files"
+{% endif %}
 {% if star2pass %}
   - id: "#sjdb_name"
     type: string
@@ -124,10 +126,14 @@ steps:
         source: "#input_fastq_read1_files"
         valueFrom: $(self.path)
       - id: "#sep"
+{% if read_type == 'pe' %}
         valueFrom: '[\.|_]R1'
+{% else %}
+        valueFrom: '.fastq'
+{% endif %}
     outputs:
       - id: "#basename.basename"
-
+{% if read_type == 'pe' %}
   - id: "#zip_fastq_files"
     run: {$import: "../utils/zip_arrays.cwl"}
     inputs:
@@ -135,6 +141,7 @@ steps:
       - {id: "#zip_fastq_files.reads2", source: "#input_fastq_read2_files"}
     outputs:
       - id: "#zip_fastq_files.zipped_list"
+{% endif %}
 {% if star2pass %}
   - id: "#star_pass1"
     run: {$import: "../workflows/tools/STAR.cwl" }
@@ -144,7 +151,12 @@ steps:
     scatterMethod: dotproduct
     inputs:
       - id: "#star_pass1.readFilesIn"
+{% if read_type == 'pe' %}
         source: "#zip_fastq_files.zipped_list"
+{% else %}
+        source: "#input_fastq_read1_files"
+        valueFrom: $([self])
+{% endif %}
       - { id: "#star_pass1.sjdbOverhang", source: "#sjdbOverhang", valueFrom: $(parseInt(self))}
       - { id: "#star_pass1.genomeDir", source: "#genomeDirFiles" }
       - { id: "#star_pass1.outSAMattributes", valueFrom: "All" }
@@ -215,7 +227,13 @@ steps:
     scatterMethod: dotproduct
     inputs:
       - { id: "#star_pass2.quantMode", valueFrom: "GeneCounts" }
-      - { id: "#star_pass2.readFilesIn", source: "#zip_fastq_files.zipped_list" }
+      - id: "#star_pass2.readFilesIn"
+{% if read_type == 'pe' %}
+        source: "#zip_fastq_files.zipped_list"
+{% else %}
+        source: "#input_fastq_read1_files"
+        valueFrom: $([self])
+{% endif %}
       - { id: "#star_pass2.sjdbOverhang", source: "#sjdbOverhang", valueFrom: $(parseInt(self))}
       - { id: "#star_pass2.genomeDir", source: {% if star2pass %}"#generate_genome.indices"{% else %}"#genomeDirFiles"{% endif %} } #TODO: This is my solution for the current challange that STAR presents, given that it needs a folder here...
       - { id: "#star_pass2.outSAMattributes", valueFrom: "All" }
@@ -299,7 +317,13 @@ steps:
     scatterMethod: dotproduct
     inputs:
       - { id: "#transcriptome_star_pass2.quantMode", valueFrom: "TranscriptomeSAM" }
-      - { id: "#transcriptome_star_pass2.readFilesIn", source: "#zip_fastq_files.zipped_list"}
+      - id: "#transcriptome_star_pass2.readFilesIn"
+{% if read_type == 'pe' %}
+        source: "#zip_fastq_files.zipped_list"
+{% else %}
+        source: "#input_fastq_read1_files"
+        valueFrom: $([self])
+{% endif %}
       - { id: "#transcriptome_star_pass2.sjdbOverhang", source: "#sjdbOverhang", valueFrom: $(parseInt(self))}
       - { id: "#transcriptome_star_pass2.genomeDir", source: {% if star2pass %}"#generate_genome.indices"{% else %}"#genomeDirFiles"{% endif %} } #TODO: See previous TODO
       - { id: "#transcriptome_star_pass2.outSAMattributes", valueFrom: "NH HI AS NM MD" }

@@ -44,8 +44,10 @@
         {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.n2g.idx.fa"},
         {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.chrlist"}
     ],
+{% if 'pe' == wf_conf['rt'] %}
     "bamtools_forward_filter_file": {"class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/quantification/forward_filter.txt"},
     "bamtools_reverse_filter_file": {"class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/quantification/reverse_filter.txt"},
+{% endif %}
     "nthreads_qc": {{ nthreads }},
     "nthreads_trimm": {{ nthreads }},
     "nthreads_map": {{ nthreads }},

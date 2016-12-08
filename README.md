@@ -56,6 +56,12 @@ For a detail User Guide to the CWL workflows, please see the [wiki](https://gith
 ## [RNA-seq](RNA-seq_pipeline):
 
 ### Pipelines
+* [SE - Unstranded](RNA-seq_pipeline/pipeline-se-unstranded.cwl)
+* [SE - Unstranded - w/sjdb](RNA-seq_pipeline/pipeline-se-unstranded-with-sjdb.cwl)
+* [SE - Stranded](RNA-seq_pipeline/pipeline-se-stranded.cwl)
+* [SE - Stranded - w/sjdb](RNA-seq_pipeline/pipeline-se-stranded-with-sjdb.cwl)
+* [SE - Revstranded](RNA-seq_pipeline/pipeline-se-revstranded.cwl)
+* [SE - Revstranded - w/sjdb](RNA-seq_pipeline/pipeline-se-revstranded-with-sjdb.cwl)
 * [PE - Unstranded](RNA-seq_pipeline/pipeline-pe-unstranded.cwl)
 * [PE - Unstranded - w/sjdb](RNA-seq_pipeline/pipeline-pe-unstranded-with-sjdb.cwl)
 * [PE - Stranded](RNA-seq_pipeline/pipeline-pe-stranded.cwl)
@@ -67,13 +73,20 @@ For a detail User Guide to the CWL workflows, please see the [wiki](https://gith
 * 00 - Genome files generation for STAR and RSEM:
     * 00 - [Preprocessing step](RNA-seq_pipeline/00-preprocessing.cwl)
 * 01 - Fastq QC step:
+    * 01 - [Fastq QC step - SE](RNA-seq_pipeline/01-qc-se.cwl)
     * 01 - [Fastq QC step - PE](RNA-seq_pipeline/01-qc-pe.cwl)
 * 02 - Trimming reads step:
+    * 02 - [Trimming step - SE](RNA-seq_pipeline/02-trim-se.cwl)
     * 02 - [Trimming step - PE](RNA-seq_pipeline/02-trim-pe.cwl)
 * 03 - Mapping step:
+    * 03 - [Mapping step - SE](RNA-seq_pipeline/03-map-se.cwl)
+    * 03 - [Mapping step - SE - w/sjdb](RNA-seq_pipeline/03-map-se-with-sjdb.cwl)
     * 03 - [Mapping step - PE](RNA-seq_pipeline/03-map-pe.cwl)
-    * 03 - [Mapping step - PE - w/sjdb](RNA-seq_pipeline/03-map-pe.cwl)
+    * 03 - [Mapping step - PE - w/sjdb](RNA-seq_pipeline/03-map-pe-with-sjdb.cwl)
 * 04 - Quantification step:
+    * 04 - [Quantification step - SE - Unstranded](RNA-seq_pipeline/04-quantification-se-unstranded.cwl)
+    * 04 - [Quantification step - SE - Stranded](RNA-seq_pipeline/04-quantification-se-stranded.cwl)
+    * 04 - [Quantification step - SE - Revstranded](RNA-seq_pipeline/04-quantification-se-revstranded.cwl)
     * 04 - [Quantification step - PE - Unstranded](RNA-seq_pipeline/04-quantification-pe-unstranded.cwl)
     * 04 - [Quantification step - PE - Stranded](RNA-seq_pipeline/04-quantification-pe-stranded.cwl)
     * 04 - [Quantification step - PE - Revstranded](RNA-seq_pipeline/04-quantification-pe-revstranded.cwl)

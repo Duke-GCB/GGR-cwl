@@ -10,9 +10,6 @@ inputs:
   - id: "#input_fastq_read1_files"
     type: {type: array, items: File}
     description: "Input read1 fastq files"
-  - id: "#input_fastq_read2_files"
-    type: {type: array, items: File}
-    description: "Input read2 fastq files"
   - id: "#default_adapters_file"
     type: File
     description: "Adapters file"
@@ -40,12 +37,6 @@ inputs:
   - id: "#sjdb_name"
     type: string
     default: "ggr.SJ.out.all.tab"
-  - id: "#bamtools_forward_filter_file"
-    type: File
-    description: "JSON filter file for forward strand used in bamtools (see bamtools-filter command)"
-  - id: "#bamtools_reverse_filter_file"
-    type: File
-    description: "JSON filter file for reverse strand used in bamtools (see bamtools-filter command)"
   - id: "#rsem_reference_files"
     type: {type: array, items: File}
     description: "RSEM genome reference files - generated with the rsem-prepare-reference command"
@@ -86,31 +77,6 @@ outputs:
   - id: "#output_trimmed_read1_fastq_read_count"
     source: "#trim.output_trimmed_read1_fastq_read_count"
     description: "Trimmed read counts of paired read 1 fastq files"
-    type: {type: array, items: File}
-  - id: "#output_fastqc_report_files_read2"
-    source: "#qc.output_fastqc_report_files_read2"
-    description: "FastQC reports in zip format for paired read 2"
-    type: {type: array, items: File}
-  - id: "#output_fastqc_data_files_read2"
-    source: "#qc.output_fastqc_data_files_read2"
-    description: "FastQC data files for paired read 2"
-    type: {type: array, items: File}
-  - id: "#output_custom_adapters_read2"
-    source: "#qc.output_custom_adapters_read2"
-    type: {type: array, items: File}
-  - id: "#output_count_raw_reads_read2"
-    source: "#qc.output_count_raw_reads_read2"
-    type: {type: array, items: File}
-  - id: "#output_diff_counts_read2"
-    source: "#qc.output_diff_counts_read2"
-    type: {type: array, items: File}
-  - id: "#output_data_fastq_read2_trimmed_files"
-    source: "#trim.output_data_fastq_read2_trimmed_files"
-    description: "Trimmed fastq files for paired read 2"
-    type: {type: array, items: File}
-  - id: "#output_trimmed_read2_fastq_read_count"
-    source: "#trim.output_trimmed_read2_fastq_read_count"
-    description: "Trimmed read counts of paired read 2 fastq files"
     type: {type: array, items: File}
   - id: "#star_aligned_unsorted_file"
     source: "#map.star_aligned_unsorted_file"
@@ -188,44 +154,19 @@ outputs:
     source: "#quant.rsem_genes_files"
     description: "RSEM genes files"
     type: {type: array, items: File}
-  - id: "#bam_plus_files"
-    source: "#quant.bam_plus_files"
-    description: "BAM files containing only reads in the forward (plus) strand."
+  - id: "#bw_raw_files"
+    source: "#quant.bw_raw_files"
+    description: "Raw bigWig files."
     type: {type: array, items: File}
-  - id: "#bam_minus_files"
-    source: "#quant.bam_minus_files"
-    description: "BAM files containing only reads in the reverse (minus) strand."
-    type: {type: array, items: File}
-  - id: "#index_bam_plus_files"
-    source: "#quant.index_bam_plus_files"
-    description: "Index files for BAM files containing only reads in the forward (plus) strand."
-    type: {type: array, items: File}
-  - id: "#index_bam_minus_files"
-    source: "#quant.index_bam_minus_files"
-    description: "Index files for BAM files containing only reads in the reverse (minus) strand."
-    type: {type: array, items: File}
-  - id: "#bw_raw_plus_files"
-    source: "#quant.bw_raw_plus_files"
-    description: "Raw bigWig files from BAM files containing only reads in the forward (plus) strand."
-    type: {type: array, items: File}
-  - id: "#bw_raw_minus_files"
-    source: "#quant.bw_raw_minus_files"
-    description: "Raw bigWig files from BAM files containing only reads in the reverse (minus) strand."
-    type: {type: array, items: File}
-  - id: "#bw_norm_plus_files"
-    source: "#quant.bw_norm_plus_files"
-    description: "Normalized by RPKM bigWig files from BAM files containing only reads in the forward (plus) strand."
-    type: {type: array, items: File}
-  - id: "#bw_norm_minus_files"
-    source: "#quant.bw_norm_minus_files"
-    description: "Normalized by RPKM bigWig files from BAM files containing only reads in the forward (plus) strand."
+  - id: "#bw_norm_files"
+    source: "#quant.bw_norm_files"
+    description: "Normalized by RPKM bigWig files."
     type: {type: array, items: File}
 steps:
   - id: "#qc"
-    run: {$import: "01-qc-pe.cwl" }
+    run: {$import: "01-qc-se.cwl" }
     inputs:
       - { id: "#qc.input_fastq_read1_files", source: "#input_fastq_read1_files" }
-      - { id: "#qc.input_fastq_read2_files", source: "#input_fastq_read2_files" }
       - { id: "#qc.default_adapters_file", source: "#default_adapters_file" }
       - { id: "#qc.nthreads", source: "#nthreads_qc" }
     outputs:
@@ -234,31 +175,21 @@ steps:
       - id: "#qc.output_custom_adapters_read1"
       - id: "#qc.output_count_raw_reads_read1"
       - id: "#qc.output_diff_counts_read1"
-      - id: "#qc.output_fastqc_report_files_read2"
-      - id: "#qc.output_fastqc_data_files_read2"
-      - id: "#qc.output_custom_adapters_read2"
-      - id: "#qc.output_count_raw_reads_read2"
-      - id: "#qc.output_diff_counts_read2"
   - id: "#trim"
-    run: {$import: "02-trim-pe.cwl" }
+    run: {$import: "02-trim-se.cwl" }
     inputs:
       - { id: "#trim.input_fastq_read1_files", source: "#input_fastq_read1_files" }
       - { id: "#trim.input_read1_adapters_files", source: "#qc.output_custom_adapters_read1" }
-      - { id: "#trim.input_fastq_read2_files", source: "#input_fastq_read2_files" }
-      - { id: "#trim.input_read2_adapters_files", source: "#qc.output_custom_adapters_read2" }
       - { id: "#trim.trimmomatic_jar_path", source: "#trimmomatic_jar_path" }
       - { id: "#trim.trimmomatic_java_opts", source: "#trimmomatic_java_opts" }
       - { id: "#trim.nthreads", source: "#nthreads_trimm" }
     outputs:
       - id: "#trim.output_data_fastq_read1_trimmed_files"
       - id: "#trim.output_trimmed_read1_fastq_read_count"
-      - id: "#trim.output_data_fastq_read2_trimmed_files"
-      - id: "#trim.output_trimmed_read2_fastq_read_count"
   - id: "#map"
-    run: {$import: "03-map-pe.cwl" }
+    run: {$import: "03-map-se.cwl" }
     inputs:
       - { id: "#map.input_fastq_read1_files", source: "#trim.output_data_fastq_read1_trimmed_files" }
-      - { id: "#map.input_fastq_read2_files", source: "#trim.output_data_fastq_read2_trimmed_files" }
       - { id: "#map.genome_sizes_file", source: "#genome_sizes_file" }
       - { id: "#map.genome_fasta_files", source: "#genome_fasta_files" }
       - { id: "#map.annotation_file", source: "#annotation_file" }
@@ -284,7 +215,7 @@ steps:
       - id: "#map.read_count_mapped_star1"
       - id: "#map.star_1pass_sjdb"
   - id: "#quant"
-    run: {$import: "04-quantification-pe-unstranded.cwl" }
+    run: {$import: "04-quantification-se-revstranded.cwl" }
     inputs:
       - { id: "#quant.input_bam_files", source: "#map.star_aligned_sorted_file" }
       - { id: "#quant.input_transcripts_bam_files", source: "#map.transcriptome_star_aligned_file" }
@@ -292,17 +223,9 @@ steps:
       - { id: "#quant.input_genome_sizes", source: "#genome_sizes_file" }
       - { id: "#quant.rsem_reference_files", source: "#rsem_reference_files" }
       - { id: "#quant.nthreads", source: "#nthreads_quant" }
-      - { id: "#quant.bamtools_forward_filter_file", source: "#bamtools_forward_filter_file" }
-      - { id: "#quant.bamtools_reverse_filter_file", source: "#bamtools_reverse_filter_file" }
     outputs:
       - id: "#quant.featurecounts_counts"
       - id: "#quant.rsem_isoforms_files"
       - id: "#quant.rsem_genes_files"
-      - id: "#quant.bam_plus_files"
-      - id: "#quant.bam_minus_files"
-      - id: "#quant.index_bam_plus_files"
-      - id: "#quant.index_bam_minus_files"
-      - id: "#quant.bw_raw_plus_files"
-      - id: "#quant.bw_raw_minus_files"
-      - id: "#quant.bw_norm_plus_files"
-      - id: "#quant.bw_norm_minus_files"
+      - id: "#quant.bw_raw_files"
+      - id: "#quant.bw_norm_files"

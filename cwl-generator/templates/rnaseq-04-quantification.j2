@@ -23,12 +23,14 @@ inputs:
   - id: "#annotation_file"
     type: File
     description: "GTF annotation file"
+{% if read_type == 'pe' %}
   - id: "#bamtools_forward_filter_file"
     type: File
     description: "JSON filter file for forward strand used in bamtools (see bamtools-filter command)"
   - id: "#bamtools_reverse_filter_file"
     type: File
     description: "JSON filter file for reverse strand used in bamtools (see bamtools-filter command)"
+{% endif %}
   - id: "#nthreads"
     type: int
     default: 1
@@ -53,6 +55,7 @@ outputs:
     source: "#rsem-calc-expr.genes"
     description: "RSEM genes files"
     type: {type: array, items: File}
+{% if read_type == 'pe' %}
   - id: "#bam_plus_files"
     source: "#split_bams.bam_plus_files"
     description: "BAM files containing only reads in the forward (plus) strand."
@@ -85,7 +88,16 @@ outputs:
     source: "#bdg2bw-norm-minus.output_bigwig"
     description: "Normalized by RPKM bigWig files from BAM files containing only reads in the forward (plus) strand."
     type: {type: array, items: File}
-
+{% else %}
+  - id: "#bw_raw_files"
+    source: "#bdg2bw-raw.output_bigwig"
+    description: "Raw bigWig files."
+    type: {type: array, items: File}
+  - id: "#bw_norm_files"
+    source: "#bamcoverage.output_bam_coverage"
+    description: "Normalized by RPKM bigWig files."
+    type: {type: array, items: File}
+{% endif %}
 steps:
   - id: "#basename"
     run: {$import: "../utils/basename.cwl" }
@@ -150,7 +162,9 @@ steps:
             var trans_file_str = self.map(function(e){return e.path}).filter(function(e){return e.match(/\.transcripts\.fa$/)})[0];
             return trans_file_str.match(/.*[\\\/](.*)\.transcripts\.fa$/)[1];
           }
+{% if read_type == 'pe' %}
       - { id: "#rsem-calc-expr.paired-end", valueFrom: $(true) }
+{% endif %}
       - { id: "#rsem-calc-expr.no-bam-output", valueFrom: $(true) }
 {% if strandness == "stranded" %}
       - { id: "#rsem-calc-expr.strand-specific", valueFrom: $(true) }
@@ -163,6 +177,7 @@ steps:
       - id: "#rsem-calc-expr.genes"
       - id: "#rsem-calc-expr.rsem_stat"
 
+{% if read_type == 'pe' %}
   - id: "#split_bams"
     run: {$import: "../quant/split-bams-by-strand-and-index.cwl"}
     inputs:
@@ -295,3 +310,44 @@ steps:
       - { id: "#bdg2bw-norm-minus.output_suffix", valueFrom: ".Aligned.minus.norm.bw" }
     outputs:
       - id: "#bdg2bw-norm-minus.output_bigwig"
+{% else %}
+  - id: "#bedtools_genomecov"
+    run: {$import: "../map/bedtools-genomecov.cwl"}
+    scatter: "#bedtools_genomecov.ibam"
+    inputs:
+      - { id: "#bedtools_genomecov.ibam",  source: "#input_bam_files" }
+      - { id: "#bedtools_genomecov.g", source: "#input_genome_sizes"}
+      - { id: "#bedtools_genomecov.bg", valueFrom: $(true) }
+    outputs:
+      - id: "#bedtools_genomecov.output_bedfile"
+
+  - id: "#bedsort_genomecov"
+    run: {$import: "../quant/bedSort.cwl"}
+    scatter: "#bedsort_genomecov.bed_file"
+    inputs:
+      - { id: "#bedsort_genomecov.bed_file",  source: "#bedtools_genomecov.output_bedfile" }
+    outputs:
+      - id: "#bedsort_genomecov.bed_file_sorted"
+
+  - id: "#bdg2bw-raw"
+    run: {$import: "../quant/bedGraphToBigWig.cwl"}
+    scatter: "#bdg2bw-raw.bed_graph"
+    inputs:
+      - { id: "#bdg2bw-raw.bed_graph", source: "#bedsort_genomecov.bed_file_sorted" }
+      - { id: "#bdg2bw-raw.genome_sizes", source: "#input_genome_sizes" }
+      - { id: "#bdg2bw-raw.output_suffix", valueFrom: ".raw.bw" }
+    outputs:
+      - id: "#bdg2bw-raw.output_bigwig"
+  - id: "#bamcoverage"
+    run: {$import: "../quant/deeptools-bamcoverage.cwl"}
+    scatter: "#bamcoverage.bam"
+    inputs:
+      - { id: "#bamcoverage.bam", source: "#input_bam_files" }
+      - { id: "#bamcoverage.output_suffix", valueFrom: ".norm.bw" }
+      - { id: "#bamcoverage.numberOfProcessors", source: "#nthreads" }
+      - { id: "#bamcoverage.normalizeUsingRPKM", valueFrom: $(true) }
+    outputs:
+      - id: "#bamcoverage.output_bam_coverage"
+
+
+{% endif %}

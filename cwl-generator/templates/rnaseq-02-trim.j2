@@ -17,6 +17,7 @@ inputs:
       type: array
       items: File
     description: "Input read 1 adapters files"
+{% if read_type == 'pe' %}
   - id: "#input_fastq_read2_files"
     type:
       type: array
@@ -27,6 +28,7 @@ inputs:
       type: array
       items: File
     description: "Input read 2 adapters files"
+{% endif %}
   - id: "#nthreads"
     type: int
     default: 1
@@ -56,6 +58,7 @@ outputs:
     type:
       type: array
       items: File
+{% if read_type == 'pe' %}
   - id: "#output_data_fastq_read2_trimmed_files"
     source: "#trimmomatic.output_read2_trimmed_paired_file"
     description: "Trimmed fastq files for paired read 2"
@@ -68,7 +71,9 @@ outputs:
     type:
       type: array
       items: File
+{% endif %}
 steps:
+{% if read_type == 'pe' %}
   - id: "#concat_adapters"
     run: {$import: "../utils/concat-files.cwl"}
     scatter:
@@ -82,20 +87,28 @@ steps:
         source: "#input_read2_adapters_files"
     outputs:
       - id: "#concat_adapters.output_file"
+{% endif %}
   - id: "#trimmomatic"
     run: {$import: "../trimmomatic/trimmomatic.cwl"}
     scatter:
       - "#trimmomatic.input_read1_fastq_file"
+{% if read_type == 'pe' %}
       - "#trimmomatic.input_read2_fastq_file"
+{% endif %}
       - "#trimmomatic.input_adapters_file"
     scatterMethod: dotproduct
     inputs:
       - id: "#trimmomatic.input_read1_fastq_file"
         source: "#input_fastq_read1_files"
+{% if read_type == 'pe' %}
       - id: "#trimmomatic.input_read2_fastq_file"
         source: "#input_fastq_read2_files"
       - id: "#trimmomatic.input_adapters_file"
         source: "#concat_adapters.output_file"
+{% else %}
+      - id: "#trimmomatic.input_adapters_file"
+        source: "#input_read1_adapters_files"
+{% endif %}
       - id: "#trimmomatic.nthreads"
         source: "#nthreads"
       - id: "#trimmomatic.java_opts"
@@ -105,7 +118,11 @@ steps:
       - id: "#trimmomatic.illuminaclip"
         valueFrom: "2:30:15"
       - id: "#trimmomatic.end_mode"
+{% if read_type == 'pe' %}
         valueFrom: "PE"
+{% else %}
+        valueFrom: "SE"
+{% endif %}
       - id: "#trimmomatic.leading"
         valueFrom: $(3)
       - id: "#trimmomatic.trailing"
@@ -119,8 +136,10 @@ steps:
     outputs:
       - id: "#trimmomatic.output_read1_trimmed_file"
 #      - id: "#trimmomatic.output_read1_trimmed_unpaired_file"
+{% if read_type == 'pe' %}
       - id: "#trimmomatic.output_read2_trimmed_paired_file"
 #      - id: "#trimmomatic.output_read2_trimmed_unpaired_file"
+{% endif %}
   - id: "#extract_basename_read1"
     run: {$import: "../utils/extract-basename.cwl" }
     scatter: "#extract_basename_read1.input_file"
@@ -142,6 +161,7 @@ steps:
         source: "#extract_basename_read1.output_basename"
     outputs:
       - id: "#count_fastq_reads_read1.output_read_count"
+{% if read_type == 'pe' %}
   - id: "#extract_basename_read2"
     run: {$import: "../utils/extract-basename.cwl" }
     scatter: "#extract_basename_read2.input_file"
@@ -163,3 +183,4 @@ steps:
         source: "#extract_basename_read2.output_basename"
     outputs:
       - id: "#count_fastq_reads_read2.output_read_count"
+{% endif %}

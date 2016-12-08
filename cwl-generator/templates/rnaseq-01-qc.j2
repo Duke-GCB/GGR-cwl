@@ -12,11 +12,13 @@ inputs:
       type: array
       items: File
     description: "Input read1 fastq files"
+{% if read_type == 'pe' %}
   - id: "#input_fastq_read2_files"
     type:
       type: array
       items: File
     description: "Input read2 fastq files"
+{% endif %}
   - id: "#default_adapters_file"
     type: File
     description: "Adapters file"
@@ -51,6 +53,7 @@ outputs:
     type:
       type: array
       items: File
+{% if read_type == 'pe' %}
   - id: "#output_fastqc_report_files_read2"
     source: "#fastqc_read2.output_qc_report_file"
     description: "FastQC reports in zip format for paired read 2"
@@ -78,6 +81,7 @@ outputs:
     type:
       type: array
       items: File
+{% endif %}
 steps:
   - id: "#extract_basename_read1"
     run: {$import: "../utils/extract-basename.cwl" }
@@ -164,6 +168,7 @@ steps:
         source: "#count_fastqc_reads_read1.output_fastqc_read_count"
     outputs:
       - id: "#compare_read_counts_read1.result"
+{% if read_type == 'pe' %}
   - id: "#extract_basename_read2"
     run: {$import: "../utils/extract-basename.cwl" }
     scatter: "#extract_basename_read2.input_file"
@@ -249,3 +254,4 @@ steps:
         source: "#count_fastqc_reads_read2.output_fastqc_read_count"
     outputs:
       - id: "#compare_read_counts_read2.result"
+{% endif %}

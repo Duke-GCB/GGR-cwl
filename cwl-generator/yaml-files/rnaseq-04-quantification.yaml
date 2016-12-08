@@ -7,3 +7,12 @@
 -
   read_type: pe
   strandness: revstranded
+-
+  read_type: se
+  strandness: unstranded
+-
+  read_type: se
+  strandness: stranded
+-
+  read_type: se
+  strandness: revstranded

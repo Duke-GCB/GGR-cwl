@@ -115,7 +115,8 @@ steps:
     scatterMethod: dotproduct
     inputs:
       - { id: "#star_pass2.quantMode", valueFrom: "GeneCounts" }
-      - { id: "#star_pass2.readFilesIn", source: "#zip_fastq_files.zipped_list" }
+      - id: "#star_pass2.readFilesIn"
+        source: "#zip_fastq_files.zipped_list"
       - { id: "#star_pass2.sjdbOverhang", source: "#sjdbOverhang", valueFrom: $(parseInt(self))}
       - { id: "#star_pass2.genomeDir", source: "#genomeDirFiles" } #TODO: This is my solution for the current challange that STAR presents, given that it needs a folder here...
       - { id: "#star_pass2.outSAMattributes", valueFrom: "All" }
@@ -192,7 +193,8 @@ steps:
     scatterMethod: dotproduct
     inputs:
       - { id: "#transcriptome_star_pass2.quantMode", valueFrom: "TranscriptomeSAM" }
-      - { id: "#transcriptome_star_pass2.readFilesIn", source: "#zip_fastq_files.zipped_list"}
+      - id: "#transcriptome_star_pass2.readFilesIn"
+        source: "#zip_fastq_files.zipped_list"
       - { id: "#transcriptome_star_pass2.sjdbOverhang", source: "#sjdbOverhang", valueFrom: $(parseInt(self))}
       - { id: "#transcriptome_star_pass2.genomeDir", source: "#genomeDirFiles" } #TODO: See previous TODO
       - { id: "#transcriptome_star_pass2.outSAMattributes", valueFrom: "NH HI AS NM MD" }
