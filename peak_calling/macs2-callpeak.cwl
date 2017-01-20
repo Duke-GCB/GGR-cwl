@@ -359,7 +359,9 @@ outputs:
     outputBinding:
       glob: $(inputs.treatment[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_peaks.xls')
   - id: output_peak_summits_file
-    type: File
+    type: 
+      - 'null'
+      - File
     description: "Peaks summits bedfile."
     outputBinding:
       glob: $(inputs.treatment[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_summits.bed')
