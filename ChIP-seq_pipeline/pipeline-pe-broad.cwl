@@ -63,13 +63,13 @@ inputs:
       - string
     description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
 outputs:
-   - id: "#qc_count_raw_reads_read1"
+  - id: "#qc_count_raw_reads_read1"
     source: "#qc.output_count_raw_reads_read1"
     description: "Raw read counts of fastq files for read 1 after QC"
     type:
       type: array
       items: File
- - id: "#qc_count_raw_reads_read2"
+  - id: "#qc_count_raw_reads_read2"
     source: "#qc.output_count_raw_reads_read2"
     description: "Raw read counts of fastq files for read 2 after QC"
     type:
@@ -84,6 +84,30 @@ outputs:
   - id: "#qc_diff_counts_read2"
     source: "#qc.output_diff_counts_read2"
     description: "Diff file between number of raw reads and number of reads counted by FASTQC, read 2"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_report_files_read1"
+    source: "#qc.output_fastqc_report_files_read1"
+    description: "FastQC reports in zip format for paired read 1"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_report_files_read2"
+    source: "#qc.output_fastqc_report_files_read2"
+    description: "FastQC reports in zip format for paired read 2"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_data_files_read1"
+    source: "#qc.output_fastqc_data_files_read1"
+    description: "FastQC data files for paired read 1"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_data_files_read2"
+    source: "#qc.output_fastqc_data_files_read2"
+    description: "FastQC data files for paired read 2"
     type:
       type: array
       items: File

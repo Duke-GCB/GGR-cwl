@@ -5,7 +5,7 @@ description: "Filter BAM file to only include reads overlapping with a BED file"
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/samtools'
+    dockerPull: 'dukegcb/samtools'
 
 requirements:
   - class: InlineJavascriptRequirement

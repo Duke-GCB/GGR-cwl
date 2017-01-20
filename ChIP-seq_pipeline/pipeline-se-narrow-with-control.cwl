@@ -67,6 +67,18 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#qc_treatment_fastqc_report_files"
+    source: "#qc_treatment.output_fastqc_report_files"
+    description: "FastQC reports in zip format"
+    type:
+      type: array
+      items: File
+  - id: "#qc_treatment_fastqc_data_files"
+    source: "#qc_treatment.output_fastqc_data_files"
+    description: "FastQC data files"
+    type:
+      type: array
+      items: File
   - id: "#trimm_treatment_raw_read_counts"
     source: "#trimm_treatment.trimmed_fastq_read_count"
     description: "Raw read counts of fastq files after TRIMM for treatment"
@@ -130,6 +142,18 @@ outputs:
   - id: "#qc_control_raw_read_counts"
     source: "#qc_control.output_raw_read_counts"
     description: "Raw read counts of fastq files after QC for control"
+    type:
+      type: array
+      items: File
+  - id: "#qc_control_fastqc_report_files"
+    source: "#qc_control.output_fastqc_report_files"
+    description: "FastQC reports in zip format"
+    type:
+      type: array
+      items: File
+  - id: "#qc_control_fastqc_data_files"
+    source: "#qc_control.output_fastqc_data_files"
+    description: "FastQC data files"
     type:
       type: array
       items: File

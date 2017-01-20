@@ -119,6 +119,30 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#qc_{{ sample_type }}_fastqc_report_files_read1"
+    source: "#qc_{{ sample_type }}.output_fastqc_report_files_read1"
+    description: "FastQC reports in zip format for paired read 1"
+    type:
+      type: array
+      items: File
+  - id: "#qc_{{ sample_type }}_fastqc_report_files_read2"
+    source: "#qc_{{ sample_type }}.output_fastqc_report_files_read2"
+    description: "FastQC reports in zip format for paired read 2"
+    type:
+      type: array
+      items: File
+  - id: "#qc_{{ sample_type }}_fastqc_data_files_read1"
+    source: "#qc_{{ sample_type }}.output_fastqc_data_files_read1"
+    description: "FastQC data files for paired read 1"
+    type:
+      type: array
+      items: File
+  - id: "#qc_{{ sample_type }}_fastqc_data_files_read2"
+    source: "#qc_{{ sample_type }}.output_fastqc_data_files_read2"
+    description: "FastQC data files for paired read 2"
+    type:
+      type: array
+      items: File
   - id: "#trimm_{{ sample_type }}_raw_counts_read1"
     source: "#trimm_{{ sample_type }}.output_trimmed_read1_fastq_read_count"
     description: "Raw read counts for R1 of fastq files after TRIMM for {{ sample_type }}"
@@ -147,6 +171,18 @@ outputs:
   - id: "#qc_{{ sample_type }}_raw_read_counts"
     source: "#qc_{{ sample_type }}.output_raw_read_counts"
     description: "Raw read counts of fastq files after QC for {{ sample_type }}"
+    type:
+      type: array
+      items: File
+  - id: "#qc_{{ sample_type }}_fastqc_report_files"
+    source: "#qc_{{ sample_type }}.output_fastqc_report_files"
+    description: "FastQC reports in zip format"
+    type:
+      type: array
+      items: File
+  - id: "#qc_{{ sample_type }}_fastqc_data_files"
+    source: "#qc_{{ sample_type }}.output_fastqc_data_files"
+    description: "FastQC data files"
     type:
       type: array
       items: File
@@ -214,13 +250,13 @@ outputs:
     {%  endfor %}
 {% else %}
 {% if read_type == "pe" %}
-   - id: "#qc_count_raw_reads_read1"
+  - id: "#qc_count_raw_reads_read1"
     source: "#qc.output_count_raw_reads_read1"
     description: "Raw read counts of fastq files for read 1 after QC"
     type:
       type: array
       items: File
- - id: "#qc_count_raw_reads_read2"
+  - id: "#qc_count_raw_reads_read2"
     source: "#qc.output_count_raw_reads_read2"
     description: "Raw read counts of fastq files for read 2 after QC"
     type:
@@ -235,6 +271,30 @@ outputs:
   - id: "#qc_diff_counts_read2"
     source: "#qc.output_diff_counts_read2"
     description: "Diff file between number of raw reads and number of reads counted by FASTQC, read 2"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_report_files_read1"
+    source: "#qc.output_fastqc_report_files_read1"
+    description: "FastQC reports in zip format for paired read 1"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_report_files_read2"
+    source: "#qc.output_fastqc_report_files_read2"
+    description: "FastQC reports in zip format for paired read 2"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_data_files_read1"
+    source: "#qc.output_fastqc_data_files_read1"
+    description: "FastQC data files for paired read 1"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_data_files_read2"
+    source: "#qc.output_fastqc_data_files_read2"
+    description: "FastQC data files for paired read 2"
     type:
       type: array
       items: File
@@ -266,6 +326,18 @@ outputs:
   - id: "#qc_raw_read_counts"
     source: "#qc.output_raw_read_counts"
     description: "Raw read counts of fastq files after QC"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_report_files"
+    source: "#qc.output_fastqc_report_files"
+    description: "FastQC reports in zip format"
+    type:
+      type: array
+      items: File
+  - id: "#qc_fastqc_data_files"
+    source: "#qc.output_fastqc_data_files"
+    description: "FastQC data files"
     type:
       type: array
       items: File

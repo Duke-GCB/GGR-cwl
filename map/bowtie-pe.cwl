@@ -4,7 +4,7 @@ class: CommandLineTool
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/bowtie'
+    dockerPull: 'dukegcb/bowtie'
 
 requirements:
   - class: InlineJavascriptRequirement
@@ -43,13 +43,6 @@ inputs:
     inputBinding:
       position: 1
       prefix: "--trim5"
-  - id: "#t"
-    type: boolean
-    default: true
-    description: "Print wall-clock time taken by search phases"
-    inputBinding:
-      position: 1
-      prefix: "-t"
   - id: "#t"
     type: boolean
     default: true

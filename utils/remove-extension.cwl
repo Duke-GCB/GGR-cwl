@@ -5,7 +5,7 @@ description: "Extracts the base name of a file"
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/workflow-utils'
+    dockerPull: 'dukegcb/workflow-utils'
 
 inputs:
   - id: "#file_path"

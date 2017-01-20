@@ -6,7 +6,7 @@ class: CommandLineTool
 
 hints:
   - class: DockerRequirement
-    dockerImageId: "dukegcb/spp"
+    dockerPull: "dukegcb/spp"
 
 requirements:
   - class: InlineJavascriptRequirement

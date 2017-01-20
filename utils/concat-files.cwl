@@ -5,7 +5,7 @@ description: "Concat file1 and file2 into output_file."
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/workflow-utils'
+    dockerPull: 'dukegcb/workflow-utils'
 
 inputs:
   - id: "#input_file1"

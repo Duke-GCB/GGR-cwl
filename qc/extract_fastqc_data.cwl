@@ -5,7 +5,7 @@ description: "Unzips a zipped fastqc report and returns the fastqc_data.txt file
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/fastqc' # Just so that unzip is installed
+    dockerPull: 'dukegcb/fastqc' # Just so that unzip is installed
 
 inputs:
   - id: "#pipe"

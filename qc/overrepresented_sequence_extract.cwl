@@ -4,7 +4,7 @@ class: CommandLineTool
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/overrepresented_sequence_extract'
+    dockerPull: 'dukegcb/overrepresented_sequence_extract'
 
 inputs:
   - id: "#input_fastqc_data"

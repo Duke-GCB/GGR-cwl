@@ -4,7 +4,7 @@ class: CommandLineTool
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/preseq'
+    dockerPull: 'dukegcb/preseq'
 
 requirements:
   - class: InlineJavascriptRequirement

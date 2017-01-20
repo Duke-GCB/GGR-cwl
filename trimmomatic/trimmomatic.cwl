@@ -6,7 +6,7 @@ class: CommandLineTool
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/trimmomatic'
+    dockerPull: 'dukegcb/trimmomatic'
 
 requirements:
   - class: InlineJavascriptRequirement

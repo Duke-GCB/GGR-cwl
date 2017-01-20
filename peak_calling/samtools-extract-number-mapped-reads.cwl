@@ -5,7 +5,7 @@ description: "Extract mapped reads from BAM file using Samtools flagstat command
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/samtools'
+    dockerPull: 'dukegcb/samtools'
 
 requirements:
   - class: InlineJavascriptRequirement

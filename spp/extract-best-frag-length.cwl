@@ -5,7 +5,7 @@ description: "Extracts best fragment length from SPP output text file"
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/workflow-utils'
+    dockerPull: 'dukegcb/workflow-utils'
 
 inputs:
   - id: "#input_spp_txt_file"

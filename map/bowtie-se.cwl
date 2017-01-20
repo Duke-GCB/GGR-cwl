@@ -4,7 +4,7 @@ class: CommandLineTool
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/bowtie'
+    dockerPull: 'dukegcb/bowtie'
 
 requirements:
   - class: InlineJavascriptRequirement

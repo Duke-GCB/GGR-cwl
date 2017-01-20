@@ -6,7 +6,7 @@ class: CommandLineTool
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/macs2'
+    dockerPull: 'dukegcb/macs2'
 
 requirements:
   - class: InlineJavascriptRequirement

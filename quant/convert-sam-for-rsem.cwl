@@ -11,7 +11,7 @@ requirements:
   - class: ShellCommandRequirement
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/rsem:1.2.21'
+    dockerPull: 'dukegcb/rsem:1.2.21'
 inputs:
   - id: input_file
     type: File

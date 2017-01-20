@@ -12,16 +12,16 @@ inputs:
       type: array
       items: File
     description: "Input read 1 fastq files"
-  - id: "#input_fastq_read2_files"
-    type:
-      type: array
-      items: File
-    description: "Input read 2 fastq files"
   - id: "#input_read1_adapters_files"
     type:
       type: array
       items: File
     description: "Input read 1 adapters files"
+  - id: "#input_fastq_read2_files"
+    type:
+      type: array
+      items: File
+    description: "Input read 2 fastq files"
   - id: "#input_read2_adapters_files"
     type:
       type: array
@@ -50,15 +50,15 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#output_data_fastq_read2_trimmed_files"
-    source: "#trimmomatic.output_read2_trimmed_paired_file"
-    description: "Trimmed fastq files for paired read 2"
-    type:
-      type: array
-      items: File
   - id: "#output_trimmed_read1_fastq_read_count"
     source: "#count_fastq_reads_read1.output_read_count"
     description: "Trimmed read counts of paired read 1 fastq files"
+    type:
+      type: array
+      items: File
+  - id: "#output_data_fastq_read2_trimmed_files"
+    source: "#trimmomatic.output_read2_trimmed_paired_file"
+    description: "Trimmed fastq files for paired read 2"
     type:
       type: array
       items: File
@@ -129,14 +129,6 @@ steps:
         source: "#trimmomatic.output_read1_trimmed_file"
     outputs:
       - id: "#extract_basename_read1.output_basename"
-  - id: "#extract_basename_read2"
-    run: {$import: "../utils/extract-basename.cwl" }
-    scatter: "#extract_basename_read2.input_file"
-    inputs:
-      - id: "#extract_basename_read2.input_file"
-        source: "#trimmomatic.output_read2_trimmed_paired_file"
-    outputs:
-      - id: "#extract_basename_read2.output_basename"
   - id: "#count_fastq_reads_read1"
     run: {$import: "../utils/count-fastq-reads.cwl" }
     scatter:
@@ -150,6 +142,14 @@ steps:
         source: "#extract_basename_read1.output_basename"
     outputs:
       - id: "#count_fastq_reads_read1.output_read_count"
+  - id: "#extract_basename_read2"
+    run: {$import: "../utils/extract-basename.cwl" }
+    scatter: "#extract_basename_read2.input_file"
+    inputs:
+      - id: "#extract_basename_read2.input_file"
+        source: "#trimmomatic.output_read2_trimmed_paired_file"
+    outputs:
+      - id: "#extract_basename_read2.output_basename"
   - id: "#count_fastq_reads_read2"
     run: {$import: "../utils/count-fastq-reads.cwl" }
     scatter:

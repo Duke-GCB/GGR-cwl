@@ -5,7 +5,7 @@ class: CommandLineTool
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/fastqc'
+    dockerPull: 'dukegcb/fastqc'
 
 requirements:
   - class: InlineJavascriptRequirement

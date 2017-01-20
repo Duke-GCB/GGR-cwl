@@ -1,15 +1,12 @@
 #!/usr/bin/env cwl-runner
 cwlVersion: "cwl:draft-3"
-
 class: Workflow
 description: "RNA-seq 04 quantification"
-
 requirements:
   - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
   - class: InlineJavascriptRequirement
   - class: SubworkflowFeatureRequirement
-
 inputs:
   - id: "#input_bam_files"
     type: {type: array, items: File}
@@ -32,14 +29,6 @@ inputs:
   - id: "#nthreads"
     type: int
     default: 1
-  - id: "#strand_specific"
-    type: int
-    default: 1
-    description: |
-      Indicate if strand-specific read counting should be performed.
-      It has three possible values:  0 (unstranded), 1 (stranded) and
-      2 (reversely stranded).
-
 outputs:
   - id: "#featurecounts_counts"
     source: "#featurecounts.output_files"
@@ -85,7 +74,6 @@ outputs:
     source: "#bdg2bw-norm-minus.output_bigwig"
     description: "Normalized by RPKM bigWig files from BAM files containing only reads in the forward (plus) strand."
     type: {type: array, items: File}
-
 steps:
   - id: "#basename"
     run: {$import: "../utils/basename.cwl" }
@@ -98,7 +86,6 @@ steps:
         valueFrom: '\.Aligned\.out\.sorted'
     outputs:
       - id: "#basename.basename"
-
   - id: "#featurecounts"
     run: {$import: "../quant/subread-featurecounts.cwl"}
     scatter:
@@ -117,19 +104,10 @@ steps:
       - { id: "#featurecounts.B", valueFrom: $(true) }
       - { id: "#featurecounts.t", valueFrom: "exon" }
       - { id: "#featurecounts.g", valueFrom: "gene_id" }
-      - { id: "#featurecounts.s", source: "#strand_specific" }
+      - { id: "#featurecounts.s", valueFrom: $(1) }
       - { id: "#featurecounts.T", source: "#nthreads" }
     outputs:
       - id: "#featurecounts.output_files"
-  - id: "#convert-sam-for-rsem"
-    run: {$import: "../quant/convert-sam-for-rsem.cwl"}
-    scatter:
-      - "#convert-sam-for-rsem.input_file"
-    scatterMethod: dotproduct
-    inputs:
-      - { id: "#convert-sam-for-rsem.input_file", source: "#input_transcripts_bam_files"}
-    outputs:
-      - id: "#convert-sam-for-rsem.output_file"
   - id: "#rsem-calc-expr"
     run: {$import: "../quant/rsem-calculate-expression.cwl"}
     scatter:
@@ -137,7 +115,7 @@ steps:
       - "#rsem-calc-expr.sample_name"
     scatterMethod: dotproduct
     inputs:
-      - { id: "#rsem-calc-expr.bam", source: "#convert-sam-for-rsem.output_file"}
+      - { id: "#rsem-calc-expr.bam", source: "#input_transcripts_bam_files"}
       - { id: "#rsem-calc-expr.reference_files", source: "#rsem_reference_files"}
       - id: "#rsem-calc-expr.sample_name"
         source: "#basename.basename"
@@ -154,11 +132,11 @@ steps:
       - { id: "#rsem-calc-expr.strand-specific", valueFrom: $(true) }
       - { id: "#rsem-calc-expr.seed", valueFrom: $(1234) }
       - { id: "#rsem-calc-expr.num-threads", source: "#nthreads" }
+      - { id: "#rsem-calc-expr.quiet", valueFrom: $(true) }
     outputs:
       - id: "#rsem-calc-expr.isoforms"
       - id: "#rsem-calc-expr.genes"
       - id: "#rsem-calc-expr.rsem_stat"
-
   - id: "#split_bams"
     run: {$import: "../quant/split-bams-by-strand-and-index.cwl"}
     inputs:
@@ -171,7 +149,6 @@ steps:
       - {id: "#split_bams.bam_minus_files"}
       - {id: "#split_bams.index_bam_plus_files"}
       - {id: "#split_bams.index_bam_minus_files"}
-
   - id: "#bedtools_genomecov_plus"
     run: {$import: "../map/bedtools-genomecov.cwl"}
     scatter: "#bedtools_genomecov_plus.ibam"
@@ -190,8 +167,6 @@ steps:
       - { id: "#bedtools_genomecov_minus.bg", valueFrom: $(true) }
     outputs:
       - id: "#bedtools_genomecov_minus.output_bedfile"
-
-
   - id: "#bedsort_genomecov_plus"
     run: {$import: "../quant/bedSort.cwl"}
     scatter: "#bedsort_genomecov_plus.bed_file"
@@ -219,8 +194,6 @@ steps:
         valueFrom: $(self + ".Aligned.minus.raw.bdg")
     outputs:
       - id: "#negate_minus_bdg.negated_minus_bdg"
-
-
   - id: "#bdg2bw-raw-plus"
     run: {$import: "../quant/bedGraphToBigWig.cwl"}
     scatter: "#bdg2bw-raw-plus.bed_graph"
@@ -239,8 +212,6 @@ steps:
       - { id: "#bdg2bw-raw-minus.output_suffix", valueFrom: ".bw" }
     outputs:
       - id: "#bdg2bw-raw-minus.output_bigwig"
-
-
   - id: "#bamcoverage-plus"
     run: {$import: "../quant/deeptools-bamcoverage.cwl"}
     scatter: "#bamcoverage-plus.bam"
@@ -261,7 +232,6 @@ steps:
       - { id: "#bamcoverage-minus.normalizeUsingRPKM", valueFrom: $(true) }
     outputs:
       - id: "#bamcoverage-minus.output_bam_coverage"
-
   - id: "#bw2bdg-minus"
     run: {$import: "../quant/bigWigToBedGraph.cwl"}
     scatter: "#bw2bdg-minus.bigwig_file"

@@ -4,7 +4,7 @@ cwlVersion: 'cwl:draft-3'
 class: CommandLineTool
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/picard'
+    dockerPull: 'dukegcb/picard'
 
 requirements:
   - class: InlineJavascriptRequirement

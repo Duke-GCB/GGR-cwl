@@ -2,8 +2,13 @@ import textwrap
 import csv
 import argparse
 from collections import defaultdict
-from jinja2 import Environment, PackageLoader
+
+import sys
+from jinja2 import Environment, FileSystemLoader
 import os
+
+encoding = sys.getfilesystemencoding()
+EXEC_DIR = os.path.dirname(unicode(__file__, encoding)) + "/"
 
 
 def save_or_print_json(json_str, outdir, json_name):
@@ -16,11 +21,13 @@ def save_or_print_json(json_str, outdir, json_name):
 
 
 class MetadataParser(object):
-    def __init__(self, **kwargs):
-        self.nthreads = kwargs['nthreads']
-        self.mem = kwargs['mem']
-        self.file_path = kwargs['file_path']
+    def __init__(self, args):
+        self.experiment_type = args.data_type
+        self.nthreads = args.nthreads
+        self.mem = args.mem
+        self.file_path = args.meta_file
         self.records = self.load_file()
+        self.separate_jsons = args.separate_jsons
 
     def render_json(self, wf_conf, samples_list, data_dir, template_name):
         pass
@@ -31,28 +38,25 @@ class MetadataParser(object):
     def load_file(self):
         rows = []
         with open(self.file_path, 'rb') as f:
-            reader = csv.DictReader(f, delimiter='\t')
+            reader = csv.DictReader(filter(lambda row: row[0] != '#', f), delimiter='\t')
             for row in reader:
                 rows.append(row)
         return rows
 
 
 def generateMetadataParser(args):
-    return MetadataParser(file_path=args.meta_file,
-                          nthreads= args.nthreads,
-                          mem=args.mem)
+    return MetadataParser(args)
 
 
 class MetadataParserChipseq(object):
     def __init__(self, **kwargs):
         self.obj = generateMetadataParser(kwargs['args_obj'])
-        self.experiment_type = kwargs['exp_type']
 
     def __getattr__(self, attr):
         return getattr(self.obj, attr)
 
     def render_json(self, wf_conf, samples_list, data_dir, template_name):
-        env = Environment(loader=PackageLoader(package_name='json-generator'))
+        env = Environment(extensions=["jinja2.ext.do"], loader=FileSystemLoader(os.path.join(EXEC_DIR, "templates/")))
         template = env.get_template(template_name + '.j2')
         json_str = template.render({'wf_conf': wf_conf,
                                     'samples_list': samples_list,
@@ -80,27 +84,31 @@ class MetadataParserChipseq(object):
                                     'st': sample_info.keys()}
             samples_dict[wf_key].append(sample_info)
         for wf_key, samples_list in samples_dict.iteritems():
-            yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir, self.experiment_type), wf_key
+            if self.obj.separate_jsons:
+                for si, s in enumerate(sorted(samples_list)):
+                    yield self.render_json(wf_conf_dict[wf_key], [s], data_dir, self.experiment_type), wf_key, si
+            else:
+                yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir, self.experiment_type), wf_key, None
 
 
 class MetadataParserRnaseq(object):
     def __init__(self, **kwargs):
         self.obj = generateMetadataParser(kwargs['args_obj'])
-        self.experiment_type = kwargs['exp_type']
-        self.strand_specific = kwargs['strand_specific']
+        self.genomeDir = kwargs['args_obj'].genomeDir
+        self.skip_star_2pass = kwargs['args_obj'].skip_star_2pass
 
     def __getattr__(self, attr):
         return getattr(self.obj, attr)
 
     def render_json(self, wf_conf, samples_list, data_dir):
-        env = Environment(loader=PackageLoader(package_name='json-generator'))
+        env = Environment(extensions=["jinja2.ext.do"], loader=FileSystemLoader(os.path.join(EXEC_DIR, "templates/")))
         template = env.get_template(self.experiment_type + '.j2')
         json_str = template.render({'wf_conf': wf_conf,
                                     'samples_list': samples_list,
                                     'data_dir': data_dir,
-                                    'strand_specific': self.strand_specific,
                                     'nthreads': self.nthreads,
-                                    'mem': self.mem
+                                    'mem': self.mem,
+                                    'genomeDir': self.genomeDir
                                     })
         json_str = '\n'.join([l for l in json_str.split('\n') if l.strip() != ''])  # Remove empty lines
         return json_str
@@ -111,12 +119,19 @@ class MetadataParserRnaseq(object):
         for r in self.records:
             read_type = r['Paired-end or single-end'].lower()
             sample_name = r['Name']
-            wf_key = '-'.join([read_type])
-            wf_conf_dict[wf_key] = {'rt': read_type, 'sn': sample_name}
-            samples_dict[wf_key].append({'name': sample_name, 'iter': r['Iter num']})
+            strand_specific = r['Strand specificity']
+            kws = [read_type,  strand_specific]
+            if self.skip_star_2pass:
+                kws.append('with-sjdb')
+            wf_key = '-'.join(kws)
+            wf_conf_dict[wf_key] = {'iter': r['Iter num'], 'rt': read_type, 'sn': sample_name}
+            samples_dict[wf_key].append(sample_name)
         for wf_key, samples_list in samples_dict.iteritems():
-            yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir), wf_key
-
+            if self.obj.separate_jsons:
+                for si, s in enumerate(sorted(samples_list)):
+                    yield self.render_json(wf_conf_dict[wf_key], [s], data_dir), wf_key, si
+            else:
+                yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir), wf_key, None
 
 
 def main():
@@ -139,27 +154,37 @@ def main():
     parser.add_argument('-t', '--metadata-type', dest='data_type', choices=['chip-seq', 'rna-seq'],
                         default='chip-seq', help='Experiment type for the metadata.')
     parser.add_argument('--nthreads', type=int, dest='nthreads', default=16, help='Number of threads.')
-    parser.add_argument('--strand-specific', type=int, default=1, help='0 (unstranded), 1 (stranded) and 2 (reversely stranded)')
     parser.add_argument('--mem', type=int, dest='mem', default=16000, help='Memory for Java based CLT.')
+    parser.add_argument('--separate-jsons', action='store_true', help='Create one JSON per sample in the metadata.')
+    parser.add_argument('--genomeDir', default='/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_49',
+                        help='[RNA-seq only] Directory containing the STAR Genome files (indices).')
+    parser.add_argument('--skip-star-2pass', action='store_true', default=False,
+                        help='''[RNA-seq only]
+                             Skip the STAR 2-pass step and use the genomeDir index for mapping.
+                             By default, a STAR 2-pass strategy if implemented to create a splice junctions
+                             file used to create a new STAR genome.''')
 
     # Parse input
     args = parser.parse_args()
 
     if os.path.isfile(args.outdir):
         print "[ERROR] :: Target output directory is an existing file."
-        import sys
         sys.exit(1)
 
     if args.outdir and not os.path.exists(args.outdir):
         os.mkdir(args.outdir)
 
     if args.data_type == 'chip-seq':
-        meta_parser = MetadataParserChipseq(args_obj=args, exp_type=args.data_type)
+        meta_parser = MetadataParserChipseq(args_obj=args)
     elif args.data_type == 'rna-seq':
-        meta_parser = MetadataParserRnaseq(args_obj=args, exp_type=args.data_type, strand_specific=args.strand_specific)
+        meta_parser = MetadataParserRnaseq(args_obj=args)
+    else:
+        raise Exception('Unrecognized Experiment Type: %s' % args.data_type)
 
     file_basename = os.path.splitext(os.path.basename(args.meta_file))[0]
-    for json_str, conf_name in meta_parser.parse_metadata(args.data_dir.rstrip('/')):
+    for json_str, conf_name, idx in meta_parser.parse_metadata(args.data_dir.rstrip('/')):
+        if args.separate_jsons:
+            conf_name += '-%d' % idx
         save_or_print_json(json_str, args.outdir, file_basename + '-' + conf_name)
 
 

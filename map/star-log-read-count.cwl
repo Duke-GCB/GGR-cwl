@@ -5,7 +5,7 @@ description: "Get number of processed reads from STAR log."
 
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/workflow-utils'
+    dockerPull: 'dukegcb/workflow-utils'
 
 requirements:
   - class: InlineJavascriptRequirement

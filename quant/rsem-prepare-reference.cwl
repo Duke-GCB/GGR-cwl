@@ -8,7 +8,7 @@ cwlVersion: 'cwl:draft-3'
 class: CommandLineTool
 hints:
   - class: DockerRequirement
-    dockerImageId: 'dukegcb/rsem:1.2.25'
+    dockerPull: 'dukegcb/rsem:1.2.25'
 requirements:
   - class: InlineJavascriptRequirement
 inputs:
