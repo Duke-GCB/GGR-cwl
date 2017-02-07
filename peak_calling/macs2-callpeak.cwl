@@ -342,7 +342,7 @@ inputs:
 outputs:
   - id: output_peak_file
     type: File
-    description: "Peak calling output file in narrowPeak format."
+    description: "Peak calling output file in narrowPeak|broadPeak format."
     outputBinding:
       glob: $(inputs.treatment[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_peaks.*Peak')
       outputEval: $(self[0])
@@ -359,7 +359,7 @@ outputs:
     outputBinding:
       glob: $(inputs.treatment[0].path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '_peaks.xls')
   - id: output_peak_summits_file
-    type: 
+    type:
       - 'null'
       - File
     description: "Peaks summits bedfile."

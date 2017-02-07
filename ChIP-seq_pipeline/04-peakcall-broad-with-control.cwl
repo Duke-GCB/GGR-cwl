@@ -41,6 +41,12 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#output_broadpeak_summits_file"
+    source: "#peak-calling.output_peak_summits_file"
+    description: "File containing peak summits"
+    type:
+      type: array
+      items: ['null', {items: File, type: array}]
   - id: "#output_extended_broadpeak_file"
     source: "#peak-calling.output_ext_frag_bdg_file"
     description: "peakshift/phantomPeak extended fragment results file"
@@ -125,6 +131,7 @@ steps:
         source: "#input_bam_format"
     outputs:
       - id: "#peak-calling.output_peak_file"
+      - id: "#peak-calling.output_peak_summits_file"
       - id: "#peak-calling.output_ext_frag_bdg_file"
       - id: "#peak-calling.output_peak_xls_file"
   - id: "#count-reads-filtered"

@@ -355,6 +355,12 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#peak_call_broadpeak_summit_file"
+    source: "#peak_call.output_broadpeak_summit_file"
+    description: "Peaks summits in bedfile format"
+    type:
+      type: array
+      items: ['null', {items: File, type: array}]
   - id: "#peak_call_extended_broadpeak_file"
     source: "#peak_call.output_extended_broadpeak_file"
     description: "Extended fragment peaks in broadPeak file format"
@@ -503,6 +509,7 @@ steps:
       - { id: "#peak_call.output_spp_x_cross_corr" }
       - { id: "#peak_call.output_spp_cross_corr_plot" }
       - { id: "#peak_call.output_broadpeak_file" }
+      - { id: "#peak_call.output_broadpeak_summit_file" }
       - { id: "#peak_call.output_extended_broadpeak_file" }
       - { id: "#peak_call.output_peak_xls_file" }
       - { id: "#peak_call.output_filtered_read_count_file" }
