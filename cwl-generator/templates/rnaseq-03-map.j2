@@ -237,8 +237,8 @@ steps:
       - { id: "#star_pass2.sjdbOverhang", source: "#sjdbOverhang", valueFrom: $(parseInt(self))}
       - { id: "#star_pass2.genomeDir", source: {% if star2pass %}"#generate_genome.indices"{% else %}"#genomeDirFiles"{% endif %} } #TODO: This is my solution for the current challange that STAR presents, given that it needs a folder here...
       - { id: "#star_pass2.outSAMattributes", valueFrom: "All" }
-      - { id: "#star_pass2.outFiterMultimapNmax", valueFrom: $(1) }
-      - { id: "#star_pass2.outFiterIntronMotifs", valueFrom: "RemoveNoncanonical" }
+      - { id: "#star_pass2.outFilterMultimapNmax", valueFrom: $(1) }
+      - { id: "#star_pass2.outFilterIntronMotifs", valueFrom: "RemoveNoncanonical" }
       - { id: "#star_pass2.runThreadN", source: "#nthreads"}
       - id: "#star_pass2.outFileNamePrefix"
         source: "#basename.basename"
