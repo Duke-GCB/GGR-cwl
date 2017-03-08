@@ -259,8 +259,8 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#peak_call_narrowpeak_summit_file"
-    source: "#peak_call.output_narrowpeak_summit_file"
+  - id: "#peak_call_narrowpeak_summits_file"
+    source: "#peak_call.output_narrowpeak_summits_file"
     description: "Peaks summits in bedfile format"
     type:
       type: array
@@ -391,7 +391,7 @@ steps:
       - { id: "#peak_call.output_spp_x_cross_corr" }
       - { id: "#peak_call.output_spp_cross_corr_plot" }
       - { id: "#peak_call.output_narrowpeak_file" }
-      - { id: "#peak_call.output_narrowpeak_summit_file" }
+      - { id: "#peak_call.output_narrowpeak_summits_file" }
       - { id: "#peak_call.output_extended_narrowpeak_file" }
       - { id: "#peak_call.output_peak_xls_file" }
       - { id: "#peak_call.output_filtered_read_count_file" }
