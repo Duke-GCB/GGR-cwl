@@ -12,11 +12,11 @@
     ],
 {% endif %}
     "default_adapters_file": { "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/adapters/default_adapters.fasta" },
-    "genome_sizes_file": { "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/hg38.sizes" },
+    "genome_sizes_file": { "class": "File", "path": "/data/reddylab/Reference_Data/Genomes/GRCm38/hg38.sizes/GRCm38.sizes" },
     "sjdbOverhang": "49",
-    "annotation_file": {"class": "File", "path": "/data/reddylab/Reference_Data/Gencode/v22/gencode.v22.annotation.gtf"},
+    "annotation_file": {"class": "File", "path": "/data/reddylab/Reference_Data/Gencode/vM13/gencode.vM13.annotation.gtf"},
     "genome_fasta_files": [
-        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna"}
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/GRCm38/GRCm38.primary_assembly.genome.fa"}
     ],
     "genomeDirFiles": [
         {"class": "File", "path": "{{ genomeDir }}/Genome"},
@@ -36,13 +36,13 @@
         {"class": "File", "path": "{{ genomeDir }}/transcriptInfo.tab"}
     ],
     "rsem_reference_files": [
-        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.transcripts.fa"},
-        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.ti"},
-        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.seq"},
-        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.idx.fa"},
-        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.grp"},
-        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.n2g.idx.fa"},
-        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome.chrlist"}
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/GRCm38/RSEM/RSEM_genome.transcripts.fa"},
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/GRCm38/RSEM/RSEM_genome.ti"},
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/GRCm38/RSEM/RSEM_genome.seq"},
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/GRCm38/RSEM/RSEM_genome.idx.fa"},
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/GRCm38/RSEM/RSEM_genome.grp"},
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/GRCm38/RSEM/RSEM_genome.n2g.idx.fa"},
+        {"class": "File", "path": "/data/reddylab/Reference_Data/Genomes/GRCm38/RSEM/RSEM_genome.chrlist"}
     ],
 {% if 'pe' == wf_conf['rt'] %}
     "bamtools_forward_filter_file": {"class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/quantification/forward_filter.txt"},

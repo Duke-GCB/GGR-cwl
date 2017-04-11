@@ -156,7 +156,7 @@ def main():
     parser.add_argument('--nthreads', type=int, dest='nthreads', default=16, help='Number of threads.')
     parser.add_argument('--mem', type=int, dest='mem', default=16000, help='Memory for Java based CLT.')
     parser.add_argument('--separate-jsons', action='store_true', help='Create one JSON per sample in the metadata.')
-    parser.add_argument('--genomeDir', default='/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_49',
+    parser.add_argument('--genomeDir', default='/data/reddylab/Reference_Data/Genomes/GRCm38/STAR_genome_sjdbOverhang_49',
                         help='[RNA-seq only] Directory containing the STAR Genome files (indices).')
     parser.add_argument('--skip-star-2pass', action='store_true', default=False,
                         help='''[RNA-seq only]
