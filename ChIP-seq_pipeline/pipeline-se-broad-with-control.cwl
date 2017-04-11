@@ -26,9 +26,9 @@ inputs:
   - id: "#genome_sizes_file"
     type: File
     description: "Genome sizes tab-delimited file (used in samtools)"
-#  - id: "#ENCODE_blacklist_bedfile"
-#    type: File
-#    description: "Bedfile containing ENCODE consensus blacklist regions to be excluded."
+  - id: "#ENCODE_blacklist_bedfile"
+    type: File
+    description: "Bedfile containing ENCODE consensus blacklist regions to be excluded."
   - id: "#nthreads_qc"
     type: int
     description: "Number of threads required for the 01-qc step"
@@ -319,7 +319,7 @@ steps:
       - { id: "#map_treatment.input_fastq_files", source: "#trimm_treatment.output_data_fastq_trimmed_files" }
       - { id: "#map_treatment.genome_ref_first_index_file", source: "#genome_ref_first_index_file" }
       - { id: "#map_treatment.genome_sizes_file", source: "#genome_sizes_file" }
-#      - { id: "#map_treatment.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile" }
+      - { id: "#map_treatment.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile" }
       - { id: "#map_treatment.nthreads", source: "#nthreads_map" }
       - { id: "#map_treatment.picard_jar_path", source: "#picard_jar_path" }
       - { id: "#map_treatment.picard_java_opts", source: "#picard_java_opts" }
@@ -361,7 +361,7 @@ steps:
       - { id: "#map_control.input_fastq_files", source: "#trimm_control.output_data_fastq_trimmed_files" }
       - { id: "#map_control.genome_ref_first_index_file", source: "#genome_ref_first_index_file" }
       - { id: "#map_control.genome_sizes_file", source: "#genome_sizes_file" }
-#      - { id: "#map_control.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile" }
+      - { id: "#map_control.ENCODE_blacklist_bedfile", source: "#ENCODE_blacklist_bedfile" }
       - { id: "#map_control.nthreads", source: "#nthreads_map" }
       - { id: "#map_control.picard_jar_path", source: "#picard_jar_path" }
       - { id: "#map_control.picard_java_opts", source: "#picard_java_opts" }

@@ -114,7 +114,7 @@ steps:
       - id: "#peak-calling.format"
         source: "#input_bam_format"
       - id: "#peak-calling.g"
-        valueFrom: "mm"
+        valueFrom: 'mm'
     outputs:
       - id: "#peak-calling.output_peak_file"
       - id: "#peak-calling.output_ext_frag_bdg_file"
