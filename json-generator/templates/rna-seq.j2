@@ -6,7 +6,7 @@
     ],
 {% if 'pe' == wf_conf['rt'] %}
     "input_fastq_read2_files": [
-    {% for sample_info in samples_list %}
+    {% for samples in samples_list %}
         { "class": "File", "path": "{{ data_dir }}/{{ wf_conf['iter'] }}/{{ samples }}.R2.fastq" }{% if loop.index < samples_list|length %},{% endif %}
     {% endfor %}
     ],
