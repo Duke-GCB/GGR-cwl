@@ -2,9 +2,10 @@
     "input_fastq_files": [
         { "class": "File", "path": "/data/reddylab/Alex/GGR/data/atac_seq/processed_reads/iter0/atac_seq_3.fastq" }
     ],
+    "genome_effective_size": "mm",
     "default_adapters_file": { "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/adapters/default_adapters.fasta" },
-    "genome_ref_first_index_file": { "class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg19/hg19.1.ebwt"},
-    "genome_sizes_file": { "class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg19/hg19.chrom.sizes" },
+    "genome_ref_first_index_file": { "class": "File", "path": "/data/reddylab/Reference_Data/Genomes/mm10/bowtie/GRCm38.1.ebwt"},
+    "genome_sizes_file": { "class": "File", "path": "/data/reddylab/Reference_Data/Genomes/GRCm38/GRCm38.sizes" },
     "nthreads_qc": 16,
     "nthreads_trimm": 16,
     "nthreads_map": 16,

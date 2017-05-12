@@ -56,6 +56,10 @@ inputs:
       - 'null'
       - string
     description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
+  - id: "#genome_effective_size"
+    type: string
+    default: "hg"
+    description: "Effective genome size used by MACS2. It can be numeric or a shortcuts:'hs' for human (2.7e9), 'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for fruitfly (1.2e8), Default:hs"
 outputs:
   - id: "#qc_raw_read_counts"
     source: "#qc.output_raw_read_counts"
@@ -261,6 +265,7 @@ steps:
     inputs:
       - { id: "#peak_call.input_bam_files", source: "#map.output_data_sorted_dedup_bam_files" }
       - { id: "#peak_call.input_bam_format", valueFrom: "BAM" }
+      - { id: "#peak_call.genome_effective_size", source: "#genome_effective_size" }
       - { id: "#peak_call.nthreads", source: "#nthreads_peakcall" }
     outputs:
       - { id: "#peak_call.output_spp_x_cross_corr" }

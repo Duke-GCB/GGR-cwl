@@ -15,6 +15,10 @@ inputs:
     type: string
     description: "BAM or BAMPE for single-end and paired-end reads respectively (default: BAM)"
     default: "BAM"
+  - id: "#genome_effective_size"
+    type: string
+    default: "hg"
+    description: "Effective genome size used by MACS2. It can be numeric or a shortcuts:'hs' for human (2.7e9), 'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for fruitfly (1.2e8), Default:hs"
   - id: "#nthreads"
     type: int
     default: 1
@@ -112,10 +116,8 @@ steps:
         source: "#input_bam_format"
       - id: "#peak-calling.q"
         valueFrom: $(0.1)
-      - id: "#peak-calling.broad"
-        valueFrom: $(true)
-      - id: "#peak-calling.broad-cutoff"
-        valueFrom: $(0.1)
+      - id: "#peak-calling.g"
+        source: "#genome_effective_size"
       - id: "#peak-calling.nomodel"
         valueFrom: $(true)
       - id: "#peak-calling.shift"
