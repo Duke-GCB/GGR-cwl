@@ -298,7 +298,7 @@ inputs:
   - id: broad-cutoff
     type:
       - 'null'
-      - boolean
+      - float
     description: |
       BROADCUTOFF
       Cutoff for broad region. This option is not available

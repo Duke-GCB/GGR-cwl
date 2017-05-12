@@ -2,7 +2,7 @@
   "input_fastq_files": [
     {
       "class": "File",
-      "path": "/Users/abarrera/data/chipseq-test/GR.t00_rep1.0-001.fastq"
+      "path": "/Users/abarrera/data/chipseq-test/GR.t00_rep1.0-0001.fastq"
     }
   ],
   "default_adapters_file":

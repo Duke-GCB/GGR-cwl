@@ -5,5 +5,5 @@
     "path": "/Users/abarrera/data/chipseq-test/out_map/GR.dedup_filtered.sorted.bam"
     }
   ],
-  "input_bam_format": "BAM"
+  "input_bam_format": "BAMPE"
 }
