@@ -164,7 +164,7 @@ outputs:
     type: {type: array, items: File}
 steps:
   - id: "#qc"
-    run: {$import: "01-qc-se.cwl" }
+    run: "01-qc-se.cwl" 
     inputs:
       - { id: "#qc.input_fastq_read1_files", source: "#input_fastq_read1_files" }
       - { id: "#qc.default_adapters_file", source: "#default_adapters_file" }
@@ -176,7 +176,7 @@ steps:
       - id: "#qc.output_count_raw_reads_read1"
       - id: "#qc.output_diff_counts_read1"
   - id: "#trim"
-    run: {$import: "02-trim-se.cwl" }
+    run: "02-trim-se.cwl" 
     inputs:
       - { id: "#trim.input_fastq_read1_files", source: "#input_fastq_read1_files" }
       - { id: "#trim.input_read1_adapters_files", source: "#qc.output_custom_adapters_read1" }
@@ -187,7 +187,7 @@ steps:
       - id: "#trim.output_data_fastq_read1_trimmed_files"
       - id: "#trim.output_trimmed_read1_fastq_read_count"
   - id: "#map"
-    run: {$import: "03-map-se.cwl" }
+    run: "03-map-se.cwl" 
     inputs:
       - { id: "#map.input_fastq_read1_files", source: "#trim.output_data_fastq_read1_trimmed_files" }
       - { id: "#map.genome_sizes_file", source: "#genome_sizes_file" }
@@ -215,7 +215,7 @@ steps:
       - id: "#map.read_count_mapped_star1"
       - id: "#map.star_1pass_sjdb"
   - id: "#quant"
-    run: {$import: "04-quantification-se-unstranded.cwl" }
+    run: "04-quantification-se-unstranded.cwl" 
     inputs:
       - { id: "#quant.input_bam_files", source: "#map.star_aligned_sorted_file" }
       - { id: "#quant.input_transcripts_bam_files", source: "#map.transcriptome_star_aligned_file" }

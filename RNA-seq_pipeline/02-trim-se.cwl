@@ -48,7 +48,7 @@ outputs:
       items: File
 steps:
   - id: "#trimmomatic"
-    run: {$import: "../trimmomatic/trimmomatic.cwl"}
+    run: "../trimmomatic/trimmomatic.cwl"
     scatter:
       - "#trimmomatic.input_read1_fastq_file"
       - "#trimmomatic.input_adapters_file"
@@ -82,7 +82,7 @@ steps:
       - id: "#trimmomatic.output_read1_trimmed_file"
 #      - id: "#trimmomatic.output_read1_trimmed_unpaired_file"
   - id: "#extract_basename_read1"
-    run: {$import: "../utils/extract-basename.cwl" }
+    run: "../utils/extract-basename.cwl" 
     scatter: "#extract_basename_read1.input_file"
     inputs:
       - id: "#extract_basename_read1.input_file"
@@ -90,7 +90,7 @@ steps:
     outputs:
       - id: "#extract_basename_read1.output_basename"
   - id: "#count_fastq_reads_read1"
-    run: {$import: "../utils/count-fastq-reads.cwl" }
+    run: "../utils/count-fastq-reads.cwl" 
     scatter:
       - "#count_fastq_reads_read1.input_fastq_file"
       - "#count_fastq_reads_read1.input_basename"

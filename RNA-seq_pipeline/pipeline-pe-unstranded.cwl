@@ -222,7 +222,7 @@ outputs:
     type: {type: array, items: File}
 steps:
   - id: "#qc"
-    run: {$import: "01-qc-pe.cwl" }
+    run: "01-qc-pe.cwl" 
     inputs:
       - { id: "#qc.input_fastq_read1_files", source: "#input_fastq_read1_files" }
       - { id: "#qc.input_fastq_read2_files", source: "#input_fastq_read2_files" }
@@ -240,7 +240,7 @@ steps:
       - id: "#qc.output_count_raw_reads_read2"
       - id: "#qc.output_diff_counts_read2"
   - id: "#trim"
-    run: {$import: "02-trim-pe.cwl" }
+    run: "02-trim-pe.cwl" 
     inputs:
       - { id: "#trim.input_fastq_read1_files", source: "#input_fastq_read1_files" }
       - { id: "#trim.input_read1_adapters_files", source: "#qc.output_custom_adapters_read1" }
@@ -255,7 +255,7 @@ steps:
       - id: "#trim.output_data_fastq_read2_trimmed_files"
       - id: "#trim.output_trimmed_read2_fastq_read_count"
   - id: "#map"
-    run: {$import: "03-map-pe.cwl" }
+    run: "03-map-pe.cwl" 
     inputs:
       - { id: "#map.input_fastq_read1_files", source: "#trim.output_data_fastq_read1_trimmed_files" }
       - { id: "#map.input_fastq_read2_files", source: "#trim.output_data_fastq_read2_trimmed_files" }
@@ -284,7 +284,7 @@ steps:
       - id: "#map.read_count_mapped_star1"
       - id: "#map.star_1pass_sjdb"
   - id: "#quant"
-    run: {$import: "04-quantification-pe-unstranded.cwl" }
+    run: "04-quantification-pe-unstranded.cwl" 
     inputs:
       - { id: "#quant.input_bam_files", source: "#map.star_aligned_sorted_file" }
       - { id: "#quant.input_transcripts_bam_files", source: "#map.transcriptome_star_aligned_file" }

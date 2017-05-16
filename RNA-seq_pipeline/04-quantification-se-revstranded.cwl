@@ -46,7 +46,7 @@ outputs:
     type: {type: array, items: File}
 steps:
   - id: "#basename"
-    run: {$import: "../utils/basename.cwl" }
+    run: "../utils/basename.cwl" 
     scatter: "#basename.file_path"
     inputs:
       - id: "#basename.file_path"
@@ -57,7 +57,7 @@ steps:
     outputs:
       - id: "#basename.basename"
   - id: "#featurecounts"
-    run: {$import: "../quant/subread-featurecounts.cwl"}
+    run: "../quant/subread-featurecounts.cwl"
     scatter:
       - "#featurecounts.input_files"
       - "#featurecounts.output_filename"
@@ -79,7 +79,7 @@ steps:
     outputs:
       - id: "#featurecounts.output_files"
   - id: "#rsem-calc-expr"
-    run: {$import: "../quant/rsem-calculate-expression.cwl"}
+    run: "../quant/rsem-calculate-expression.cwl"
     scatter:
       - "#rsem-calc-expr.bam"
       - "#rsem-calc-expr.sample_name"
@@ -106,7 +106,7 @@ steps:
       - id: "#rsem-calc-expr.genes"
       - id: "#rsem-calc-expr.rsem_stat"
   - id: "#bedtools_genomecov"
-    run: {$import: "../map/bedtools-genomecov.cwl"}
+    run: "../map/bedtools-genomecov.cwl"
     scatter: "#bedtools_genomecov.ibam"
     inputs:
       - { id: "#bedtools_genomecov.ibam",  source: "#input_bam_files" }
@@ -115,14 +115,14 @@ steps:
     outputs:
       - id: "#bedtools_genomecov.output_bedfile"
   - id: "#bedsort_genomecov"
-    run: {$import: "../quant/bedSort.cwl"}
+    run: "../quant/bedSort.cwl"
     scatter: "#bedsort_genomecov.bed_file"
     inputs:
       - { id: "#bedsort_genomecov.bed_file",  source: "#bedtools_genomecov.output_bedfile" }
     outputs:
       - id: "#bedsort_genomecov.bed_file_sorted"
   - id: "#bdg2bw-raw"
-    run: {$import: "../quant/bedGraphToBigWig.cwl"}
+    run: "../quant/bedGraphToBigWig.cwl"
     scatter: "#bdg2bw-raw.bed_graph"
     inputs:
       - { id: "#bdg2bw-raw.bed_graph", source: "#bedsort_genomecov.bed_file_sorted" }
@@ -131,7 +131,7 @@ steps:
     outputs:
       - id: "#bdg2bw-raw.output_bigwig"
   - id: "#bamcoverage"
-    run: {$import: "../quant/deeptools-bamcoverage.cwl"}
+    run: "../quant/deeptools-bamcoverage.cwl"
     scatter: "#bamcoverage.bam"
     inputs:
       - { id: "#bamcoverage.bam", source: "#input_bam_files" }

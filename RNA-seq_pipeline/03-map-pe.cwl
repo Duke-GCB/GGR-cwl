@@ -109,7 +109,7 @@ outputs:
     type: {type: array, items: File}
 steps:
   - id: "#basename"
-    run: {$import: "../utils/basename.cwl" }
+    run: "../utils/basename.cwl" 
     scatter: "#basename.file_path"
     inputs:
       - id: "#basename.file_path"
@@ -120,14 +120,14 @@ steps:
     outputs:
       - id: "#basename.basename"
   - id: "#zip_fastq_files"
-    run: {$import: "../utils/zip_arrays.cwl"}
+    run: "../utils/zip_arrays.cwl"
     inputs:
       - {id: "#zip_fastq_files.reads1", source: "#input_fastq_read1_files"}
       - {id: "#zip_fastq_files.reads2", source: "#input_fastq_read2_files"}
     outputs:
       - id: "#zip_fastq_files.zipped_list"
   - id: "#star_pass1"
-    run: {$import: "../workflows/tools/STAR.cwl" }
+    run: "../workflows/tools/STAR.cwl" 
     scatter:
       - "#star_pass1.readFilesIn"
       - "#star_pass1.outFileNamePrefix"
@@ -151,7 +151,7 @@ steps:
       - id: "#star_pass1.aligned"
       - id: "#star_pass1.mappingstats"
   - id: "#sort_star_pass1_bam"
-    run: {$import: "../map/samtools-sort.cwl"}
+    run: "../map/samtools-sort.cwl"
     scatter: "#sort_star_pass1_bam.input_file"
     inputs:
       - {id: "#sort_star_pass1_bam.input_file", source: "#star_pass1.aligned"}
@@ -159,7 +159,7 @@ steps:
     outputs:
       - id: "#sort_star_pass1_bam.sorted_file"
   - id: "#mapped_reads_count_star1"
-    run: {$import: "../map/star-log-read-count.cwl"}
+    run: "../map/star-log-read-count.cwl"
     scatter: "#mapped_reads_count_star1.star_log"
     inputs:
       - id: "#mapped_reads_count_star1.star_log"
@@ -168,7 +168,7 @@ steps:
     outputs:
       - id: "#mapped_reads_count_star1.output"
   - id: "#create_sjdb"
-    run: {$import: "../map/create-conservative-sjdb.cwl"}
+    run: "../map/create-conservative-sjdb.cwl"
     inputs:
 #      - {id: "#create_sjdb.sjdb_files", source: "#sj"}
       - id: "#create_sjdb.sjdb_files"
@@ -179,7 +179,7 @@ steps:
     outputs:
       - id: "#create_sjdb.sjdb_out"
   - id: "#generate_genome"
-    run: {$import: "../workflows/tools/STAR.cwl" }
+    run: "../workflows/tools/STAR.cwl" 
     inputs:
       - { id: "#generate_genome.runMode", valueFrom: "genomeGenerate"}
       - { id: "#generate_genome.runThreadN", source: "#nthreads"}
@@ -193,7 +193,7 @@ steps:
     outputs:
       - id: "#generate_genome.indices"
   - id: "#star_pass2"
-    run: {$import: "../workflows/tools/STAR.cwl" }
+    run: "../workflows/tools/STAR.cwl" 
     scatter:
       - "#star_pass2.readFilesIn"
       - "#star_pass2.outFileNamePrefix"
@@ -220,7 +220,7 @@ steps:
       - id: "#star_pass2.mappingstats"
       - id: "#star_pass2.readspergene"
   - id: "#sort_star_pass2_bam"
-    run: {$import: "../map/samtools-sort.cwl"}
+    run: "../map/samtools-sort.cwl"
     scatter: "#sort_star_pass2_bam.input_file"
     inputs:
       - {id: "#sort_star_pass2_bam.input_file", source: "#star_pass2.aligned"}
@@ -228,7 +228,7 @@ steps:
     outputs:
       - id: "#sort_star_pass2_bam.sorted_file"
   - id: "#index_star_pass2_bam"
-    run: {$import: "../map/samtools-index.cwl"}
+    run: "../map/samtools-index.cwl"
     scatter:
       - "#index_star_pass2_bam.input_file"
     inputs:
@@ -236,7 +236,7 @@ steps:
     outputs:
       - id: "#index_star_pass2_bam.index_file"
   - id: "#mapped_reads_count_star2"
-    run: {$import: "../map/star-log-read-count.cwl"}
+    run: "../map/star-log-read-count.cwl"
     scatter: "#mapped_reads_count_star2.star_log"
     inputs:
       - id: "#mapped_reads_count_star2.star_log"
@@ -245,7 +245,7 @@ steps:
     outputs:
       - id: "#mapped_reads_count_star2.output"
   - id: "#preseq-c-curve"
-    run: {$import: "../map/preseq-c_curve.cwl"}
+    run: "../map/preseq-c_curve.cwl"
     scatter:
       - "#preseq-c-curve.input_sorted_file"
       - "#preseq-c-curve.output_file_basename"
@@ -256,7 +256,7 @@ steps:
     outputs:
       - id: "#preseq-c-curve.output_file"
   - id: "#execute_pcr_bottleneck_coef"
-    run: {$import: "../map/pcr-bottleneck-coef.cwl"}
+    run: "../map/pcr-bottleneck-coef.cwl"
     inputs:
       - {id: "#execute_pcr_bottleneck_coef.input_bam_files", source: "#sort_star_pass1_bam.sorted_file"}
       - {id: "#execute_pcr_bottleneck_coef.genome_sizes", source: "#genome_sizes_file"}
@@ -264,14 +264,14 @@ steps:
     outputs:
       - id: "#execute_pcr_bottleneck_coef.pbc_file"
   - id: "#percent_uniq_reads_star1"
-    run: {$import: "../map/preseq-percent-uniq-reads.cwl"}
+    run: "../map/preseq-percent-uniq-reads.cwl"
     scatter: "#percent_uniq_reads_star1.preseq_c_curve_outfile"
     inputs:
       - {id: "#percent_uniq_reads_star1.preseq_c_curve_outfile", source: "#preseq-c-curve.output_file"}
     outputs:
       - id: "#percent_uniq_reads_star1.output"
   - id: "#transcriptome_star_pass2"
-    run: {$import: "../workflows/tools/STAR.cwl" }
+    run: "../workflows/tools/STAR.cwl" 
     scatter:
       - "#transcriptome_star_pass2.readFilesIn"
       - "#transcriptome_star_pass2.outFileNamePrefix"
@@ -305,7 +305,7 @@ steps:
       - id: "#transcriptome_star_pass2.transcriptomesam"
       - id: "#transcriptome_star_pass2.mappingstats"
 #  - id: "#sort_transcriptome_star_pass2_bam"
-#    run: {$import: "../map/samtools-sort.cwl"}
+#    run: "../map/samtools-sort.cwl"
 #    scatter: "#sort_transcriptome_star_pass2_bam.input_file"
 #    inputs:
 #      - {id: "#sort_transcriptome_star_pass2_bam.input_file", source: "#transcriptome_star_pass2.transcriptomesam"}
@@ -314,7 +314,7 @@ steps:
 #      - id: "#sort_transcriptome_star_pass2_bam.sorted_file"
 #
 #  - id: "#index_transcriptome_star_pass2_bam"
-#    run: {$import: "../map/samtools-index.cwl"}
+#    run: "../map/samtools-index.cwl"
 #    scatter:
 #      - "#index_transcriptome_star_pass2_bam.input_file"
 #    inputs:
@@ -322,7 +322,7 @@ steps:
 #    outputs:
 #      - id: "#index_transcriptome_star_pass2_bam.index_file"
   - id: "#transcriptome_mapped_reads_count_star2"
-    run: {$import: "../map/star-log-read-count.cwl"}
+    run: "../map/star-log-read-count.cwl"
     scatter: "#transcriptome_mapped_reads_count_star2.star_log"
     inputs:
       - id: "#transcriptome_mapped_reads_count_star2.star_log"

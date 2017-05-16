@@ -115,7 +115,7 @@ outputs:
       items: File
 steps:
   - id: "#spp"
-    run: {$import: "../spp/spp.cwl"}
+    run: "../spp/spp.cwl"
     scatter:
       - "#spp.input_bam"
     scatterMethod: dotproduct
@@ -130,7 +130,7 @@ steps:
       - id: "#spp.output_spp_cross_corr"
       - id: "#spp.output_spp_cross_corr_plot"
   - id: "#extract-peak-frag-length"
-    run: {$import: "../spp/extract-best-frag-length.cwl"}
+    run: "../spp/extract-best-frag-length.cwl"
     scatter: "#extract-peak-frag-length.input_spp_txt_file"
     inputs:
       - id: "#extract-peak-frag-length.input_spp_txt_file"
@@ -138,7 +138,7 @@ steps:
     outputs:
       - id: "#extract-peak-frag-length.output_best_frag_length"
   - id: "#peak-calling"
-    run: {$import: "../peak_calling/macs2-callpeak.cwl"}
+    run: "../peak_calling/macs2-callpeak.cwl"
     scatter:
       - "#peak-calling.treatment"
     scatterMethod: dotproduct
@@ -160,7 +160,7 @@ steps:
       - id: "#peak-calling.output_ext_frag_bdg_file"
       - id: "#peak-calling.output_peak_xls_file"
   - id: "#count-reads-filtered"
-    run: {$import: "../peak_calling/count-reads-after-filtering.cwl"}
+    run: "../peak_calling/count-reads-after-filtering.cwl"
     scatter: "#count-reads-filtered.peak_xls_file"
     inputs:
       - id: "#count-reads-filtered.peak_xls_file"
@@ -168,7 +168,7 @@ steps:
     outputs:
       - id: "#count-reads-filtered.read_count_file"
   - id: "#count-peaks"
-    run: {$import: "../utils/count-with-output-suffix.cwl"}
+    run: "../utils/count-with-output-suffix.cwl"
     scatter: "#count-peaks.input_file"
     inputs:
       - id: "#count-peaks.input_file"
@@ -178,7 +178,7 @@ steps:
     outputs:
       - id: "#count-peaks.output_counts"
   - id: "#filter-reads-in-peaks"
-    run: {$import: "../peak_calling/samtools-filter-in-bedfile.cwl"}
+    run: "../peak_calling/samtools-filter-in-bedfile.cwl"
     scatter:
       - "#filter-reads-in-peaks.input_bam_file"
       - "#filter-reads-in-peaks.input_bedfile"
@@ -191,7 +191,7 @@ steps:
     outputs:
       - id: "#filter-reads-in-peaks.filtered_file"
   - id: "#extract-count-reads-in-peaks"
-    run: {$import: "../peak_calling/samtools-extract-number-mapped-reads.cwl"}
+    run: "../peak_calling/samtools-extract-number-mapped-reads.cwl"
     scatter: "#extract-count-reads-in-peaks.input_bam_file"
     inputs:
       - id: "#extract-count-reads-in-peaks.input_bam_file"
@@ -201,7 +201,7 @@ steps:
     outputs:
       - id: "#extract-count-reads-in-peaks.output_read_count"
   - id: "#sort-bam-by-name"
-    run: {$import: "../map/samtools-sort.cwl"}
+    run: "../map/samtools-sort.cwl"
     scatter:
       - "#sort-bam-by-name.input_file"
     inputs:
@@ -214,7 +214,7 @@ steps:
     outputs:
       - id: "#sort-bam-by-name.sorted_file"
   - id: "#bedtools_bamtobed"
-    run: {$import: "../map/bedtools-bamtobed.cwl"}
+    run: "../map/bedtools-bamtobed.cwl"
     scatter: "#bedtools_bamtobed.bam"
     inputs:
       - id: "#bedtools_bamtobed.bam"
@@ -224,7 +224,7 @@ steps:
     outputs:
       - id: "#bedtools_bamtobed.output_bedfile"
   - id: "#unpair_bedpe"
-    run: {$import: "../peak_calling/bedpe-to-bed.cwl"}
+    run: "../peak_calling/bedpe-to-bed.cwl"
     scatter: "#unpair_bedpe.bedpe"
     inputs:
       - id: "#unpair_bedpe.bedpe"
@@ -232,7 +232,7 @@ steps:
     outputs:
       - id: "#unpair_bedpe.bed"
   - id: "#peak-calling-unpaired"
-    run: {$import: "../peak_calling/macs2-callpeak.cwl"}
+    run: "../peak_calling/macs2-callpeak.cwl"
     scatter:
       - "#peak-calling-unpaired.treatment"
     scatterMethod: dotproduct
@@ -260,7 +260,7 @@ steps:
       - id: "#peak-calling-unpaired.output_ext_frag_bdg_file"
       - id: "#peak-calling-unpaired.output_peak_xls_file"
   - id: "#count-reads-filtered-unpaired"
-    run: {$import: "../peak_calling/count-reads-after-filtering.cwl"}
+    run: "../peak_calling/count-reads-after-filtering.cwl"
     scatter: "#count-reads-filtered-unpaired.peak_xls_file"
     inputs:
       - id: "#count-reads-filtered-unpaired.peak_xls_file"
@@ -268,7 +268,7 @@ steps:
     outputs:
       - id: "#count-reads-filtered-unpaired.read_count_file"
   - id: "#count-peaks-unpaired"
-    run: {$import: "../utils/count-with-output-suffix.cwl"}
+    run: "../utils/count-with-output-suffix.cwl"
     scatter: "#count-peaks-unpaired.input_file"
     inputs:
       - id: "#count-peaks-unpaired.input_file"
@@ -278,7 +278,7 @@ steps:
     outputs:
       - id: "#count-peaks-unpaired.output_counts"
   - id: "#filter-reads-in-peaks-unpaired"
-    run: {$import: "../peak_calling/samtools-filter-in-bedfile.cwl"}
+    run: "../peak_calling/samtools-filter-in-bedfile.cwl"
     scatter:
       - "#filter-reads-in-peaks-unpaired.input_bam_file"
       - "#filter-reads-in-peaks-unpaired.input_bedfile"

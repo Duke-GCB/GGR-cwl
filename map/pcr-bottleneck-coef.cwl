@@ -27,7 +27,7 @@ outputs:
 
 steps:
   - id: "#bedtools_genomecov"
-    run: {$import: "bedtools-genomecov.cwl"}
+    run: "bedtools-genomecov.cwl"
     scatter: "#bedtools_genomecov.ibam"
     inputs:
       - id: "#bedtools_genomecov.ibam"
@@ -39,7 +39,7 @@ steps:
     outputs:
       - id: "#bedtools_genomecov.output_bedfile"
   - id: "#compute_pbc"
-    run: {$import: "compute-pbc.cwl"}
+    run: "compute-pbc.cwl"
     scatter:
       - "#compute_pbc.bedgraph_file"
       - "#compute_pbc.output_filename"

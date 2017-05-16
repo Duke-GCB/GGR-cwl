@@ -80,7 +80,7 @@ outputs:
       items: File
 steps:
   - id: "#extract_basename_read1"
-    run: {$import: "../utils/extract-basename.cwl" }
+    run: "../utils/extract-basename.cwl" 
     scatter: "#extract_basename_read1.input_file"
     inputs:
       - id: "#extract_basename_read1.input_file"
@@ -88,7 +88,7 @@ steps:
     outputs:
       - id: "#extract_basename_read1.output_basename"
   - id: "#count_raw_reads_read1"
-    run: {$import: "../utils/count-fastq-reads.cwl" }
+    run: "../utils/count-fastq-reads.cwl" 
     scatter:
       - "#count_raw_reads_read1.input_fastq_file"
       - "#count_raw_reads_read1.input_basename"
@@ -101,7 +101,7 @@ steps:
     outputs:
       - id: "#count_raw_reads_read1.output_read_count"
   - id: "#fastqc_read1"
-    run: {$import: "../qc/fastqc.cwl" }
+    run: "../qc/fastqc.cwl" 
     scatter: "#fastqc_read1.input_fastq_file"
     inputs:
       - id: "#fastqc_read1.input_fastq_file"
@@ -111,7 +111,7 @@ steps:
     outputs:
       - id: "#fastqc_read1.output_qc_report_file"
   - id: "#extract_fastqc_data_read1"
-    run: {$import: "../qc/extract_fastqc_data.cwl" }
+    run: "../qc/extract_fastqc_data.cwl" 
     scatter:
       - "#extract_fastqc_data_read1.input_qc_report_file"
       - "#extract_fastqc_data_read1.input_basename"
@@ -124,7 +124,7 @@ steps:
     outputs:
       - id: "#extract_fastqc_data_read1.output_fastqc_data_file"
   - id: "#overrepresented_sequence_extract_read1"
-    run: {$import: "../qc/overrepresented_sequence_extract.cwl" }
+    run: "../qc/overrepresented_sequence_extract.cwl" 
     scatter:
       - "#overrepresented_sequence_extract_read1.input_fastqc_data"
       - "#overrepresented_sequence_extract_read1.input_basename"
@@ -139,7 +139,7 @@ steps:
     outputs:
       - id: "#overrepresented_sequence_extract_read1.output_custom_adapters"
   - id: "#count_fastqc_reads_read1"
-    run: {$import: "../qc/count-fastqc-reads.cwl" }
+    run: "../qc/count-fastqc-reads.cwl" 
     scatter:
       - "#count_fastqc_reads_read1.input_fastqc_data"
       - "#count_fastqc_reads_read1.input_basename"
@@ -152,7 +152,7 @@ steps:
     outputs:
       - id: "#count_fastqc_reads_read1.output_fastqc_read_count"
   - id: "#compare_read_counts_read1"
-    run: {$import: "../qc/diff.cwl" }
+    run: "../qc/diff.cwl" 
     scatter:
       - "#compare_read_counts_read1.file1"
       - "#compare_read_counts_read1.file2"
@@ -165,7 +165,7 @@ steps:
     outputs:
       - id: "#compare_read_counts_read1.result"
   - id: "#extract_basename_read2"
-    run: {$import: "../utils/extract-basename.cwl" }
+    run: "../utils/extract-basename.cwl" 
     scatter: "#extract_basename_read2.input_file"
     inputs:
       - id: "#extract_basename_read2.input_file"
@@ -173,7 +173,7 @@ steps:
     outputs:
       - id: "#extract_basename_read2.output_basename"
   - id: "#count_raw_reads_read2"
-    run: {$import: "../utils/count-fastq-reads.cwl" }
+    run: "../utils/count-fastq-reads.cwl" 
     scatter:
       - "#count_raw_reads_read2.input_fastq_file"
       - "#count_raw_reads_read2.input_basename"
@@ -186,7 +186,7 @@ steps:
     outputs:
       - id: "#count_raw_reads_read2.output_read_count"
   - id: "#fastqc_read2"
-    run: {$import: "../qc/fastqc.cwl" }
+    run: "../qc/fastqc.cwl" 
     scatter: "#fastqc_read2.input_fastq_file"
     inputs:
       - id: "#fastqc_read2.input_fastq_file"
@@ -196,7 +196,7 @@ steps:
     outputs:
       - id: "#fastqc_read2.output_qc_report_file"
   - id: "#extract_fastqc_data_read2"
-    run: {$import: "../qc/extract_fastqc_data.cwl" }
+    run: "../qc/extract_fastqc_data.cwl" 
     scatter:
       - "#extract_fastqc_data_read2.input_qc_report_file"
       - "#extract_fastqc_data_read2.input_basename"
@@ -209,7 +209,7 @@ steps:
     outputs:
       - id: "#extract_fastqc_data_read2.output_fastqc_data_file"
   - id: "#overrepresented_sequence_extract_read2"
-    run: {$import: "../qc/overrepresented_sequence_extract.cwl" }
+    run: "../qc/overrepresented_sequence_extract.cwl" 
     scatter:
       - "#overrepresented_sequence_extract_read2.input_fastqc_data"
       - "#overrepresented_sequence_extract_read2.input_basename"
@@ -224,7 +224,7 @@ steps:
     outputs:
       - id: "#overrepresented_sequence_extract_read2.output_custom_adapters"
   - id: "#count_fastqc_reads_read2"
-    run: {$import: "../qc/count-fastqc-reads.cwl" }
+    run: "../qc/count-fastqc-reads.cwl" 
     scatter:
       - "#count_fastqc_reads_read2.input_fastqc_data"
       - "#count_fastqc_reads_read2.input_basename"
@@ -237,7 +237,7 @@ steps:
     outputs:
       - id: "#count_fastqc_reads_read2.output_fastqc_read_count"
   - id: "#compare_read_counts_read2"
-    run: {$import: "../qc/diff.cwl" }
+    run: "../qc/diff.cwl" 
     scatter:
       - "#compare_read_counts_read2.file1"
       - "#compare_read_counts_read2.file2"

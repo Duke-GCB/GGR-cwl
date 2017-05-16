@@ -103,7 +103,7 @@ outputs:
 steps:
 {% if read_type == 'pe' %}
   - id: "#concat_adapters"
-    run: {$import: "../utils/concat-files.cwl"}
+    run: "../utils/concat-files.cwl"
     scatter:
       - "#concat_adapters.input_file1"
       - "#concat_adapters.input_file2"
@@ -116,7 +116,7 @@ steps:
     outputs:
       - id: "#concat_adapters.output_file"
   - id: "#trimmomatic"
-    run: {$import: "../trimmomatic/trimmomatic.cwl"}
+    run: "../trimmomatic/trimmomatic.cwl"
     scatter:
       - "#trimmomatic.input_read1_fastq_file"
       - "#trimmomatic.input_read2_fastq_file"
@@ -155,7 +155,7 @@ steps:
       - id: "#trimmomatic.output_read2_trimmed_paired_file"
 #      - id: "#trimmomatic.output_read2_trimmed_unpaired_file"
   - id: "#extract_basename_read1"
-    run: {$import: "../utils/extract-basename.cwl" }
+    run: "../utils/extract-basename.cwl" 
     scatter: "#extract_basename_read1.input_file"
     inputs:
       - id: "#extract_basename_read1.input_file"
@@ -163,7 +163,7 @@ steps:
     outputs:
       - id: "#extract_basename_read1.output_basename"
   - id: "#extract_basename_read2"
-    run: {$import: "../utils/extract-basename.cwl" }
+    run: "../utils/extract-basename.cwl" 
     scatter: "#extract_basename_read2.input_file"
     inputs:
       - id: "#extract_basename_read2.input_file"
@@ -171,7 +171,7 @@ steps:
     outputs:
       - id: "#extract_basename_read2.output_basename"
   - id: "#count_fastq_reads_read1"
-    run: {$import: "../utils/count-fastq-reads.cwl" }
+    run: "../utils/count-fastq-reads.cwl" 
     scatter:
       - "#count_fastq_reads_read1.input_fastq_file"
       - "#count_fastq_reads_read1.input_basename"
@@ -184,7 +184,7 @@ steps:
     outputs:
       - id: "#count_fastq_reads_read1.output_read_count"
   - id: "#count_fastq_reads_read2"
-    run: {$import: "../utils/count-fastq-reads.cwl" }
+    run: "../utils/count-fastq-reads.cwl" 
     scatter:
       - "#count_fastq_reads_read2.input_fastq_file"
       - "#count_fastq_reads_read2.input_basename"
@@ -198,7 +198,7 @@ steps:
       - id: "#count_fastq_reads_read2.output_read_count"
 {% else %}
   - id: "#trimmomatic"
-    run: {$import: "../trimmomatic/trimmomatic.cwl"}
+    run: "../trimmomatic/trimmomatic.cwl"
     scatter:
       - "#trimmomatic.input_read1_fastq_file"
       - "#trimmomatic.input_adapters_file"
@@ -231,7 +231,7 @@ steps:
     outputs:
       - id: "#trimmomatic.output_read1_trimmed_file"
   - id: "#extract_basename"
-    run: {$import: "../utils/extract-basename.cwl" }
+    run: "../utils/extract-basename.cwl" 
     scatter: "#extract_basename.input_file"
     inputs:
       - id: "#extract_basename.input_file"
@@ -239,7 +239,7 @@ steps:
     outputs:
       - id: "#extract_basename.output_basename"
   - id: "#count_fastq_reads"
-    run: {$import: "../utils/count-fastq-reads.cwl" }
+    run: "../utils/count-fastq-reads.cwl" 
     scatter:
       - "#count_fastq_reads.input_fastq_file"
       - "#count_fastq_reads.input_basename"

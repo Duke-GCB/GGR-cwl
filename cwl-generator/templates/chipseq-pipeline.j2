@@ -486,7 +486,7 @@ steps:
     {% for sample_type in sample_types %}
         {% if read_type == "pe" %}
   - id: "#qc_{{ sample_type }}"
-    run: {$import: "01-qc-pe.cwl" }
+    run: "01-qc-pe.cwl" 
     inputs:
       - { id: "#qc_{{ sample_type }}.input_read1_fastq_files", source: "#input_{{ sample_type }}_fastq_read1_files" }
       - { id: "#qc_{{ sample_type }}.input_read2_fastq_files", source: "#input_{{ sample_type }}_fastq_read2_files" }
@@ -504,7 +504,7 @@ steps:
       - { id:  "#qc_{{ sample_type }}.output_custom_adapters_read1" }
       - { id:  "#qc_{{ sample_type }}.output_custom_adapters_read2" }
   - id: "#trimm_{{ sample_type }}"
-    run: {$import: "02-trim-pe.cwl" }
+    run: "02-trim-pe.cwl" 
     inputs:
       - { id: "#trimm_{{ sample_type }}.input_read1_fastq_files", source: "#input_{{ sample_type }}_fastq_read1_files" }
       - { id: "#trimm_{{ sample_type }}.input_read2_fastq_files", source: "#input_{{ sample_type }}_fastq_read2_files" }
@@ -519,7 +519,7 @@ steps:
       - { id:  "#trimm_{{ sample_type }}.output_trimmed_read1_fastq_read_count" }
       - { id:  "#trimm_{{ sample_type }}.output_trimmed_read2_fastq_read_count" }
   - id: "#map_{{ sample_type }}"
-    run: {$import: "03-map-pe.cwl" }
+    run: "03-map-pe.cwl" 
     inputs:
       - { id: "#map_{{ sample_type }}.input_fastq_read1_files", source: "#trimm_{{ sample_type }}.output_data_fastq_read1_trimmed_files" }
       - { id: "#map_{{ sample_type }}.input_fastq_read2_files", source: "#trimm_{{ sample_type }}.output_data_fastq_read2_trimmed_files" }
@@ -540,7 +540,7 @@ steps:
       - { id: "#map_{{ sample_type }}.output_read_count_mapped" }
         {% else %}
   - id: "#qc_{{ sample_type }}"
-    run: {$import: "01-qc-se.cwl" }
+    run: "01-qc-se.cwl" 
     inputs:
       - { id: "#qc_{{ sample_type }}.input_fastq_files", source: "#input_{{ sample_type }}_fastq_files" }
       - { id: "#qc_{{ sample_type }}.default_adapters_file", source: "#default_adapters_file" }
@@ -552,7 +552,7 @@ steps:
       - { id: "#qc_{{ sample_type }}.output_fastqc_data_files" }
       - { id: "#qc_{{ sample_type }}.output_custom_adapters" }
   - id: "#trimm_{{ sample_type }}"
-    run: {$import: "02-trim-se.cwl" }
+    run: "02-trim-se.cwl" 
     inputs:
       - { id: "#trimm_{{ sample_type }}.input_read1_fastq_files", source: "#input_{{ sample_type }}_fastq_files" }
       - { id: "#trimm_{{ sample_type }}.input_adapters_files", source: "#qc_{{ sample_type }}.output_custom_adapters" }
@@ -563,7 +563,7 @@ steps:
       - { id: "#trimm_{{ sample_type }}.output_data_fastq_trimmed_files" }
       - { id: "#trimm_{{ sample_type }}.trimmed_fastq_read_count" }
   - id: "#map_{{ sample_type }}"
-    run: {$import: "03-map-se.cwl" }
+    run: "03-map-se.cwl" 
     inputs:
       - { id: "#map_{{ sample_type }}.input_fastq_files", source: "#trimm_{{ sample_type }}.output_data_fastq_trimmed_files" }
       - { id: "#map_{{ sample_type }}.genome_ref_first_index_file", source: "#genome_ref_first_index_file" }
@@ -585,7 +585,7 @@ steps:
     {% endfor %}
 {%  elif read_type == "pe" %}
   - id: "#qc"
-    run: {$import: "01-qc-pe.cwl" }
+    run: "01-qc-pe.cwl" 
     inputs:
       - { id: "#qc.input_read1_fastq_files", source: "#input_fastq_read1_files" }
       - { id: "#qc.input_read2_fastq_files", source: "#input_fastq_read2_files" }
@@ -603,7 +603,7 @@ steps:
       - { id:  "#qc.output_custom_adapters_read1" }
       - { id:  "#qc.output_custom_adapters_read2" }
   - id: "#trimm"
-    run: {$import: "02-trim-pe.cwl" }
+    run: "02-trim-pe.cwl" 
     inputs:
       - { id: "#trimm.input_read1_fastq_files", source: "#input_fastq_read1_files" }
       - { id: "#trimm.input_read2_fastq_files", source: "#input_fastq_read2_files" }
@@ -618,7 +618,7 @@ steps:
       - { id:  "#trimm.output_trimmed_read1_fastq_read_count" }
       - { id:  "#trimm.output_trimmed_read2_fastq_read_count" }
   - id: "#map"
-    run: {$import: "03-map-pe.cwl" }
+    run: "03-map-pe.cwl" 
     inputs:
       - { id: "#map.input_fastq_read1_files", source: "#trimm.output_data_fastq_read1_trimmed_files" }
       - { id: "#map.input_fastq_read2_files", source: "#trimm.output_data_fastq_read2_trimmed_files" }
@@ -639,7 +639,7 @@ steps:
       - { id:  "#map.output_read_count_mapped" }
 {% else %}
   - id: "#qc"
-    run: {$import: "01-qc-se.cwl" }
+    run: "01-qc-se.cwl" 
     inputs:
       - { id: "#qc.input_fastq_files", source: "#input_fastq_files" }
       - { id: "#qc.default_adapters_file", source: "#default_adapters_file" }
@@ -651,7 +651,7 @@ steps:
       - { id:  "#qc.output_fastqc_data_files" }
       - { id:  "#qc.output_custom_adapters" }
   - id: "#trimm"
-    run: {$import: "02-trim-se.cwl" }
+    run: "02-trim-se.cwl" 
     inputs:
       - { id: "#trimm.input_read1_fastq_files", source: "#input_fastq_files" }
       - { id: "#trimm.input_adapters_files", source: "#qc.output_custom_adapters" }
@@ -662,7 +662,7 @@ steps:
       - { id:  "#trimm.output_data_fastq_trimmed_files" }
       - { id:  "#trimm.trimmed_fastq_read_count" }
   - id: "#map"
-    run: {$import: "03-map-se.cwl" }
+    run: "03-map-se.cwl" 
     inputs:
       - { id: "#map.input_fastq_files", source: "#trimm.output_data_fastq_trimmed_files" }
       - { id: "#map.genome_ref_first_index_file", source: "#genome_ref_first_index_file" }
@@ -682,7 +682,7 @@ steps:
       - { id:  "#map.output_read_count_mapped" }
 {% endif %}
   - id: "#peak_call"
-    run: {$import: "04-peakcall-{{ peak_type }}{% if 'control' in sample_types %}-with-control{% endif %}.cwl" }
+    run: "04-peakcall-{{ peak_type }}{% if 'control' in sample_types %}-with-control{% endif %}.cwl" 
     inputs:
       - { id: "#peak_call.input_bam_files", source: "#map{% if 'control' in sample_types %}_treatment{% endif %}.output_data_sorted_dedup_bam_files" }
       - { id: "#peak_call.input_bam_format", valueFrom: "BAM{% if read_type == 'pe' %}PE{% endif %}" }
@@ -701,7 +701,7 @@ steps:
       - { id: "#peak_call.output_peak_count_within_replicate" }
       - { id: "#peak_call.output_read_in_peak_count_within_replicate" }
   - id: "#quant"
-    run: {$import: "05-quantification.cwl" }
+    run: "05-quantification.cwl" 
     inputs:
       - { id: "#quant.input_bam_files", source: "#map{% if 'control' in sample_types %}_treatment{% endif %}.output_data_sorted_dedup_bam_files" }
       - { id: "#quant.input_pileup_bedgraphs", source: "#peak_call.output_extended_{{ peak_type }}peak_file" }

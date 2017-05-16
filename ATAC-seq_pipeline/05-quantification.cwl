@@ -59,7 +59,7 @@ outputs:
 
 steps:
   - id: "#bedtools_genomecov"
-    run: {$import: "../map/bedtools-genomecov.cwl"}
+    run: "../map/bedtools-genomecov.cwl"
     scatter: "#bedtools_genomecov.ibam"
     inputs:
       - id: "#bedtools_genomecov.ibam"
@@ -71,7 +71,7 @@ steps:
     outputs:
       - id: "#bedtools_genomecov.output_bedfile"
   - id: "#bedsort_genomecov"
-    run: {$import: "../quant/bedSort.cwl"}
+    run: "../quant/bedSort.cwl"
     scatter: "#bedsort_genomecov.bed_file"
     inputs:
       - id: "#bedsort_genomecov.bed_file"
@@ -79,7 +79,7 @@ steps:
     outputs:
       - id: "#bedsort_genomecov.bed_file_sorted"
   - id: "#bdg2bw-raw"
-    run: {$import: "../quant/bedGraphToBigWig.cwl"}
+    run: "../quant/bedGraphToBigWig.cwl"
     scatter: "#bdg2bw-raw.bed_graph"
     inputs:
       - id: "#bdg2bw-raw.bed_graph"
@@ -91,7 +91,7 @@ steps:
     outputs:
       - id: "#bdg2bw-raw.output_bigwig"
   - id: "#bamcoverage"
-    run: {$import: "../quant/deeptools-bamcoverage.cwl"}
+    run: "../quant/deeptools-bamcoverage.cwl"
     scatter: "#bamcoverage.bam"
     inputs:
       - id: "#bamcoverage.bam"
@@ -109,7 +109,7 @@ steps:
     outputs:
       - id: "#bamcoverage.output_bam_coverage"
   - id: "#extend-reads"
-    run: {$import: "../quant/bedtools-slop.cwl"}
+    run: "../quant/bedtools-slop.cwl"
     scatter: "#extend-reads.i"
     inputs:
       - id: "#extend-reads.i"
@@ -121,7 +121,7 @@ steps:
     outputs:
       - id: "#extend-reads.stdoutfile"
   - id: "#clip-off-chrom"
-    run: {$import: "../quant/bedClip.cwl"}
+    run: "../quant/bedClip.cwl"
     scatter: "#clip-off-chrom.bed_file"
     inputs:
       - id: "#clip-off-chrom.bed_file"
@@ -131,7 +131,7 @@ steps:
     outputs:
       - id: "#clip-off-chrom.bed_file_clipped"
   - id: "#bedsort_clipped_bedfile"
-    run: {$import: "../quant/bedSort.cwl"}
+    run: "../quant/bedSort.cwl"
     scatter: "#bedsort_clipped_bedfile.bed_file"
     inputs:
       - id: "#bedsort_clipped_bedfile.bed_file"
@@ -139,7 +139,7 @@ steps:
     outputs:
       - id: "#bedsort_clipped_bedfile.bed_file_sorted"
   - id: "#bdg2bw-extend"
-    run: {$import: "../quant/bedGraphToBigWig.cwl"}
+    run: "../quant/bedGraphToBigWig.cwl"
     scatter: "#bdg2bw-extend.bed_graph"
     inputs:
       - id: "#bdg2bw-extend.bed_graph"
@@ -151,7 +151,7 @@ steps:
     outputs:
       - id: "#bdg2bw-extend.output_bigwig"
   - id: "#scale-bedgraph"
-    run: {$import: "../peak_calling/scale-bedgraph.cwl"}
+    run: "../peak_calling/scale-bedgraph.cwl"
     scatter:
       - "#scale-bedgraph.bedgraph_file"
       - "#scale-bedgraph.read_count_file"
@@ -164,7 +164,7 @@ steps:
     outputs:
       - id: "#scale-bedgraph.bedgraph_scaled"
   - id: "#bedsort_scaled_bdg"
-    run: {$import: "../quant/bedSort.cwl"}
+    run: "../quant/bedSort.cwl"
     scatter: "#bedsort_scaled_bdg.bed_file"
     inputs:
       - id: "#bedsort_scaled_bdg.bed_file"
@@ -172,7 +172,7 @@ steps:
     outputs:
       - id: "#bedsort_scaled_bdg.bed_file_sorted"
   - id: "#bdg2bw-extend-norm"
-    run: {$import: "../quant/bedGraphToBigWig.cwl"}
+    run: "../quant/bedGraphToBigWig.cwl"
     scatter: "#bdg2bw-extend-norm.bed_graph"
     inputs:
       - id: "#bdg2bw-extend-norm.bed_graph"
