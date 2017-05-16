@@ -17,7 +17,7 @@ inputs:
     default: "BAM"
   - id: "#genome_effective_size"
     type: string
-    default: "hg"
+    default: "hs"
     description: "Effective genome size used by MACS2. It can be numeric or a shortcuts:'hs' for human (2.7e9), 'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for fruitfly (1.2e8), Default:hs"
   - id: "#nthreads"
     type: int
@@ -73,7 +73,7 @@ outputs:
       items: File
   - id: "#output_read_in_peak_count_within_replicate"
     source: "#extract-count-reads-in-peaks.output_read_count"
-    description: "Peak counts within replicate"
+    description: "Reads peak counts within replicate"
     type:
       type: array
       items: File

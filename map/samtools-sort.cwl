@@ -22,7 +22,13 @@ inputs:
     inputBinding:
       position: 1
       prefix: "-@"
-
+  - id: "#n"
+    type: boolean
+    description: "Sort by read name"
+    default: false
+    inputBinding:
+      position: 1
+      prefix: "-n"
 outputs:
   - id: "#sorted_file"
     type: File

@@ -58,7 +58,7 @@ inputs:
     description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
   - id: "#genome_effective_size"
     type: string
-    default: "hg"
+    default: "hs"
     description: "Effective genome size used by MACS2. It can be numeric or a shortcuts:'hs' for human (2.7e9), 'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for fruitfly (1.2e8), Default:hs"
 outputs:
   - id: "#qc_raw_read_counts"
@@ -270,13 +270,13 @@ steps:
     outputs:
       - { id: "#peak_call.output_spp_x_cross_corr" }
       - { id: "#peak_call.output_spp_cross_corr_plot" }
+      - { id: "#peak_call.output_read_in_peak_count_within_replicate" }
       - { id: "#peak_call.output_peak_file" }
       - { id: "#peak_call.output_peak_summits_file" }
       - { id: "#peak_call.output_extended_peak_file" }
       - { id: "#peak_call.output_peak_xls_file" }
       - { id: "#peak_call.output_filtered_read_count_file" }
       - { id: "#peak_call.output_peak_count_within_replicate" }
-      - { id: "#peak_call.output_read_in_peak_count_within_replicate" }
   - id: "#quant"
     run: {$import: "05-quantification.cwl" }
     inputs:

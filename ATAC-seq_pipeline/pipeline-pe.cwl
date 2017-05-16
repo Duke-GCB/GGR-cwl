@@ -61,7 +61,7 @@ inputs:
     description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
   - id: "#genome_effective_size"
     type: string
-    default: "hg"
+    default: "hs"
     description: "Effective genome size used by MACS2. It can be numeric or a shortcuts:'hs' for human (2.7e9), 'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for fruitfly (1.2e8), Default:hs"
 outputs:
   - id: "#qc_count_raw_reads_read1"
@@ -238,6 +238,42 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#output_unpaired_peak_file"
+    source: "#peak_call.output_peak_file"
+    description: "peakshift/phantomPeak results file using each paired mate independently"
+    type:
+      type: array
+      items: File
+  - id: "#output_unpaired_peak_summits_file"
+    source: "#peak_call.output_peak_summits_file"
+    description: "File containing peak summits using each paired mate independently"
+    type:
+      type: array
+      items: File
+  - id: "#output_unpaired_extended_peak_file"
+    source: "#peak_call.output_ext_frag_bdg_file"
+    description: "peakshift/phantomPeak extended fragment results file using each paired mate independently"
+    type:
+      type: array
+      items: File
+  - id: "#output_unpaired_peak_xls_file"
+    source: "#peak_call.output_peak_xls_file"
+    description: "Peak calling report file (*_peaks.xls file produced by MACS2) using each paired mate independently"
+    type:
+      type: array
+      items: File
+  - id: "#output_unpaired_filtered_read_count_file"
+    source: "#count-reads-filtered-unpaired.read_count_file"
+    description: "Filtered read count reported by MACS2 using each paired mate independently"
+    type:
+      type: array
+      items: File
+  - id: "#output_unpaired_peak_count_within_replicate"
+    source: "#count-peaks-unpaired.output_counts"
+    description: "Peak counts within replicate using each paired mate independently"
+    type:
+      type: array
+      items: File
   - id: "#quant_bigwig_raw_files"
     source: "#quant.bigwig_raw_files"
     description: "Raw reads bigWig (signal) files"
@@ -325,13 +361,19 @@ steps:
     outputs:
       - { id: "#peak_call.output_spp_x_cross_corr" }
       - { id: "#peak_call.output_spp_cross_corr_plot" }
+      - { id: "#peak_call.output_read_in_peak_count_within_replicate" }
       - { id: "#peak_call.output_peak_file" }
       - { id: "#peak_call.output_peak_summits_file" }
       - { id: "#peak_call.output_extended_peak_file" }
       - { id: "#peak_call.output_peak_xls_file" }
       - { id: "#peak_call.output_filtered_read_count_file" }
       - { id: "#peak_call.output_peak_count_within_replicate" }
-      - { id: "#peak_call.output_read_in_peak_count_within_replicate" }
+      - { id: "#peak_call.output_unpaired_peak_file" }
+      - { id: "#peak_call.output_unpaired_peak_summits_file" }
+      - { id: "#peak_call.output_unpaired_extended_peak_file" }
+      - { id: "#peak_call.output_unpaired_peak_xls_file" }
+      - { id: "#peak_call.output_unpaired_filtered_read_count_file" }
+      - { id: "#peak_call.output_unpaired_peak_count_within_replicate" }
   - id: "#quant"
     run: {$import: "05-quantification.cwl" }
     inputs:
