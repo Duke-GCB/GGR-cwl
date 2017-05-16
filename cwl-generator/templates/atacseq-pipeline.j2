@@ -287,37 +287,37 @@ outputs:
       items: File
 {% if read_type == 'pe' %}
   - id: "#output_unpaired_peak_file"
-    source: "#peak_call.output_peak_file"
+    source: "#peak_call.output_unpaired_peak_file"
     description: "peakshift/phantomPeak results file using each paired mate independently"
     type:
       type: array
       items: File
   - id: "#output_unpaired_peak_summits_file"
-    source: "#peak_call.output_peak_summits_file"
+    source: "#peak_call.output_unpaired_peak_summits_file"
     description: "File containing peak summits using each paired mate independently"
     type:
       type: array
       items: File
   - id: "#output_unpaired_extended_peak_file"
-    source: "#peak_call.output_ext_frag_bdg_file"
+    source: "#peak_call.output_unpaired_extended_peak_file"
     description: "peakshift/phantomPeak extended fragment results file using each paired mate independently"
     type:
       type: array
       items: File
   - id: "#output_unpaired_peak_xls_file"
-    source: "#peak_call.output_peak_xls_file"
+    source: "#peak_call.output_unpaired_peak_xls_file"
     description: "Peak calling report file (*_peaks.xls file produced by MACS2) using each paired mate independently"
     type:
       type: array
       items: File
   - id: "#output_unpaired_filtered_read_count_file"
-    source: "#count-reads-filtered-unpaired.read_count_file"
+    source: "#peak_call.output_unpaired_filtered_read_count_file"
     description: "Filtered read count reported by MACS2 using each paired mate independently"
     type:
       type: array
       items: File
   - id: "#output_unpaired_peak_count_within_replicate"
-    source: "#count-peaks-unpaired.output_counts"
+    source: "#peak_call.output_unpaired_peak_count_within_replicate"
     description: "Peak counts within replicate using each paired mate independently"
     type:
       type: array
