@@ -30,7 +30,7 @@ outputs:
 
 steps:
   - id: "#generate_genome_star"
-    run: "../workflows/tools/STAR.cwl" 
+    run: {$import: "../workflows/tools/STAR.cwl" }
     inputs:
       - { id: "#generate_genome_star.runMode", valueFrom: "genomeGenerate"}
       - { id: "#generate_genome_star.sjdbGTFfile", source: "#annotation_file"}
@@ -41,7 +41,7 @@ steps:
       - id: "#generate_genome_star.indices"
 
   - id: "#generate_genome_rsem"
-    run: "../quant/rsem-prepare-reference.cwl" 
+    run: {$import: "../quant/rsem-prepare-reference.cwl" }
     inputs:
       - { id: "#generate_genome_rsem.gtf", source: "#annotation_file"}
       - { id: "#generate_genome_rsem.reference_fasta_files", source: "#genome_fasta_files"}

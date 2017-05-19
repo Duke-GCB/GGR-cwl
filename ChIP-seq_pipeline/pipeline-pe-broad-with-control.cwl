@@ -393,7 +393,7 @@ outputs:
       items: File
 steps:
   - id: "#qc_treatment"
-    run: "01-qc-pe.cwl" 
+    run: {$import: "01-qc-pe.cwl" }
     inputs:
       - { id: "#qc_treatment.input_read1_fastq_files", source: "#input_treatment_fastq_read1_files" }
       - { id: "#qc_treatment.input_read2_fastq_files", source: "#input_treatment_fastq_read2_files" }
@@ -411,7 +411,7 @@ steps:
       - { id:  "#qc_treatment.output_custom_adapters_read1" }
       - { id:  "#qc_treatment.output_custom_adapters_read2" }
   - id: "#trimm_treatment"
-    run: "02-trim-pe.cwl" 
+    run: {$import: "02-trim-pe.cwl" }
     inputs:
       - { id: "#trimm_treatment.input_read1_fastq_files", source: "#input_treatment_fastq_read1_files" }
       - { id: "#trimm_treatment.input_read2_fastq_files", source: "#input_treatment_fastq_read2_files" }
@@ -426,7 +426,7 @@ steps:
       - { id:  "#trimm_treatment.output_trimmed_read1_fastq_read_count" }
       - { id:  "#trimm_treatment.output_trimmed_read2_fastq_read_count" }
   - id: "#map_treatment"
-    run: "03-map-pe.cwl" 
+    run: {$import: "03-map-pe.cwl" }
     inputs:
       - { id: "#map_treatment.input_fastq_read1_files", source: "#trimm_treatment.output_data_fastq_read1_trimmed_files" }
       - { id: "#map_treatment.input_fastq_read2_files", source: "#trimm_treatment.output_data_fastq_read2_trimmed_files" }
@@ -446,7 +446,7 @@ steps:
       - { id: "#map_treatment.output_percentage_uniq_reads" }
       - { id: "#map_treatment.output_read_count_mapped" }
   - id: "#qc_control"
-    run: "01-qc-pe.cwl" 
+    run: {$import: "01-qc-pe.cwl" }
     inputs:
       - { id: "#qc_control.input_read1_fastq_files", source: "#input_control_fastq_read1_files" }
       - { id: "#qc_control.input_read2_fastq_files", source: "#input_control_fastq_read2_files" }
@@ -464,7 +464,7 @@ steps:
       - { id:  "#qc_control.output_custom_adapters_read1" }
       - { id:  "#qc_control.output_custom_adapters_read2" }
   - id: "#trimm_control"
-    run: "02-trim-pe.cwl" 
+    run: {$import: "02-trim-pe.cwl" }
     inputs:
       - { id: "#trimm_control.input_read1_fastq_files", source: "#input_control_fastq_read1_files" }
       - { id: "#trimm_control.input_read2_fastq_files", source: "#input_control_fastq_read2_files" }
@@ -479,7 +479,7 @@ steps:
       - { id:  "#trimm_control.output_trimmed_read1_fastq_read_count" }
       - { id:  "#trimm_control.output_trimmed_read2_fastq_read_count" }
   - id: "#map_control"
-    run: "03-map-pe.cwl" 
+    run: {$import: "03-map-pe.cwl" }
     inputs:
       - { id: "#map_control.input_fastq_read1_files", source: "#trimm_control.output_data_fastq_read1_trimmed_files" }
       - { id: "#map_control.input_fastq_read2_files", source: "#trimm_control.output_data_fastq_read2_trimmed_files" }
@@ -499,7 +499,7 @@ steps:
       - { id: "#map_control.output_percentage_uniq_reads" }
       - { id: "#map_control.output_read_count_mapped" }
   - id: "#peak_call"
-    run: "04-peakcall-broad-with-control.cwl" 
+    run: {$import: "04-peakcall-broad-with-control.cwl" }
     inputs:
       - { id: "#peak_call.input_bam_files", source: "#map_treatment.output_data_sorted_dedup_bam_files" }
       - { id: "#peak_call.input_bam_format", valueFrom: "BAMPE" }
@@ -516,7 +516,7 @@ steps:
       - { id: "#peak_call.output_peak_count_within_replicate" }
       - { id: "#peak_call.output_read_in_peak_count_within_replicate" }
   - id: "#quant"
-    run: "05-quantification.cwl" 
+    run: {$import: "05-quantification.cwl" }
     inputs:
       - { id: "#quant.input_bam_files", source: "#map_treatment.output_data_sorted_dedup_bam_files" }
       - { id: "#quant.input_pileup_bedgraphs", source: "#peak_call.output_extended_broadpeak_file" }

@@ -145,7 +145,7 @@ outputs:
     type: {type: array, items: File}
 steps:
   - id: "#qc"
-    run: "01-qc-se.cwl" 
+    run: {$import: "01-qc-se.cwl" }
     inputs:
       - { id: "#qc.input_fastq_read1_files", source: "#input_fastq_read1_files" }
       - { id: "#qc.default_adapters_file", source: "#default_adapters_file" }
@@ -157,7 +157,7 @@ steps:
       - id: "#qc.output_count_raw_reads_read1"
       - id: "#qc.output_diff_counts_read1"
   - id: "#trim"
-    run: "02-trim-se.cwl" 
+    run: {$import: "02-trim-se.cwl" }
     inputs:
       - { id: "#trim.input_fastq_read1_files", source: "#input_fastq_read1_files" }
       - { id: "#trim.input_read1_adapters_files", source: "#qc.output_custom_adapters_read1" }
@@ -168,7 +168,7 @@ steps:
       - id: "#trim.output_data_fastq_read1_trimmed_files"
       - id: "#trim.output_trimmed_read1_fastq_read_count"
   - id: "#map"
-    run: "03-map-se-with-sjdb.cwl" 
+    run: {$import: "03-map-se-with-sjdb.cwl" }
     inputs:
       - { id: "#map.input_fastq_read1_files", source: "#trim.output_data_fastq_read1_trimmed_files" }
       - { id: "#map.genome_sizes_file", source: "#genome_sizes_file" }
@@ -191,7 +191,7 @@ steps:
       - id: "#map.percentage_uniq_reads_star2"
       - id: "#map.pcr_bottleneck_coef_file"
   - id: "#quant"
-    run: "04-quantification-se-stranded.cwl" 
+    run: {$import: "04-quantification-se-stranded.cwl" }
     inputs:
       - { id: "#quant.input_bam_files", source: "#map.star_aligned_sorted_file" }
       - { id: "#quant.input_transcripts_bam_files", source: "#map.transcriptome_star_aligned_file" }

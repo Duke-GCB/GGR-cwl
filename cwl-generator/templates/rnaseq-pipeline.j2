@@ -253,7 +253,7 @@ steps:
 
 
   - id: "#qc"
-    run: "01-qc-{% if read_type == 'pe' %}pe{% else %}se{% endif %}.cwl" 
+    run: {$import: "01-qc-{% if read_type == 'pe' %}pe{% else %}se{% endif %}.cwl" }
     inputs:
       - { id: "#qc.input_fastq_read1_files", source: "#input_fastq_read1_files" }
 {% if read_type == 'pe' %}
@@ -275,7 +275,7 @@ steps:
       - id: "#qc.output_diff_counts_read2"
 {% endif %}
   - id: "#trim"
-    run: "02-trim-{% if read_type == 'pe' %}pe{% else %}se{% endif %}.cwl" 
+    run: {$import: "02-trim-{% if read_type == 'pe' %}pe{% else %}se{% endif %}.cwl" }
     inputs:
       - { id: "#trim.input_fastq_read1_files", source: "#input_fastq_read1_files" }
       - { id: "#trim.input_read1_adapters_files", source: "#qc.output_custom_adapters_read1" }
@@ -294,7 +294,7 @@ steps:
       - id: "#trim.output_trimmed_read2_fastq_read_count"
 {% endif %}
   - id: "#map"
-    run: "03-map-{% if read_type == 'pe' %}pe{% else %}se{% endif %}{% if not star2pass %}-with-sjdb{% endif %}.cwl" 
+    run: {$import: "03-map-{% if read_type == 'pe' %}pe{% else %}se{% endif %}{% if not star2pass %}-with-sjdb{% endif %}.cwl" }
     inputs:
       - { id: "#map.input_fastq_read1_files", source: "#trim.output_data_fastq_read1_trimmed_files" }
 {% if read_type == 'pe' %}
@@ -329,7 +329,7 @@ steps:
       - id: "#map.star_1pass_sjdb"
 {% endif %}
   - id: "#quant"
-    run: "04-quantification-{% if read_type == 'pe' %}pe{% else %}se{% endif %}-{{ strandness }}.cwl" 
+    run: {$import: "04-quantification-{% if read_type == 'pe' %}pe{% else %}se{% endif %}-{{ strandness }}.cwl" }
     inputs:
       - { id: "#quant.input_bam_files", source: "#map.star_aligned_sorted_file" }
       - { id: "#quant.input_transcripts_bam_files", source: "#map.transcriptome_star_aligned_file" }

@@ -76,7 +76,7 @@ outputs:
     type: {type: array, items: File}
 steps:
   - id: "#basename"
-    run: "../utils/basename.cwl" 
+    run: {$import: "../utils/basename.cwl" }
     scatter: "#basename.file_path"
     inputs:
       - id: "#basename.file_path"
@@ -87,7 +87,7 @@ steps:
     outputs:
       - id: "#basename.basename"
   - id: "#featurecounts"
-    run: "../quant/subread-featurecounts.cwl"
+    run: {$import: "../quant/subread-featurecounts.cwl"}
     scatter:
       - "#featurecounts.input_files"
       - "#featurecounts.output_filename"
@@ -109,7 +109,7 @@ steps:
     outputs:
       - id: "#featurecounts.output_files"
   - id: "#rsem-calc-expr"
-    run: "../quant/rsem-calculate-expression.cwl"
+    run: {$import: "../quant/rsem-calculate-expression.cwl"}
     scatter:
       - "#rsem-calc-expr.bam"
       - "#rsem-calc-expr.sample_name"
@@ -137,7 +137,7 @@ steps:
       - id: "#rsem-calc-expr.genes"
       - id: "#rsem-calc-expr.rsem_stat"
   - id: "#split_bams"
-    run: "../quant/split-bams-by-strand-and-index.cwl"
+    run: {$import: "../quant/split-bams-by-strand-and-index.cwl"}
     inputs:
       - {id: "#split_bams.input_bam_files", source: "#input_bam_files"}
       - {id: "#split_bams.input_basenames", source: "#basename.basename"}
@@ -149,7 +149,7 @@ steps:
       - {id: "#split_bams.index_bam_plus_files"}
       - {id: "#split_bams.index_bam_minus_files"}
   - id: "#bedtools_genomecov_plus"
-    run: "../map/bedtools-genomecov.cwl"
+    run: {$import: "../map/bedtools-genomecov.cwl"}
     scatter: "#bedtools_genomecov_plus.ibam"
     inputs:
       - { id: "#bedtools_genomecov_plus.ibam",  source: "#split_bams.bam_plus_files" }
@@ -158,7 +158,7 @@ steps:
     outputs:
       - id: "#bedtools_genomecov_plus.output_bedfile"
   - id: "#bedtools_genomecov_minus"
-    run: "../map/bedtools-genomecov.cwl"
+    run: {$import: "../map/bedtools-genomecov.cwl"}
     scatter: "#bedtools_genomecov_minus.ibam"
     inputs:
       - { id: "#bedtools_genomecov_minus.ibam", source: "#split_bams.bam_minus_files" }
@@ -167,21 +167,21 @@ steps:
     outputs:
       - id: "#bedtools_genomecov_minus.output_bedfile"
   - id: "#bedsort_genomecov_plus"
-    run: "../quant/bedSort.cwl"
+    run: {$import: "../quant/bedSort.cwl"}
     scatter: "#bedsort_genomecov_plus.bed_file"
     inputs:
       - { id: "#bedsort_genomecov_plus.bed_file",  source: "#bedtools_genomecov_plus.output_bedfile" }
     outputs:
       - id: "#bedsort_genomecov_plus.bed_file_sorted"
   - id: "#bedsort_genomecov_minus"
-    run: "../quant/bedSort.cwl"
+    run: {$import: "../quant/bedSort.cwl"}
     scatter: "#bedsort_genomecov_minus.bed_file"
     inputs:
       - { id: "#bedsort_genomecov_minus.bed_file",  source: "#bedtools_genomecov_minus.output_bedfile" }
     outputs:
       - id: "#bedsort_genomecov_minus.bed_file_sorted"
   - id: "#negate_minus_bdg"
-    run: "../quant/negate-minus-strand-bedgraph.cwl"
+    run: {$import: "../quant/negate-minus-strand-bedgraph.cwl"}
     scatter:
       - "#negate_minus_bdg.bedgraph_file"
       - "#negate_minus_bdg.output_filename"
@@ -194,7 +194,7 @@ steps:
     outputs:
       - id: "#negate_minus_bdg.negated_minus_bdg"
   - id: "#bdg2bw-raw-plus"
-    run: "../quant/bedGraphToBigWig.cwl"
+    run: {$import: "../quant/bedGraphToBigWig.cwl"}
     scatter: "#bdg2bw-raw-plus.bed_graph"
     inputs:
       - { id: "#bdg2bw-raw-plus.bed_graph", source: "#bedsort_genomecov_plus.bed_file_sorted" }
@@ -203,7 +203,7 @@ steps:
     outputs:
       - id: "#bdg2bw-raw-plus.output_bigwig"
   - id: "#bdg2bw-raw-minus"
-    run: "../quant/bedGraphToBigWig.cwl"
+    run: {$import: "../quant/bedGraphToBigWig.cwl"}
     scatter: "#bdg2bw-raw-minus.bed_graph"
     inputs:
       - { id: "#bdg2bw-raw-minus.bed_graph", source: "#negate_minus_bdg.negated_minus_bdg" }
@@ -212,7 +212,7 @@ steps:
     outputs:
       - id: "#bdg2bw-raw-minus.output_bigwig"
   - id: "#bamcoverage-plus"
-    run: "../quant/deeptools-bamcoverage.cwl"
+    run: {$import: "../quant/deeptools-bamcoverage.cwl"}
     scatter: "#bamcoverage-plus.bam"
     inputs:
       - { id: "#bamcoverage-plus.bam", source: "#split_bams.bam_plus_files" }
@@ -222,7 +222,7 @@ steps:
     outputs:
       - id: "#bamcoverage-plus.output_bam_coverage"
   - id: "#bamcoverage-minus"
-    run: "../quant/deeptools-bamcoverage.cwl"
+    run: {$import: "../quant/deeptools-bamcoverage.cwl"}
     scatter: "#bamcoverage-minus.bam"
     inputs:
       - { id: "#bamcoverage-minus.bam", source: "#split_bams.bam_minus_files" }
@@ -232,14 +232,14 @@ steps:
     outputs:
       - id: "#bamcoverage-minus.output_bam_coverage"
   - id: "#bw2bdg-minus"
-    run: "../quant/bigWigToBedGraph.cwl"
+    run: {$import: "../quant/bigWigToBedGraph.cwl"}
     scatter: "#bw2bdg-minus.bigwig_file"
     inputs:
       - { id: "#bw2bdg-minus.bigwig_file", source: "#bamcoverage-minus.output_bam_coverage" }
     outputs:
       - id: "#bw2bdg-minus.output_bedgraph"
   - id: "#negate_minus_bdg_norm"
-    run: "../quant/negate-minus-strand-bedgraph.cwl"
+    run: {$import: "../quant/negate-minus-strand-bedgraph.cwl"}
     scatter:
       - "#negate_minus_bdg_norm.bedgraph_file"
       - "#negate_minus_bdg_norm.output_filename"
@@ -252,7 +252,7 @@ steps:
     outputs:
       - id: "#negate_minus_bdg_norm.negated_minus_bdg"
   - id: "#bdg2bw-norm-minus"
-    run: "../quant/bedGraphToBigWig.cwl"
+    run: {$import: "../quant/bedGraphToBigWig.cwl"}
     scatter: "#bdg2bw-norm-minus.bed_graph"
     inputs:
       - { id: "#bdg2bw-norm-minus.bed_graph", source: "#negate_minus_bdg_norm.negated_minus_bdg" }

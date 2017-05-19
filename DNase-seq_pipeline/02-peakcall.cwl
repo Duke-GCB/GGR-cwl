@@ -68,7 +68,7 @@ outputs:
       items: File
 steps:
   - id: "#spp"
-    run: "../spp/spp.cwl"
+    run: {$import: "../spp/spp.cwl"}
     scatter:
       - "#spp.input_bam"
     scatterMethod: dotproduct
@@ -83,7 +83,7 @@ steps:
       - id: "#spp.output_spp_cross_corr"
       - id: "#spp.output_spp_cross_corr_plot"
   - id: "#extract-peak-frag-length"
-    run: "../spp/extract-best-frag-length.cwl"
+    run: {$import: "../spp/extract-best-frag-length.cwl"}
     scatter: "#extract-peak-frag-length.input_spp_txt_file"
     inputs:
       - id: "#extract-peak-frag-length.input_spp_txt_file"
@@ -91,7 +91,7 @@ steps:
     outputs:
       - id: "#extract-peak-frag-length.output_best_frag_length"
   - id: "#peak-calling-narrow"
-    run: "../peak_calling/macs2-callpeak.cwl"
+    run: {$import: "../peak_calling/macs2-callpeak.cwl"}
     scatter:
       - "#peak-calling-narrow.treatment"
     inputs:
@@ -115,7 +115,7 @@ steps:
       - id: "#peak-calling-narrow.output_ext_frag_bdg_file"
       - id: "#peak-calling-narrow.output_peak_xls_file"
   - id: "#count-reads-filtered"
-    run: "../peak_calling/count-reads-after-filtering.cwl"
+    run: {$import: "../peak_calling/count-reads-after-filtering.cwl"}
     scatter: "#count-reads-filtered.peak_xls_file"
     inputs:
       - id: "#count-reads-filtered.peak_xls_file"
@@ -123,7 +123,7 @@ steps:
     outputs:
       - id: "#count-reads-filtered.read_count_file"
   - id: "#count-peaks"
-    run: "../utils/count-with-output-suffix.cwl"
+    run: {$import: "../utils/count-with-output-suffix.cwl"}
     scatter: "#count-peaks.input_file"
     inputs:
       - id: "#count-peaks.input_file"
@@ -133,7 +133,7 @@ steps:
     outputs:
       - id: "#count-peaks.output_counts"
   - id: "#filter-reads-in-peaks"
-    run: "../peak_calling/samtools-filter-in-bedfile.cwl"
+    run: {$import: "../peak_calling/samtools-filter-in-bedfile.cwl"}
     scatter:
       - "#filter-reads-in-peaks.input_bam_file"
       - "#filter-reads-in-peaks.input_bedfile"
@@ -147,7 +147,7 @@ steps:
       - id: "#filter-reads-in-peaks.filtered_file"
 
   - id: "#extract-count-reads-in-peaks"
-    run: "../peak_calling/samtools-extract-number-mapped-reads.cwl"
+    run: {$import: "../peak_calling/samtools-extract-number-mapped-reads.cwl"}
     scatter: "#extract-count-reads-in-peaks.input_bam_file"
     inputs:
       - id: "#extract-count-reads-in-peaks.input_bam_file"

@@ -42,7 +42,7 @@ outputs:
 steps:
 
   - id: "#split-bam-plus"
-    run: "../quant/bamtools-filter.cwl"
+    run: {$import: "../quant/bamtools-filter.cwl"}
     scatter:
       - "#split-bam-plus.in"
       - "#split-bam-plus.out"
@@ -58,7 +58,7 @@ steps:
     outputs:
       - id: "#split-bam-plus.output_file"
   - id: "#split-bam-minus"
-    run: "../quant/bamtools-filter.cwl"
+    run: {$import: "../quant/bamtools-filter.cwl"}
     scatter:
       - "#split-bam-minus.in"
       - "#split-bam-minus.out"
@@ -76,14 +76,14 @@ steps:
 
 
   - id: "#index_plus_bam"
-    run: "../map/samtools-index.cwl"
+    run: {$import: "../map/samtools-index.cwl"}
     scatter: "#index_plus_bam.input_file"
     inputs:
       - { id: "#index_plus_bam.input_file", source: "#split-bam-plus.output_file" }
     outputs:
       - id: "#index_plus_bam.index_file"
   - id: "#index_minus_bam"
-    run: "../map/samtools-index.cwl"
+    run: {$import: "../map/samtools-index.cwl"}
     scatter: "#index_minus_bam.input_file"
     inputs:
       - { id: "#index_minus_bam.input_file", source: "#split-bam-minus.output_file" }

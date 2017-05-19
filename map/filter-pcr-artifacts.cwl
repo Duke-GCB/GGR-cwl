@@ -21,7 +21,7 @@ outputs:
 
 steps:
   - id: "#bedtools_bamtobed"
-    run: "bedtools-bamtobed.cwl"
+    run: {$import: "bedtools-bamtobed.cwl"}
     scatter: "#bedtools_bamtobed.bam"
     inputs:
       - id: "#bedtools_bamtobed.bam"
@@ -29,7 +29,7 @@ steps:
     outputs:
       - id: "#bedtools_bamtobed.output_bedfile"
   - id: "#window_trimmer"
-    run: "windowtrimmer.cwl"
+    run: {$import: "windowtrimmer.cwl"}
     scatter: "#window_trimmer.input_file"
     inputs:
       - id: "#window_trimmer.input_file"

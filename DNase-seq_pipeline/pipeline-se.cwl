@@ -163,7 +163,7 @@ outputs:
       items: File
 steps:
   - id: "#map"
-    run: "01-map-se.cwl" 
+    run: {$import: "01-map-se.cwl" }
     inputs:
       - { id: "#map.input_fastq_files", source: "#input_fastq_files" }
       - { id: "#map.genome_ref_first_index_file", source: "#genome_ref_first_index_file" }
@@ -181,7 +181,7 @@ steps:
       - { id: "#map.output_read_count_mapped_filtered" }
       - { id: "#map.output_percentage_uniq_reads" }
   - id: "#peak_call"
-    run: "02-peakcall.cwl" 
+    run: {$import: "02-peakcall.cwl" }
     inputs:
       - { id: "#peak_call.input_bam_files", source: "#map.output_data_filtered_bam_files" }
       - { id: "#peak_call.input_bam_format", valueFrom: "BAM" }
@@ -196,7 +196,7 @@ steps:
       - { id: "#peak_call.output_peak_count_within_replicate" }
       - { id: "#peak_call.output_read_in_peak_count_within_replicate" }
   - id: "#quant"
-    run: "03-quantification.cwl" 
+    run: {$import: "03-quantification.cwl" }
     inputs:
       - { id: "#quant.input_bam_files", source: "#map.output_data_filtered_bam_files" }
       - { id: "#quant.input_pileup_bedgraphs", source: "#peak_call.output_extended_narrowpeak_file" }
