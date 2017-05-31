@@ -28,6 +28,9 @@ inputs:
   - id: "#genome_sizes_file"
     type: File
     description: "Genome sizes tab-delimited file (used in samtools)"
+  - id: "#as_narrowPeak_file"
+    type: File
+    description: "Definition narrowPeak file in AutoSql format (used in bedToBigBed)"
   - id: "#ENCODE_blacklist_bedfile"
     type: File
     description: "Bedfile containing ENCODE consensus blacklist regions to be excluded."
@@ -241,9 +244,21 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#peak_call_peak_bigbed_file"
+    source: "#peak_call.output_peak_bigbed_file"
+    description: "Peaks in bigBed format"
+    type:
+      type: array
+      items: File
   - id: "#output_unpaired_peak_file"
     source: "#peak_call.output_unpaired_peak_file"
     description: "peakshift/phantomPeak results file using each paired mate independently"
+    type:
+      type: array
+      items: File
+  - id: "#output_unpaired_peak_bigbed_file"
+    source: "#peak_call.output_unpaired_peak_bigbed_file"
+    description: "peakshift/phantomPeak results bigbed file using each paired mate independently"
     type:
       type: array
       items: File
@@ -361,18 +376,22 @@ steps:
       - { id: "#peak_call.input_bam_files", source: "#map.output_data_sorted_dedup_bam_files" }
       - { id: "#peak_call.input_bam_format", valueFrom: "BAMPE" }
       - { id: "#peak_call.genome_effective_size", source: "#genome_effective_size" }
+      - { id: "#peak_call.input_genome_sizes", source: "#genome_sizes_file" }
+      - { id: "#peak_call.as_narrowPeak_file", source: "#as_narrowPeak_file" }
       - { id: "#peak_call.nthreads", source: "#nthreads_peakcall" }
     outputs:
       - { id: "#peak_call.output_spp_x_cross_corr" }
       - { id: "#peak_call.output_spp_cross_corr_plot" }
       - { id: "#peak_call.output_read_in_peak_count_within_replicate" }
       - { id: "#peak_call.output_peak_file" }
+      - { id: "#peak_call.output_peak_bigbed_file" }
       - { id: "#peak_call.output_peak_summits_file" }
       - { id: "#peak_call.output_extended_peak_file" }
       - { id: "#peak_call.output_peak_xls_file" }
       - { id: "#peak_call.output_filtered_read_count_file" }
       - { id: "#peak_call.output_peak_count_within_replicate" }
       - { id: "#peak_call.output_unpaired_peak_file" }
+      - { id: "#peak_call.output_unpaired_peak_bigbed_file" }
       - { id: "#peak_call.output_unpaired_peak_summits_file" }
       - { id: "#peak_call.output_unpaired_extended_peak_file" }
       - { id: "#peak_call.output_unpaired_peak_xls_file" }

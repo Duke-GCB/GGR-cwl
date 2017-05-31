@@ -19,6 +19,12 @@ inputs:
     type: string
     default: "hs"
     description: "Effective genome size used by MACS2. It can be numeric or a shortcuts:'hs' for human (2.7e9), 'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for fruitfly (1.2e8), Default:hs"
+  - id: "#input_genome_sizes"
+    type: File
+    description: "Two column tab-delimited file with chromosome size information"
+  - id: "#as_narrowPeak_file"
+    type: File
+    description: "Definition narrowPeak file in AutoSql format (used in bedToBigBed)"
   - id: "#nthreads"
     type: int
     default: 1
@@ -38,6 +44,12 @@ outputs:
   - id: "#output_peak_file"
     source: "#peak-calling.output_peak_file"
     description: "peakshift/phantomPeak results file"
+    type:
+      type: array
+      items: File
+  - id: "#output_peak_bigbed_file"
+    source: "#peaks-bed-to-bigbed.bigbed"
+    description: "Peaks in bigBed format"
     type:
       type: array
       items: File
@@ -80,6 +92,12 @@ outputs:
   - id: "#output_unpaired_peak_file"
     source: "#peak-calling-unpaired.output_peak_file"
     description: "peakshift/phantomPeak results file using each paired mate independently"
+    type:
+      type: array
+      items: File
+  - id: "#output_unpaired_peak_bigbed_file"
+    source: "#peaks-bed-to-bigbed-unpaired.bigbed"
+    description: "Peaks in bigBed format using each paired mate independently"
     type:
       type: array
       items: File
@@ -200,6 +218,28 @@ steps:
         valueFrom: ".read_count.within_replicate.txt"
     outputs:
       - id: "#extract-count-reads-in-peaks.output_read_count"
+  - id: "#trunk-peak-score"
+    run: "../utils/trunk-peak-score.cwl"
+    scatter: "#trunk-peak-score.peaks"
+    inputs:
+      - id: "#trunk-peak-score.peaks"
+        source: "#peak-calling.output_peak_file"
+    outputs:
+      - id: "#trunk-peak-score.trunked_scores_peaks"
+  - id: "#peaks-bed-to-bigbed"
+    run: "../quant/bedToBigBed.cwl"
+    scatter: "#peaks-bed-to-bigbed.bed"
+    inputs:
+      - id: "#peaks-bed-to-bigbed.bed"
+        source: "#trunk-peak-score.trunked_scores_peaks"
+      - id: "#peaks-bed-to-bigbed.genome_sizes"
+        source: "#input_genome_sizes"
+      - id: "#peaks-bed-to-bigbed.type"
+        valueFrom: "bed6+4"
+      - id: "#peaks-bed-to-bigbed.as"
+        source: "#as_narrowPeak_file"
+    outputs:
+      - id: "#peaks-bed-to-bigbed.bigbed"
   - id: "#sort-bam-by-name"
     run: {$import: "../map/samtools-sort.cwl"}
     scatter:
@@ -290,3 +330,25 @@ steps:
         source: "#peak-calling-unpaired.output_peak_file"
     outputs:
       - id: "#filter-reads-in-peaks-unpaired.filtered_file"
+  - id: "#trunk-peak-score-unpaired"
+    run: "../utils/trunk-peak-score.cwl"
+    scatter: "#trunk-peak-score-unpaired.peaks"
+    inputs:
+      - id: "#trunk-peak-score-unpaired.peaks"
+        source: "#peak-calling-unpaired.output_peak_file"
+    outputs:
+      - id: "#trunk-peak-score-unpaired.trunked_scores_peaks"
+  - id: "#peaks-bed-to-bigbed-unpaired"
+    run: "../quant/bedToBigBed.cwl"
+    scatter: "#peaks-bed-to-bigbed-unpaired.bed"
+    inputs:
+      - id: "#peaks-bed-to-bigbed-unpaired.bed"
+        source: "#trunk-peak-score-unpaired.trunked_scores_peaks"
+      - id: "#peaks-bed-to-bigbed-unpaired.genome_sizes"
+        source: "#input_genome_sizes"
+      - id: "#peaks-bed-to-bigbed-unpaired.type"
+        valueFrom: "bed6+4"
+      - id: "#peaks-bed-to-bigbed-unpaired.as"
+        source: "#as_narrowPeak_file"
+    outputs:
+      - id: "#peaks-bed-to-bigbed-unpaired.bigbed"
