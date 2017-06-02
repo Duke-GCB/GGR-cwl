@@ -11,6 +11,7 @@
     {% endfor %}
     ],
 {% endif %}
+    "as_narrowPeak_file": "{{ conf_args.as_narrowPeak}}",
     "genome_effective_size": "{{ conf_args.genome_effective_size }}",
     "default_adapters_file": { "class": "File", "path": "{{ conf_args.default_adapters }}" },
     "genome_ref_first_index_file": { "class": "File", "path": "{{ conf_args.bowtie_genome_ref_first_index }}"},

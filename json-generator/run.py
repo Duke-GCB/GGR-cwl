@@ -39,6 +39,7 @@ class MetadataParser(object):
         self.encode_blacklist_bedfile = args.encode_blacklist_bedfile
         self.trimmomatic_jar = args.trimmomatic_jar
         self.picard_jar = args.picard_jar
+        self.as_narrowPeak = args.as_narrowPeak
 
     def render_json(self, wf_conf, samples_list, data_dir, template_name):
         pass
@@ -235,6 +236,9 @@ def main():
                         help='[non RNA-seq only] First index file of the Bowtie reference genome.')
     parser.add_argument('--genome-sizes-file', default='/data/reddylab/projects/GGR/auxiliary/hg38.sizes',
                         help='Chromosome sizes file')
+    parser.add_argument('--as-narrowPeak', default='/data/reddylab/Reference_Data/ENCODE/kent/src/hg/lib/encode/narrowPeak.as',
+                        help='AutoSQL file defining non-standard fields for narrowPeak files '
+                             '(formats available in https://github.com/ucscGenomeBrowser/kent/tree/master/src/hg/lib/encode)')
     parser.add_argument('--encode-blacklist-bedfile', default='/data/reddylab/Reference_Data/ENCODE/hg38.blacklist.bed',
                         help='ENCODE blacklist bedfile to mask out un-mappable regions')
     parser.add_argument('--trimmomatic-jar', default='/data/reddylab/software/Trimmomatic-0.32/trimmomatic-0.32.jar',
