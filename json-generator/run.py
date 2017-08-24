@@ -40,6 +40,7 @@ class MetadataParser(object):
         self.trimmomatic_jar = args.trimmomatic_jar
         self.picard_jar = args.picard_jar
         self.as_narrowPeak = args.as_narrowPeak
+        self.as_broadPeak = args.as_broadPeak
 
     def render_json(self, wf_conf, samples_list, data_dir, template_name):
         pass
@@ -76,8 +77,7 @@ class MetadataParserChipseq(object):
         json_str = template.render({'wf_conf': wf_conf,
                                     'samples_list': samples_list,
                                     'data_dir': data_dir,
-                                    'nthreads': self.nthreads,
-                                    'mem': self.mem
+                                    'conf_args': self
                                     })
         json_str = '\n'.join([l for l in json_str.split('\n') if l.strip() != ''])  # Remove empty lines
         return json_str
@@ -97,12 +97,27 @@ class MetadataParserChipseq(object):
             wf_conf_dict[wf_key] = {'rt': read_type,
                                     'pt': peak_type,
                                     'st': sample_info.keys()}
-            samples_dict[wf_key].append(sample_info)
-        for wf_key, samples_list in samples_dict.iteritems():
+            genome = 'hg38'  # Default genome
+            if 'Genome' in r.keys():
+                genome = r['Genome']
+
+            samples_dict[wf_key].append([sample_info, genome])
+        for wf_key, samples_genomes in samples_dict.iteritems():
             if self.obj.separate_jsons:
-                for si, s in enumerate(sorted(samples_list)):
-                    yield self.render_json(wf_conf_dict[wf_key], [s], data_dir, self.experiment_type), wf_key, si
+                for si, s in enumerate(sorted(samples_genomes)):
+                    sample, genome = s[0], s[1]
+                    ref_dataset = consts.ReferenceDataset(genome)
+                    self.update_paths(ref_dataset)
+                    yield self.render_json(wf_conf_dict[wf_key], [sample], data_dir, self.experiment_type), wf_key, si
+
             else:
+                samples_list, genomes_list = zip(*samples_genomes)
+                if len(set(genomes_list)) > 1:
+                    raise Exception('More than one genome specified (%s). Please create a different metadata file'
+                                    ' per genome or provide a sjdb and specify the --separate-jsons argument' %
+                                    ', '.join(set(genomes_list)))
+                ref_dataset = consts.ReferenceDataset(genomes_list[0])
+                self.update_paths(ref_dataset)
                 yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir, self.experiment_type), wf_key, None
 
 
@@ -137,7 +152,6 @@ class MetadataParserAtacseq(object):
             genome = 'hg38'  # Default genome
             if 'Genome' in r.keys():
                 genome = r['Genome']
-                print "[WARNING]:: overwriting reference data sets with the genome specified in metadata: %s" % genome
             if not ('Blacklist removal' in r.keys() and is_false(r['Blacklist removal'])):
                 wf_key += '-blacklist-removal'
 
@@ -236,8 +250,11 @@ def main():
                         help='[non RNA-seq only] First index file of the Bowtie reference genome.')
     parser.add_argument('--genome-sizes-file', default='/data/reddylab/projects/GGR/auxiliary/hg38.sizes',
                         help='Chromosome sizes file')
-    parser.add_argument('--as-narrowPeak', default='/data/reddylab/Reference_Data/ENCODE/kent/src/hg/lib/encode/narrowPeak.as',
+    parser.add_argument('--as-narrowPeak', default=consts.as_narrowPeak,
                         help='AutoSQL file defining non-standard fields for narrowPeak files '
+                             '(formats available in https://github.com/ucscGenomeBrowser/kent/tree/master/src/hg/lib/encode)')
+    parser.add_argument('--as-broadPeak', default=consts.as_broadPeak,
+                        help='AutoSQL file defining non-standard fields for broadPeak files '
                              '(formats available in https://github.com/ucscGenomeBrowser/kent/tree/master/src/hg/lib/encode)')
     parser.add_argument('--encode-blacklist-bedfile', default='/data/reddylab/Reference_Data/ENCODE/hg38.blacklist.bed',
                         help='ENCODE blacklist bedfile to mask out un-mappable regions')

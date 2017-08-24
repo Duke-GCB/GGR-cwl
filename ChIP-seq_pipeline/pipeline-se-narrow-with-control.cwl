@@ -18,6 +18,9 @@ inputs:
   - id: "#default_adapters_file"
     type: File
     description: "Adapters file"
+  - id: "#as_narrowPeak_file"
+    type: File
+    description: "Definition narrowPeak file in AutoSql format (used in bedToBigBed)"
   - id: "#genome_ref_first_index_file"
     type: File
     description: |
@@ -60,6 +63,10 @@ inputs:
       - 'null'
       - string
     description: "JVM arguments should be a quoted, space separated list (e.g. \"-Xms128m -Xmx512m\")"
+  - id: "#genome_effective_size"
+    type: string
+    default: "hs"
+    description: "Effective genome size used by MACS2. It can be numeric or a shortcuts:'hs' for human (2.7e9), 'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for fruitfly (1.2e8), Default:hs"
 outputs:
   - id: "#qc_treatment_raw_read_counts"
     source: "#qc_treatment.output_raw_read_counts"
@@ -271,6 +278,12 @@ outputs:
     type:
       type: array
       items: File
+  - id: "#peak_call_narrowpeak_bigbed_file"
+    source: "#peak_call.output_narrowpeak_bigbed_file"
+    description: "narrowPeaks in bigBed format"
+    type:
+      type: array
+      items: File
   - id: "#quant_bigwig_raw_files"
     source: "#quant.bigwig_raw_files"
     description: "Raw reads bigWig (signal) files"
@@ -387,12 +400,16 @@ steps:
       - { id: "#peak_call.input_bam_format", valueFrom: "BAM" }
       - { id: "#peak_call.input_control_bam_files", source: "#map_control.output_data_sorted_dedup_bam_files" }
       - { id: "#peak_call.nthreads", source: "#nthreads_peakcall" }
+      - { id: "#peak_call.genome_effective_size", source: "#genome_effective_size" }
+      - { id: "#peak_call.input_genome_sizes", source: "#genome_sizes_file" }
+      - { id: "#peak_call.as_narrowPeak_file", source: "#as_narrowPeak_file" }
     outputs:
       - { id: "#peak_call.output_spp_x_cross_corr" }
       - { id: "#peak_call.output_spp_cross_corr_plot" }
       - { id: "#peak_call.output_narrowpeak_file" }
       - { id: "#peak_call.output_narrowpeak_summits_file" }
       - { id: "#peak_call.output_extended_narrowpeak_file" }
+      - { id: "#peak_call.output_narrowpeak_bigbed_file" }
       - { id: "#peak_call.output_peak_xls_file" }
       - { id: "#peak_call.output_filtered_read_count_file" }
       - { id: "#peak_call.output_peak_count_within_replicate" }

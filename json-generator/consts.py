@@ -2,6 +2,9 @@
 trimmomatic_jar = "/data/reddylab/software/Trimmomatic-0.32/trimmomatic-0.32.jar"
 picard_jar = "/data/reddylab/software/picard/dist/picard.jar"
 
+# Auxiliary reference files (species agnostic)
+as_narrowPeak = '/data/reddylab/Reference_Data/ENCODE/kent/src/hg/lib/encode/narrowPeak.as'
+as_broadPeak = '/data/reddylab/Reference_Data/ENCODE/kent/src/hg/lib/encode/broadPeak.as'
 
 class ReferenceDataset(object):
     def __init__(self, genome='hg38'):

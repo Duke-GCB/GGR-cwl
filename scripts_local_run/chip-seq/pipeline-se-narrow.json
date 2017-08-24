@@ -10,6 +10,12 @@
     "class": "File",
     "path": "/Users/abarrera/data/adapters.fa"
   },
+  "genome_effective_size": "mm",
+  "as_narrowPeak_file":
+  {
+    "class": "File",
+    "path": "/Users/abarrera/data/narrowPeak.as"
+  },
   "genome_ref_first_index_file": {
     "class": "File",
     "path": "/Users/abarrera/data/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.1.ebwt"

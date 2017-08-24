@@ -26,17 +26,19 @@
     ],
     {% endif %}
 {% endif %}
-    "default_adapters_file": { "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/adapters/default_adapters.fasta" },
-    "genome_ref_first_index_file": { "class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.1.ebwt"},
-    "genome_sizes_file": { "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/hg38.sizes" },
-    "ENCODE_blacklist_bedfile": { "class": "File", "path": "/data/reddylab/Reference_Data/ENCODE/hg38.blacklist.bed" },
-    "nthreads_qc": {{ nthreads }},
-    "nthreads_trimm": {{ nthreads }},
-    "nthreads_map": {{ nthreads }},
-    "nthreads_peakcall": {{ nthreads }},
-    "nthreads_quant": {{ nthreads }},
-    "trimmomatic_jar_path": "/data/reddylab/software/Trimmomatic-0.32/trimmomatic-0.32.jar",
-    "trimmomatic_java_opts": "-Xms{{ (mem/2) | round | int }}m -Xmx{{ mem }}m",
-    "picard_jar_path": "/data/reddylab/software/picard/dist/picard.jar",
-    "picard_java_opts": "-Xms{{ (mem/2) | round | int }}m -Xmx{{ mem }}m"
+    "as_{{ wf_conf['pt'] }}Peak_file": { "class": "File", "path": "{% if wf_conf['pt'] == 'narrow' %}{{ conf_args.as_narrowPeak }}{% else %}{{ conf_args.as_broadPeak }}{% endif %}" },
+    "genome_effective_size": "{{ conf_args.genome_effective_size }}",
+    "default_adapters_file": { "class": "File", "path": "{{ conf_args.default_adapters }}" },
+    "genome_ref_first_index_file": { "class": "File", "path": "{{ conf_args.bowtie_genome_ref_first_index }}" },
+    "genome_sizes_file": { "class": "File", "path": "{{ conf_args.genome_sizes_file }}" },
+    "ENCODE_blacklist_bedfile": { "class": "File", "path": "{{ conf_args.encode_blacklist_bedfile }}" },
+    "nthreads_qc": {{ conf_args.nthreads }},
+    "nthreads_trimm": {{ conf_args.nthreads }},
+    "nthreads_map": {{ conf_args.nthreads }},
+    "nthreads_peakcall": {{ conf_args.nthreads }},
+    "nthreads_quant": {{ conf_args.nthreads }},
+    "trimmomatic_jar_path": "{{ conf_args.trimmomatic_jar }}",
+    "trimmomatic_java_opts": "-Xms{{ (conf_args.mem/2) | round | int }}m -Xmx{{ conf_args.mem }}m",
+    "picard_jar_path": "{{ conf_args.picard_jar }}",
+    "picard_java_opts": "-Xms{{ (conf_args.mem/2) | round | int }}m -Xmx{{ conf_args.mem }}m"
 }
