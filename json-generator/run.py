@@ -9,7 +9,7 @@ import os
 import consts
 
 encoding = sys.getfilesystemencoding()
-EXEC_DIR = os.path.dirname(unicode(__file__, encoding)) + "/"
+EXEC_DIR = os.path.dirname(unicode(__file__, encoding))
 
 
 def save_or_print_json(json_str, outdir, json_name):
@@ -72,7 +72,7 @@ class MetadataParserChipseq(object):
         return getattr(self.obj, attr)
 
     def render_json(self, wf_conf, samples_list, data_dir, template_name):
-        env = Environment(extensions=["jinja2.ext.do"], loader=FileSystemLoader(os.path.join(EXEC_DIR, "templates/")))
+        env = Environment(extensions=["jinja2.ext.do"], loader=FileSystemLoader(os.path.join(EXEC_DIR, "templates")))
         template = env.get_template(template_name + '.j2')
         json_str = template.render({'wf_conf': wf_conf,
                                     'samples_list': samples_list,
@@ -129,7 +129,7 @@ class MetadataParserAtacseq(object):
         return getattr(self.obj, attr)
 
     def render_json(self, wf_conf, samples_list, data_dir, template_name):
-        env = Environment(extensions=["jinja2.ext.do"], loader=FileSystemLoader(os.path.join(EXEC_DIR, "templates/")))
+        env = Environment(extensions=["jinja2.ext.do"], loader=FileSystemLoader(os.path.join(EXEC_DIR, "templates")))
         template = env.get_template(template_name + '.j2')
         json_str = template.render({'wf_conf': wf_conf,
                                     'samples_list': samples_list,
@@ -190,7 +190,7 @@ class MetadataParserRnaseq(object):
         return getattr(self.obj, attr)
 
     def render_json(self, wf_conf, samples_list, data_dir):
-        env = Environment(extensions=["jinja2.ext.do"], loader=FileSystemLoader(os.path.join(EXEC_DIR, "templates/")))
+        env = Environment(extensions=["jinja2.ext.do"], loader=FileSystemLoader(os.path.join(EXEC_DIR, "templates")))
         template = env.get_template(self.experiment_type + '.j2')
         json_str = template.render({'wf_conf': wf_conf,
                                     'samples_list': samples_list,
