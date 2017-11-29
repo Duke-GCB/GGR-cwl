@@ -290,21 +290,9 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#quant_bigwig_norm_files"
-    source: "#quant.bigwig_norm_files"
-    description: "Normalized reads bigWig (signal) files"
-    type:
-      type: array
-      items: File
-  - id: "#quant_bigwig_extended_files"
-    source: "#quant.bigwig_extended_files"
+  - id: "#quant_bigwig_rpkm_extended_files"
+    source: "#quant.bigwig_rpkm_extended_files"
     description: "Fragment extended reads bigWig (signal) files"
-    type:
-      type: array
-      items: File
-  - id: "#quant_bigwig_extended_norm_files"
-    source: "#quant.bigwig_extended_norm_files"
-    description: "Normalized fragment extended reads bigWig (signal) files"
     type:
       type: array
       items: File
@@ -418,13 +406,8 @@ steps:
     run: {$import: "05-quantification.cwl" }
     inputs:
       - { id: "#quant.input_bam_files", source: "#map_treatment.output_data_sorted_dedup_bam_files" }
-      - { id: "#quant.input_pileup_bedgraphs", source: "#peak_call.output_extended_broadpeak_file" }
-      - { id: "#quant.input_peak_xls_files", source: "#peak_call.output_peak_xls_file" }
-      - { id: "#quant.input_read_count_dedup_files", source: "#peak_call.output_filtered_read_count_file" }
       - { id: "#quant.input_genome_sizes", source: "#genome_sizes_file" }
       - { id: "#quant.nthreads", source: "#nthreads_quant" }
     outputs:
       - { id: "#quant.bigwig_raw_files" }
-      - { id: "#quant.bigwig_norm_files" }
-      - { id: "#quant.bigwig_extended_files" }
-      - { id: "#quant.bigwig_extended_norm_files" }
+      - { id: "#quant.bigwig_rpkm_extended_files" }

@@ -13,18 +13,6 @@ inputs:
     type:
       type: array
       items: File
-  - id: "#input_pileup_bedgraphs"
-    type:
-      type: array
-      items: File
-  - id: "#input_peak_xls_files"
-    type:
-      type: array
-      items: File
-  - id: "#input_read_count_dedup_files"
-    type:
-      type: array
-      items: File
   - id: "#input_genome_sizes"
     type: File
   - id: "#nthreads"
@@ -38,21 +26,9 @@ outputs:
     type:
       type: array
       items: File
-  - id: "#bigwig_norm_files"
-    source: "#bamcoverage.output_bam_coverage"
-    description: "Normalized reads bigWig (signal) files"
-    type:
-      type: array
-      items: File
-  - id: "#bigwig_extended_files"
-    source: "#bdg2bw-extend.output_bigwig"
-    description: "Fragment extended reads bigWig (signal) files"
-    type:
-      type: array
-      items: File
-  - id: "#bigwig_extended_norm_files"
-    source: "#bdg2bw-extend-norm.output_bigwig"
-    description: "Normalized fragment extended reads bigWig (signal) files"
+  - id: "#bigwig_rpkm_extended_files"
+    source: "#bamCoverage-rpkm.output_bam_coverage"
+    description: "Fragment extended RPKM bigWig (signal) files"
     type:
       type: array
       items: File
@@ -90,96 +66,23 @@ steps:
         valueFrom: ".raw.bw"
     outputs:
       - id: "#bdg2bw-raw.output_bigwig"
-  - id: "#bamcoverage"
+  - id: "#bamCoverage-rpkm"
     run: {$import: "../quant/deeptools-bamcoverage.cwl"}
-    scatter: "#bamcoverage.bam"
+    scatter: "#bamCoverage-rpkm.bam"
     inputs:
-      - id: "#bamcoverage.bam"
+      - id: "#bamCoverage-rpkm.bam"
         source: "#input_bam_files"
-      - id: "#bamcoverage.output_suffix"
-        valueFrom: ".norm.bw"
-      - id: "#bamcoverage.numberOfProcessors"
+      - id: "#bamCoverage-rpkm.output_suffix"
+        valueFrom: ".rpkm.bw"
+      - id: "#bamCoverage-rpkm.numberOfProcessors"
         source: "#nthreads"
-      - id: "#bamcoverage.extendReads"
+      - id: "#bamCoverage-rpkm.extendReads"
         valueFrom: $(200)
-      - id: "#bamcoverage.normalizeUsingRPKM"
+      - id: "#bamCoverage-rpkm.normalizeUsingRPKM"
         valueFrom: $(true)
-      - id: "#bamcoverage.binSize"
-        valueFrom: $(50)
+      - id: "#bamCoverage-rpkm.binSize"
+        valueFrom: $(1)
+      - id: "#bamCoverage-rpkm.outFileFormat"
+        valueFrom: "bigwig"
     outputs:
-      - id: "#bamcoverage.output_bam_coverage"
-  - id: "#extend-reads"
-    run: {$import: "../quant/bedtools-slop.cwl"}
-    scatter: "#extend-reads.i"
-    inputs:
-      - id: "#extend-reads.i"
-        source: "#input_pileup_bedgraphs"
-      - id: "#extend-reads.g"
-        source: "#input_genome_sizes"
-      - id: "#extend-reads.b"
-        valueFrom: $(0)
-    outputs:
-      - id: "#extend-reads.stdoutfile"
-  - id: "#clip-off-chrom"
-    run: {$import: "../quant/bedClip.cwl"}
-    scatter: "#clip-off-chrom.bed_file"
-    inputs:
-      - id: "#clip-off-chrom.bed_file"
-        source: "#extend-reads.stdoutfile"
-      - id: "#clip-off-chrom.genome_sizes"
-        source: "#input_genome_sizes"
-    outputs:
-      - id: "#clip-off-chrom.bed_file_clipped"
-  - id: "#bedsort_clipped_bedfile"
-    run: {$import: "../quant/bedSort.cwl"}
-    scatter: "#bedsort_clipped_bedfile.bed_file"
-    inputs:
-      - id: "#bedsort_clipped_bedfile.bed_file"
-        source: "#clip-off-chrom.bed_file_clipped"
-    outputs:
-      - id: "#bedsort_clipped_bedfile.bed_file_sorted"
-  - id: "#bdg2bw-extend"
-    run: {$import: "../quant/bedGraphToBigWig.cwl"}
-    scatter: "#bdg2bw-extend.bed_graph"
-    inputs:
-      - id: "#bdg2bw-extend.bed_graph"
-        source: "#bedsort_clipped_bedfile.bed_file_sorted"
-      - id: "#bdg2bw-extend.genome_sizes"
-        source: "#input_genome_sizes"
-      - id: "bdg2bw-extend.output_suffix"
-        valueFrom: ".fragment_extended.bw"
-    outputs:
-      - id: "#bdg2bw-extend.output_bigwig"
-  - id: "#scale-bedgraph"
-    run: {$import: "../peak_calling/scale-bedgraph.cwl"}
-    scatter:
-      - "#scale-bedgraph.bedgraph_file"
-      - "#scale-bedgraph.read_count_file"
-    scatterMethod: dotproduct
-    inputs:
-      - id: "#scale-bedgraph.bedgraph_file"
-        source: "#input_pileup_bedgraphs"
-      - id: "#scale-bedgraph.read_count_file"
-        source: "#input_read_count_dedup_files"
-    outputs:
-      - id: "#scale-bedgraph.bedgraph_scaled"
-  - id: "#bedsort_scaled_bdg"
-    run: {$import: "../quant/bedSort.cwl"}
-    scatter: "#bedsort_scaled_bdg.bed_file"
-    inputs:
-      - id: "#bedsort_scaled_bdg.bed_file"
-        source: "#scale-bedgraph.bedgraph_scaled"
-    outputs:
-      - id: "#bedsort_scaled_bdg.bed_file_sorted"
-  - id: "#bdg2bw-extend-norm"
-    run: {$import: "../quant/bedGraphToBigWig.cwl"}
-    scatter: "#bdg2bw-extend-norm.bed_graph"
-    inputs:
-      - id: "#bdg2bw-extend-norm.bed_graph"
-        source: "#bedsort_scaled_bdg.bed_file_sorted"
-      - id: "#bdg2bw-extend-norm.genome_sizes"
-        source: "#input_genome_sizes"
-      - id: "bdg2bw-extend-norm.output_suffix"
-        valueFrom: ".fragment_extended.bw"
-    outputs:
-      - id: "#bdg2bw-extend-norm.output_bigwig"
+      - id: "#bamCoverage-rpkm.output_bam_coverage"
