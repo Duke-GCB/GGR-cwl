@@ -139,5 +139,6 @@ steps:
       - { id: "#bamcoverage.output_suffix", valueFrom: ".norm.bw" }
       - { id: "#bamcoverage.numberOfProcessors", source: "#nthreads" }
       - { id: "#bamcoverage.normalizeUsingRPKM", valueFrom: $(true) }
+      - { id: "#bamcoverage.binSize", valueFrom: $(1) }
     outputs:
       - id: "#bamcoverage.output_bam_coverage"

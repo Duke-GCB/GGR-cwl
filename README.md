@@ -36,8 +36,9 @@ For a detail User Guide to the CWL workflows, please see the [wiki](https://gith
     * [Peak calling step - narrow with control](ChIP-seq_pipeline/04-peakcall-narrow-with-control.cwl)
     * [Peak calling step - broad](ChIP-seq_pipeline/04-peakcall-broad.cwl)
     * [Peak calling step - broad with control](ChIP-seq_pipeline/04-peakcall-broad-with-control.cwl)
-* 05 - [Quantification step](ChIP-seq_pipeline/05-quantification.cwl)
-
+* 05 - Quantification step:
+    * [Quantification step](ChIP-seq_pipeline/05-quantification.cwl)
+    * [Quantification step - with control](ChIP-seq_pipeline/05-quantification-with-control.cwl)
 
 ## [DNase-seq](DNase-seq_pipeline):
 
@@ -91,6 +92,33 @@ For a detail User Guide to the CWL workflows, please see the [wiki](https://gith
     * 04 - [Quantification step - PE - Stranded](RNA-seq_pipeline/04-quantification-pe-stranded.cwl)
     * 04 - [Quantification step - PE - Revstranded](RNA-seq_pipeline/04-quantification-pe-revstranded.cwl)
 
+## [ATAC-seq](ATAC-seq_pipeline):
+
+### Pipelines
+* [SE](ATAC-seq_pipeline/pipeline-se.cwl)
+* [SE - Blacklist Removal](ATAC-seq_pipeline/pipeline-se-blacklist-removal.cwl)
+* [PE](ATAC-seq_pipeline/pipeline-pe.cwl)
+* [PE - Blacklist Removal](ATAC-seq_pipeline/pipeline-pe-blacklist-removal.cwl)
+
+### Steps
+* 01 - Fastq QC step:
+    * [Fastq QC step - SE](ATAC-seq_pipeline/01-qc-se.cwl)
+    * [Fastq QC step - PE](ATAC-seq_pipeline/01-qc-pe.cwl)
+* 02 - Trimming reads step:
+    * [Trimming step - SE](ATAC-seq_pipeline/02-trim-se.cwl)
+    * [Trimming step - PE](ATAC-seq_pipeline/02-trim-pe.cwl)
+* 03 - Mapping step:
+    * [Mapping step - SE](ATAC-seq_pipeline/03-map-se.cwl)
+    * [Mapping step - SE - Blacklist Removal](ATAC-seq_pipeline/03-map-se-blacklist-removal.cwl)
+    * [Mapping step - PE](ATAC-seq_pipeline/03-map-pe.cwl)
+    * [Mapping step - PE - Blacklist Removal](ATAC-seq_pipeline/03-map-pe-blacklist-removal.cwl)
+* 04 - Peak calling step:
+    * [Peak calling step - SE](ATAC-seq_pipeline/04-peakcall-se.cwl)
+    * [Peak calling step - PE](ATAC-seq_pipeline/04-peakcall-pe.cwl)
+* 05 - Quantification step:
+    * [Quantification step](ATAC-seq_pipeline/05-quantification.cwl)
+
+
 ----------------------------------------------------------------------------------------------------------
 ##### Workflow differences legend 
 Depending on the experiments, there might be small differences in the workflows which will be determined by:
@@ -111,4 +139,5 @@ Depending on the experiments, there might be small differences in the workflows 
         - Stranded: reads are strand-specific and can be map to the Watson and Crick strands. 
         - Reverse Stranded: reads come from cDNA, which switches the mapping of the forward and reverse strand. 
     - Custom SJDB: By default the STAR 2-pass mapping strategy is implemented in which a first pass of STAR is run to generate a large pool of novel splice junctions (referred as SJDB). These junctions are used to generate a genome index which is employed in the mapping step. However, this 2-pass strategy can be skipped, using a custom genome index Because typically this genome would be created with a precomputed SJDB, this option is denoted with `-with-sjdb`.
-    
+- ATAC-seq only
+    - Blacklist removal: whether or not to mask out blacklisted regions.

@@ -219,6 +219,7 @@ steps:
       - { id: "#bamcoverage-plus.output_suffix", valueFrom: ".norm.bw" }
       - { id: "#bamcoverage-plus.numberOfProcessors", source: "#nthreads" }
       - { id: "#bamcoverage-plus.normalizeUsingRPKM", valueFrom: $(true) }
+      - { id: "#bamcoverage-plus.binSize", valueFrom: $(1) }
     outputs:
       - id: "#bamcoverage-plus.output_bam_coverage"
   - id: "#bamcoverage-minus"
@@ -229,6 +230,7 @@ steps:
       - { id: "#bamcoverage-minus.output_suffix", valueFrom: ".norm-minus-pre-negated-bw" }
       - { id: "#bamcoverage-minus.numberOfProcessors", source: "#nthreads" }
       - { id: "#bamcoverage-minus.normalizeUsingRPKM", valueFrom: $(true) }
+      - { id: "#bamcoverage-minus.binSize", valueFrom: $(1) }
     outputs:
       - id: "#bamcoverage-minus.output_bam_coverage"
   - id: "#bw2bdg-minus"
