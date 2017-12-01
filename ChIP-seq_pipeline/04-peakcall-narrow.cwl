@@ -59,12 +59,6 @@ outputs:
     type:
       type: array
       items: ['null', {items: File, type: array}]
-  - id: "#output_extended_narrowpeak_file"
-    source: "#peak-calling.output_ext_frag_bdg_file"
-    description: "peakshift/phantomPeak extended fragment results file"
-    type:
-      type: array
-      items: File
   - id: "#output_peak_xls_file"
     source: "#peak-calling.output_peak_xls_file"
     description: "Peak calling report file (*_peaks.xls file produced by MACS2)"
@@ -127,8 +121,6 @@ steps:
         source: "#extract-peak-frag-length.output_best_frag_length"
       - id: "#peak-calling.nomodel"
         valueFrom: $(true)
-      - id: "#peak-calling.bdg"
-        valueFrom: $(true)
       - id: "#peak-calling.format"
         source: "#input_bam_format"
       - id: "#peak-calling.g"
@@ -136,7 +128,6 @@ steps:
     outputs:
       - id: "#peak-calling.output_peak_file"
       - id: "#peak-calling.output_peak_summits_file"
-      - id: "#peak-calling.output_ext_frag_bdg_file"
       - id: "#peak-calling.output_peak_xls_file"
   - id: "#count-reads-filtered"
     run: {$import: "../peak_calling/count-reads-after-filtering.cwl"}

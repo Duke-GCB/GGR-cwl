@@ -2,12 +2,10 @@
 cwlVersion: "cwl:draft-3"
 class: Workflow
 description: "ChIP-seq - Quantification"
-
 requirements:
   - class: ScatterFeatureRequirement
   - class: StepInputExpressionRequirement
   - class: InlineJavascriptRequirement
-
 inputs:
   - id: "#input_bam_files"
     type:
@@ -18,7 +16,6 @@ inputs:
   - id: "#nthreads"
     type: int
     default: 1
-
 outputs:
   - id: "#bigwig_raw_files"
     source: "#bdg2bw-raw.output_bigwig"
@@ -32,7 +29,6 @@ outputs:
     type:
       type: array
       items: File
-
 steps:
   - id: "#bedtools_genomecov"
     run: {$import: "../map/bedtools-genomecov.cwl"}
@@ -81,7 +77,7 @@ steps:
       - id: "#bamCoverage-rpkm.normalizeUsingRPKM"
         valueFrom: $(true)
       - id: "#bamCoverage-rpkm.binSize"
-        valueFrom: $(1)
+        valueFrom: $(100000)
       - id: "#bamCoverage-rpkm.outFileFormat"
         valueFrom: "bigwig"
     outputs:

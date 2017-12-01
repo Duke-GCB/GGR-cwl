@@ -272,12 +272,6 @@ outputs:
     type:
       type: array
       items: ['null', {items: File, type: array}]
-  - id: "#peak_call_extended_broadpeak_file"
-    source: "#peak_call.output_extended_broadpeak_file"
-    description: "Extended fragment peaks in broadPeak file format"
-    type:
-      type: array
-      items: File
   - id: "#peak_call_broadpeak_bigbed_file"
     source: "#peak_call.output_broadpeak_bigbed_file"
     description: "broadPeaks in bigBed format"
@@ -293,6 +287,18 @@ outputs:
   - id: "#quant_bigwig_rpkm_extended_files"
     source: "#quant.bigwig_rpkm_extended_files"
     description: "Fragment extended reads bigWig (signal) files"
+    type:
+      type: array
+      items: File
+  - id: "#quant_ctrl_bigwig_rpkm_extended_files"
+    source: "#quant.bigwig_ctrl_rpkm_extended_files"
+    description: "Fragment extended reads bigWig (signal) control files"
+    type:
+      type: array
+      items: File
+  - id: "#quant_bigwig_ctrl_subtracted_rpkm_extended_files"
+    source: "#quant.bigwig_ctrl_subtracted_rpkm_extended_files"
+    description: "Fragment control subtracted extended reads bigWig (signal) files"
     type:
       type: array
       items: File
@@ -396,18 +402,20 @@ steps:
       - { id: "#peak_call.output_spp_cross_corr_plot" }
       - { id: "#peak_call.output_broadpeak_file" }
       - { id: "#peak_call.output_broadpeak_summits_file" }
-      - { id: "#peak_call.output_extended_broadpeak_file" }
       - { id: "#peak_call.output_broadpeak_bigbed_file" }
       - { id: "#peak_call.output_peak_xls_file" }
       - { id: "#peak_call.output_filtered_read_count_file" }
       - { id: "#peak_call.output_peak_count_within_replicate" }
       - { id: "#peak_call.output_read_in_peak_count_within_replicate" }
   - id: "#quant"
-    run: {$import: "05-quantification.cwl" }
+    run: {$import: "05-quantification-with-control.cwl" }
     inputs:
-      - { id: "#quant.input_bam_files", source: "#map_treatment.output_data_sorted_dedup_bam_files" }
+      - { id: "#quant.input_trt_bam_files", source: "#map_treatment.output_data_sorted_dedup_bam_files" }
+      - { id: "#quant.input_ctrl_bam_files", source: "#map_control.output_data_sorted_dedup_bam_files" }
       - { id: "#quant.input_genome_sizes", source: "#genome_sizes_file" }
       - { id: "#quant.nthreads", source: "#nthreads_quant" }
     outputs:
       - { id: "#quant.bigwig_raw_files" }
       - { id: "#quant.bigwig_rpkm_extended_files" }
+      - { id: "#quant.bigwig_ctrl_rpkm_extended_files" }
+      - { id: "#quant.bigwig_ctrl_subtracted_rpkm_extended_files" }
