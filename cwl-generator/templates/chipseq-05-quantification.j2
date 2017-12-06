@@ -106,7 +106,7 @@ steps:
       - id: "#bamCoverage-rpkm{% if 'control' in sample_types %}-trt{% endif %}.normalizeUsingRPKM"
         valueFrom: $(true)
       - id: "#bamCoverage-rpkm{% if 'control' in sample_types %}-trt{% endif %}.binSize"
-        valueFrom: $(100000)
+        valueFrom: $(1)
       - id: "#bamCoverage-rpkm{% if 'control' in sample_types %}-trt{% endif %}.outFileFormat"
         valueFrom: "bigwig"
     outputs:
@@ -127,7 +127,7 @@ steps:
       - id: "#bamCoverage-rpkm-ctrl.normalizeUsingRPKM"
         valueFrom: $(true)
       - id: "#bamCoverage-rpkm-ctrl.binSize"
-        valueFrom: $(100000)
+        valueFrom: $(1)
       - id: "#bamCoverage-rpkm-ctrl.outFileFormat"
         valueFrom: "bigwig"
     outputs:
@@ -150,7 +150,7 @@ steps:
       - id: "#bamCompare-ctrl-subtracted-rpkm.ratio"
         valueFrom: "subtract"
       - id: "#bamCompare-ctrl-subtracted-rpkm.binSize"
-        valueFrom: $(100000)
+        valueFrom: $(1)
       - id: "#bamCompare-ctrl-subtracted-rpkm.outFileFormat"
         valueFrom: "bigwig"
     outputs:

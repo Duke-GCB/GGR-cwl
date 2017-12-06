@@ -77,7 +77,7 @@ steps:
       - id: "#bamCoverage-rpkm.normalizeUsingRPKM"
         valueFrom: $(true)
       - id: "#bamCoverage-rpkm.binSize"
-        valueFrom: $(100000)
+        valueFrom: $(1)
       - id: "#bamCoverage-rpkm.outFileFormat"
         valueFrom: "bigwig"
     outputs:

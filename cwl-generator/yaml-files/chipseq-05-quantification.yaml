@@ -2,5 +2,6 @@
   sample_types:
     - treatment
     - control
+-
   sample_types:
     - treatment

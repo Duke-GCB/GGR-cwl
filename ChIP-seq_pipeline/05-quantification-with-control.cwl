@@ -93,7 +93,7 @@ steps:
       - id: "#bamCoverage-rpkm-trt.normalizeUsingRPKM"
         valueFrom: $(true)
       - id: "#bamCoverage-rpkm-trt.binSize"
-        valueFrom: $(100000)
+        valueFrom: $(1)
       - id: "#bamCoverage-rpkm-trt.outFileFormat"
         valueFrom: "bigwig"
     outputs:
@@ -113,7 +113,7 @@ steps:
       - id: "#bamCoverage-rpkm-ctrl.normalizeUsingRPKM"
         valueFrom: $(true)
       - id: "#bamCoverage-rpkm-ctrl.binSize"
-        valueFrom: $(100000)
+        valueFrom: $(1)
       - id: "#bamCoverage-rpkm-ctrl.outFileFormat"
         valueFrom: "bigwig"
     outputs:
@@ -136,7 +136,7 @@ steps:
       - id: "#bamCompare-ctrl-subtracted-rpkm.ratio"
         valueFrom: "subtract"
       - id: "#bamCompare-ctrl-subtracted-rpkm.binSize"
-        valueFrom: $(100000)
+        valueFrom: $(1)
       - id: "#bamCompare-ctrl-subtracted-rpkm.outFileFormat"
         valueFrom: "bigwig"
     outputs:
