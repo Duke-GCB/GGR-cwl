@@ -7,7 +7,7 @@ cwlVersion: 'cwl:draft-3'
 class: CommandLineTool
 hints:
   - class: DockerRequirement
-    dockerPull: 'dukegcb/bamtools'
+    dockerPull: 'reddylab/bamtools:2.2.3'
 requirements:
   - class: InlineJavascriptRequirement
   - class: ShellCommandRequirement

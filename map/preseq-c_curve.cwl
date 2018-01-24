@@ -4,7 +4,7 @@ class: CommandLineTool
 
 hints:
   - class: DockerRequirement
-    dockerPull: 'dukegcb/preseq'
+    dockerPull: 'reddylab/preseq:2.0'
 
 requirements:
   - class: InlineJavascriptRequirement

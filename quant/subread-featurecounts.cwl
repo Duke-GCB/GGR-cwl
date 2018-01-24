@@ -8,7 +8,7 @@ cwlVersion: 'cwl:draft-3'
 class: CommandLineTool
 hints:
   - class: DockerRequirement
-    dockerPull: 'dukegcb/subread'
+    dockerPull: 'reddylab/subread:1.4.6-p4'
 requirements:
   - class: InlineJavascriptRequirement
 inputs:
