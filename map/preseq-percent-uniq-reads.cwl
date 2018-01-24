@@ -5,7 +5,7 @@ description: "Get number of processed reads from Bowtie log."
 
 hints:
   - class: DockerRequirement
-    dockerPull: 'dukegcb/workflow-utils'
+    dockerPull: 'reddylab/workflow-utils:ggr'
 
 requirements:
   - class: InlineJavascriptRequirement

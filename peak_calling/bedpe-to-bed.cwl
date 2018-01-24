@@ -8,7 +8,7 @@ requirements:
 
 hints:
   - class: DockerRequirement
-    dockerPull: 'dukegcb/workflow-utils'
+    dockerPull: 'reddylab/workflow-utils:ggr'
 
 inputs:
   - id: "#bedpe"

@@ -5,7 +5,7 @@ description: "Counts reads in a fastq file"
 
 hints:
   - class: DockerRequirement
-    dockerPull: 'dukegcb/workflow-utils'
+    dockerPull: 'reddylab/workflow-utils:ggr'
 
 inputs:
   - id: "#input_fastq_file"

@@ -4,7 +4,7 @@ class: CommandLineTool
 description: "Negate minus strand bedGraph values."
 hints:
   - class: DockerRequirement
-    dockerPull: 'dukegcb/workflow-utils'
+    dockerPull: 'reddylab/workflow-utils:ggr'
 inputs:
   - id: "#bedgraph_file"
     type: File

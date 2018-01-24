@@ -5,7 +5,7 @@ description: "Extracts the base name of a file"
 
 hints:
   - class: DockerRequirement
-    dockerPull: 'dukegcb/workflow-utils'
+    dockerPull: 'reddylab/workflow-utils:ggr'
 requirements:
   - class: InlineJavascriptRequirement
 inputs:

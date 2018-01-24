@@ -5,7 +5,7 @@ description: "Extracts read count from fastqc_data.txt"
 
 hints:
   - class: DockerRequirement
-    dockerPull: 'dukegcb/workflow-utils'
+    dockerPull: 'reddylab/workflow-utils:ggr'
 
 inputs:
   - id: "#input_fastqc_data"
