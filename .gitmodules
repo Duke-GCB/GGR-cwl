@@ -1,3 +1,4 @@
 [submodule "workflows"]
 	path = workflows
 	url = https://github.com/alexbarrera/workflows
+	branch = draft-3
