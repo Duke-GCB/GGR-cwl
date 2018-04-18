@@ -1,0 +1,12 @@
+-
+  read_type: pe
+  star2pass: no
+-
+  read_type: pe
+  star2pass: yes
+-
+  read_type: se
+  star2pass: no
+-
+  read_type: se
+  star2pass: yes

@@ -1,0 +1,23 @@
+{
+  "paired-end": true,
+  "no-bam-input": true,
+  "strand-specific": true,
+  "seed": 1234,
+  "bam": { "class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-star2/TEST.rnaseq.t00_rep1.rsem.star2.Aligned.toTranscriptome.out.sorted.bam"},
+  "reference_name": "RSEM_genome",
+  "sample_name": "rsem-expr-test",
+  "reference_files": [
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem3/RSEM_genome.transcripts.fa"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem3/RSEM_genome.ti"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem3/RSEM_genome.seq"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem3/RSEM_genome.rev.2.ebwt"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem3/RSEM_genome.rev.1.ebwt"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem3/RSEM_genome.idx.fa"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem3/RSEM_genome.grp"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem3/RSEM_genome.chrlist"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem3/RSEM_genome.4.ebwt"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem3/RSEM_genome.3.ebwt"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem3/RSEM_genome.2.ebwt"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem3/RSEM_genome.1.ebwt"}
+  ]
+}

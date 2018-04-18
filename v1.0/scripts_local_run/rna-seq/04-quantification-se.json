@@ -1,0 +1,30 @@
+{
+  "input_bam_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/rnaseq-test/out-se/TEST.rnaseq.t00_rep1.R1.trimmed.star2.Aligned.out.sorted.bam"
+    }
+  ],
+  "input_transcripts_bam_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/rnaseq-test/out-se/TEST.rnaseq.t00_rep1.R1.trimmed.transcriptome.star2.Aligned.toTranscriptome.out.bam"
+    }
+  ],
+  "input_genome_sizes":
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/hg38.genome.noheader.sizes"
+    },
+  "annotation_file": {"class": "File", "path": "/Users/abarrera/data/gencode.v22.annotation.TEST.gtf"},
+  "bamtools_reverse_filter_file": {"class": "File", "path": "/Users/abarrera/data/reverse_filter.txt"},
+  "bamtools_forward_filter_file": {"class": "File", "path": "/Users/abarrera/data/forward_filter.txt"},
+  "genome_fasta_files": [
+    {"class": "File", "path": "/Users/abarrera/data/GCA_000001405.15_GRCh38_no_alt_analysis_set.TEST.fna"}
+  ],
+  "rsem_reference_files": {
+      "class": "Directory",
+      "location": "/Users/abarrera/data/rsem_refernce_files/"
+  },
+  "strand_specific": 2
+}

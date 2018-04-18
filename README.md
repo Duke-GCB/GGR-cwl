@@ -4,119 +4,113 @@
 
 CWL tools and workflows associated with the Genomics of Gene Regulation (GGR) project
 
-GGR pipelines created using the [Common Workflow Language](http://www.commonwl.org/) `draft-3` specification. 
+GGR pipelines created using the [Common Workflow Language](http://www.commonwl.org/) `v1.0` specification. 
 The workflows are parametrized with values that best suit the GGR samples, but they can be easily tailored for specific needs.
 
 For a detail User Guide to the CWL workflows, please see the [wiki](https://github.com/Duke-GCB/GGR-cwl/wiki).
 
-## [ChIP-seq](ChIP-seq_pipeline):
+## [ChIP-seq](v1.0/ChIP-seq_pipeline):
 
 ### Pipelines
-* [SE - Narrow](ChIP-seq_pipeline/pipeline-se-narrow.cwl)
-* [SE - Narrow - w/control](ChIP-seq_pipeline/pipeline-se-narrow-with-control.cwl)
-* [SE - Broad](ChIP-seq_pipeline/pipeline-se-broad.cwl)
-* [SE - Broad - w/control](ChIP-seq_pipeline/pipeline-se-broad-with-control.cwl)
-* [PE - Narrow](ChIP-seq_pipeline/pipeline-pe-narrow.cwl)
-* [PE - Narrow - w/control](ChIP-seq_pipeline/pipeline-pe-narrow-with-control.cwl)
-* [PE - Broad](ChIP-seq_pipeline/pipeline-pe-broad.cwl)
-* [PE - Broad - w/control](ChIP-seq_pipeline/pipeline-pe-broad-with-control.cwl)
+* [SE](v1.0/ChIP-seq_pipeline/pipeline-se.cwl)
+* [SE - w/control](v1.0/ChIP-seq_pipeline/pipeline-se-with-control.cwl)
+* [PE](v1.0/ChIP-seq_pipeline/pipeline-pe.cwl)
+* [PE - w/control](v1.0/ChIP-seq_pipeline/pipeline-pe-with-control.cwl)
 
 ### Steps
 * 01 - Fastq QC step:
-    * [Fastq QC step - SE](ChIP-seq_pipeline/01-qc-se.cwl)
-    * [Fastq QC step - PE](ChIP-seq_pipeline/01-qc-pe.cwl)
+    * [Fastq QC step - SE](v1.0/ChIP-seq_pipeline/01-qc-se.cwl)
+    * [Fastq QC step - PE](v1.0/ChIP-seq_pipeline/01-qc-pe.cwl)
 * 02 - Trimming reads step:
-    * [Trimming step - SE](ChIP-seq_pipeline/02-trim-se.cwl)
-    * [Trimming step - PE](ChIP-seq_pipeline/02-trim-pe.cwl)
+    * [Trimming step - SE](v1.0/ChIP-seq_pipeline/02-trim-se.cwl)
+    * [Trimming step - PE](v1.0/ChIP-seq_pipeline/02-trim-pe.cwl)
 * 03 - Mapping step:
-    * [Mapping step - SE](ChIP-seq_pipeline/03-map-se.cwl)
-    * [Mapping step - PE](ChIP-seq_pipeline/03-map-pe.cwl)
+    * [Mapping step - SE](v1.0/ChIP-seq_pipeline/03-map-se.cwl)
+    * [Mapping step - PE](v1.0/ChIP-seq_pipeline/03-map-pe.cwl)
 * 04 - Peak calling step:
-    * [Peak calling step - narrow](ChIP-seq_pipeline/04-peakcall-narrow.cwl)
-    * [Peak calling step - narrow with control](ChIP-seq_pipeline/04-peakcall-narrow-with-control.cwl)
-    * [Peak calling step - broad](ChIP-seq_pipeline/04-peakcall-broad.cwl)
-    * [Peak calling step - broad with control](ChIP-seq_pipeline/04-peakcall-broad-with-control.cwl)
+    * [Peak calling step](v1.0/ChIP-seq_pipeline/04-peakcall.cwl)
+    * [Peak calling step - with control](v1.0/ChIP-seq_pipeline/04-peakcall-with-control.cwl)
 * 05 - Quantification step:
-    * [Quantification step](ChIP-seq_pipeline/05-quantification.cwl)
-    * [Quantification step - with control](ChIP-seq_pipeline/05-quantification-with-control.cwl)
+    * [Quantification step](v1.0/ChIP-seq_pipeline/05-quantification.cwl)
+    * [Quantification step - with control](v1.0/ChIP-seq_pipeline/05-quantification-with-control.cwl)
 
-## [DNase-seq](DNase-seq_pipeline):
+## [DNase-seq](v1.0/DNase-seq_pipeline):
 
 ### Pipelines
-* [SE](DNase-seq_pipeline/pipeline-se.cwl)
+* [SE](v1.0/DNase-seq_pipeline/pipeline-se.cwl)
 
 ### Steps
 * 01 - Mapping step:
-    * 01 - [Mapping step - SE](DNase-seq_pipeline/01-map-se.cwl)
+    * 01 - [Mapping step - SE](v1.0/DNase-seq_pipeline/01-map-se.cwl)
 * 02 - Peak calling step:
-    * 02 - [Peak calling step](DNase-seq_pipeline/02-peakcall.cwl)
+    * 02 - [Peak calling step](v1.0/DNase-seq_pipeline/02-peakcall.cwl)
 * 03 - Quantification step:
-    * 03 - [Quantification step](DNase-seq_pipeline/03-quantification.cwl)
+    * 03 - [Quantification step](v1.0/DNase-seq_pipeline/03-quantification.cwl)
 
 
-## [RNA-seq](RNA-seq_pipeline):
+## [RNA-seq](v1.0/RNA-seq_pipeline):
 
 ### Pipelines
-* [SE - Unstranded](RNA-seq_pipeline/pipeline-se-unstranded.cwl)
-* [SE - Unstranded - w/sjdb](RNA-seq_pipeline/pipeline-se-unstranded-with-sjdb.cwl)
-* [SE - Stranded](RNA-seq_pipeline/pipeline-se-stranded.cwl)
-* [SE - Stranded - w/sjdb](RNA-seq_pipeline/pipeline-se-stranded-with-sjdb.cwl)
-* [SE - Revstranded](RNA-seq_pipeline/pipeline-se-revstranded.cwl)
-* [SE - Revstranded - w/sjdb](RNA-seq_pipeline/pipeline-se-revstranded-with-sjdb.cwl)
-* [PE - Unstranded](RNA-seq_pipeline/pipeline-pe-unstranded.cwl)
-* [PE - Unstranded - w/sjdb](RNA-seq_pipeline/pipeline-pe-unstranded-with-sjdb.cwl)
-* [PE - Stranded](RNA-seq_pipeline/pipeline-pe-stranded.cwl)
-* [PE - Stranded - w/sjdb](RNA-seq_pipeline/pipeline-pe-stranded-with-sjdb.cwl)
-* [PE - Revstranded](RNA-seq_pipeline/pipeline-pe-revstranded.cwl)
-* [PE - Revstranded - w/sjdb](RNA-seq_pipeline/pipeline-pe-revstranded-with-sjdb.cwl)
+* [SE - Unstranded](v1.0/RNA-seq_pipeline/pipeline-se-unstranded.cwl)
+* [SE - Unstranded - w/sjdb](v1.0/RNA-seq_pipeline/pipeline-se-unstranded-with-sjdb.cwl)
+* [SE - Stranded](v1.0/RNA-seq_pipeline/pipeline-se-stranded.cwl)
+* [SE - Stranded - w/sjdb](v1.0/RNA-seq_pipeline/pipeline-se-stranded-with-sjdb.cwl)
+* [SE - Revstranded](v1.0/RNA-seq_pipeline/pipeline-se-revstranded.cwl)
+* [SE - Revstranded - w/sjdb](v1.0/RNA-seq_pipeline/pipeline-se-revstranded-with-sjdb.cwl)
+* [PE - Unstranded](v1.0/RNA-seq_pipeline/pipeline-pe-unstranded.cwl)
+* [PE - Unstranded - w/sjdb](v1.0/RNA-seq_pipeline/pipeline-pe-unstranded-with-sjdb.cwl)
+* [PE - Stranded](v1.0/RNA-seq_pipeline/pipeline-pe-stranded.cwl)
+* [PE - Stranded - w/sjdb](v1.0/RNA-seq_pipeline/pipeline-pe-stranded-with-sjdb.cwl)
+* [PE - Revstranded](v1.0/RNA-seq_pipeline/pipeline-pe-revstranded.cwl)
+* [PE - Revstranded - w/sjdb](v1.0/RNA-seq_pipeline/pipeline-pe-revstranded-with-sjdb.cwl)
 
 ### Steps
 * 00 - Genome files generation for STAR and RSEM:
-    * 00 - [Preprocessing step](RNA-seq_pipeline/00-preprocessing.cwl)
+    * 00 - [Preprocessing step](v1.0/RNA-seq_pipeline/00-preprocessing.cwl)
 * 01 - Fastq QC step:
-    * 01 - [Fastq QC step - SE](RNA-seq_pipeline/01-qc-se.cwl)
-    * 01 - [Fastq QC step - PE](RNA-seq_pipeline/01-qc-pe.cwl)
+    * 01 - [Fastq QC step - SE](v1.0/RNA-seq_pipeline/01-qc-se.cwl)
+    * 01 - [Fastq QC step - PE](v1.0/RNA-seq_pipeline/01-qc-pe.cwl)
 * 02 - Trimming reads step:
-    * 02 - [Trimming step - SE](RNA-seq_pipeline/02-trim-se.cwl)
-    * 02 - [Trimming step - PE](RNA-seq_pipeline/02-trim-pe.cwl)
+    * 02 - [Trimming step - SE](v1.0/RNA-seq_pipeline/02-trim-se.cwl)
+    * 02 - [Trimming step - PE](v1.0/RNA-seq_pipeline/02-trim-pe.cwl)
 * 03 - Mapping step:
-    * 03 - [Mapping step - SE](RNA-seq_pipeline/03-map-se.cwl)
-    * 03 - [Mapping step - SE - w/sjdb](RNA-seq_pipeline/03-map-se-with-sjdb.cwl)
-    * 03 - [Mapping step - PE](RNA-seq_pipeline/03-map-pe.cwl)
-    * 03 - [Mapping step - PE - w/sjdb](RNA-seq_pipeline/03-map-pe-with-sjdb.cwl)
+    * 03 - [Mapping step - SE](v1.0/RNA-seq_pipeline/03-map-se.cwl)
+    * 03 - [Mapping step - SE - w/sjdb](v1.0/RNA-seq_pipeline/03-map-se-with-sjdb.cwl)
+    * 03 - [Mapping step - PE](v1.0/RNA-seq_pipeline/03-map-pe.cwl)
+    * 03 - [Mapping step - PE - w/sjdb](v1.0/RNA-seq_pipeline/03-map-pe-with-sjdb.cwl)
 * 04 - Quantification step:
-    * 04 - [Quantification step - SE - Unstranded](RNA-seq_pipeline/04-quantification-se-unstranded.cwl)
-    * 04 - [Quantification step - SE - Stranded](RNA-seq_pipeline/04-quantification-se-stranded.cwl)
-    * 04 - [Quantification step - SE - Revstranded](RNA-seq_pipeline/04-quantification-se-revstranded.cwl)
-    * 04 - [Quantification step - PE - Unstranded](RNA-seq_pipeline/04-quantification-pe-unstranded.cwl)
-    * 04 - [Quantification step - PE - Stranded](RNA-seq_pipeline/04-quantification-pe-stranded.cwl)
-    * 04 - [Quantification step - PE - Revstranded](RNA-seq_pipeline/04-quantification-pe-revstranded.cwl)
+    * 04 - [Quantification step - SE - Unstranded](v1.0/RNA-seq_pipeline/04-quantification-se-unstranded.cwl)
+    * 04 - [Quantification step - SE - Stranded](v1.0/RNA-seq_pipeline/04-quantification-se-stranded.cwl)
+    * 04 - [Quantification step - SE - Revstranded](v1.0/RNA-seq_pipeline/04-quantification-se-revstranded.cwl)
+    * 04 - [Quantification step - PE - Unstranded](v1.0/RNA-seq_pipeline/04-quantification-pe-unstranded.cwl)
+    * 04 - [Quantification step - PE - Stranded](v1.0/RNA-seq_pipeline/04-quantification-pe-stranded.cwl)
+    * 04 - [Quantification step - PE - Revstranded](v1.0/RNA-seq_pipeline/04-quantification-pe-revstranded.cwl)
 
-## [ATAC-seq](ATAC-seq_pipeline):
+## [ATAC-seq](v1.0/ATAC-seq_pipeline):
 
 ### Pipelines
-* [SE](ATAC-seq_pipeline/pipeline-se.cwl)
-* [SE - Blacklist Removal](ATAC-seq_pipeline/pipeline-se-blacklist-removal.cwl)
-* [PE](ATAC-seq_pipeline/pipeline-pe.cwl)
-* [PE - Blacklist Removal](ATAC-seq_pipeline/pipeline-pe-blacklist-removal.cwl)
+* [SE](v1.0/ATAC-seq_pipeline/pipeline-se.cwl)
+* [SE - Blacklist Removal](v1.0/ATAC-seq_pipeline/pipeline-se-blacklist-removal.cwl)
+* [PE](v1.0/ATAC-seq_pipeline/pipeline-pe.cwl)
+* [PE - Blacklist Removal](v1.0/ATAC-seq_pipeline/pipeline-pe-blacklist-removal.cwl)
 
 ### Steps
 * 01 - Fastq QC step:
-    * [Fastq QC step - SE](ATAC-seq_pipeline/01-qc-se.cwl)
-    * [Fastq QC step - PE](ATAC-seq_pipeline/01-qc-pe.cwl)
+    * [Fastq QC step - SE](v1.0/ATAC-seq_pipeline/01-qc-se.cwl)
+    * [Fastq QC step - PE](v1.0/ATAC-seq_pipeline/01-qc-pe.cwl)
 * 02 - Trimming reads step:
-    * [Trimming step - SE](ATAC-seq_pipeline/02-trim-se.cwl)
-    * [Trimming step - PE](ATAC-seq_pipeline/02-trim-pe.cwl)
+    * [Trimming step - SE](v1.0/ATAC-seq_pipeline/02-trim-se.cwl)
+    * [Trimming step - PE](v1.0/ATAC-seq_pipeline/02-trim-pe.cwl)
 * 03 - Mapping step:
-    * [Mapping step - SE](ATAC-seq_pipeline/03-map-se.cwl)
-    * [Mapping step - SE - Blacklist Removal](ATAC-seq_pipeline/03-map-se-blacklist-removal.cwl)
-    * [Mapping step - PE](ATAC-seq_pipeline/03-map-pe.cwl)
-    * [Mapping step - PE - Blacklist Removal](ATAC-seq_pipeline/03-map-pe-blacklist-removal.cwl)
+    * [Mapping step - SE](v1.0/ATAC-seq_pipeline/03-map-se.cwl)
+    * [Mapping step - SE - Blacklist Removal](v1.0/ATAC-seq_pipeline/03-map-se-blacklist-removal.cwl)
+    * [Mapping step - PE](v1.0/ATAC-seq_pipeline/03-map-pe.cwl)
+    * [Mapping step - PE - Blacklist Removal](v1.0/ATAC-seq_pipeline/03-map-pe-blacklist-removal.cwl)
 * 04 - Peak calling step:
-    * [Peak calling step - SE](ATAC-seq_pipeline/04-peakcall-se.cwl)
-    * [Peak calling step - PE](ATAC-seq_pipeline/04-peakcall-pe.cwl)
+    * [Peak calling step - SE](v1.0/ATAC-seq_pipeline/04-peakcall-se.cwl)
+    * [Peak calling step - PE](v1.0/ATAC-seq_pipeline/04-peakcall-pe.cwl)
 * 05 - Quantification step:
-    * [Quantification step](ATAC-seq_pipeline/05-quantification.cwl)
+    * [Quantification step](v1.0/ATAC-seq_pipeline/05-quantification.cwl)
 
 
 ----------------------------------------------------------------------------------------------------------
@@ -127,10 +121,6 @@ Depending on the experiments, there might be small differences in the workflows 
     - Type of read:
         - SE: Single End reads
         - PE: Paired-End reads
-- ChIP-seq & DNase-seq
-    - Type of region targeted:
-        - Narrow: Narrow (also known as Point-Source) peaks. Limited region bound (e.g. TFs).
-        - Broad: Broad peaks. Wide region bound (e.g. Histone modifications)
 - ChIP-seq only
     - With or without control. If a control sample is available `-with-control` or not.
 - RNA-seq only

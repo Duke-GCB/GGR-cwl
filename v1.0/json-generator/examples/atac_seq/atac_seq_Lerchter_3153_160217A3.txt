@@ -1,0 +1,5 @@
+Sequencing core user	Sequencing core project	Sequencing core password	Sequencing core library name	Name	Iter num	Paired-end or single-end	Genome	Blacklist removal	Control	IP control 1	IP control 2
+leichter_3153	Lerchter_3153_160217A3	XXXXXX	atac_seq_1	atac_seq_1	iter0	se	danRer10	T	ctrl_003.t00_rep3	GR_IPctrl_003.t00_t05_003	CTCF_IPctrl_003.t00_t05
+leichter_3153	Lerchter_3153_160217A3	XXXXXX	atac_seq_2	atac_seq_2	iter0	se	mm10	F	ctrl_003.t8_rep3	GR_IPctrl_003.t7_t8_003	CTCF_IPctrl_003.t7_t8
+leichter_3153	Lerchter_3153_160217A3	XXXXXX	atac_seq_3	atac_seq_3	iter0	se	mm10	no	ctrl_003.t6_rep3	GR_IPctrl_003.t4_t5_t6_003	CTCF_IPctrl_003.t4_t5_t6
+leichter_3153	Lerchter_3153_160217A3	XXXXXX	atac_seq_4	atac_seq_4	iter0	se	mm10	True	ctrl_003.t3_rep3	GR_IPctrl_003.t1_t2_t3_003	CTCF_IPctrl_003.t1_t2_t3

@@ -1,0 +1,29 @@
+{
+    "input_fastq{% if 'pe' == wf_conf['rt'] %}_read1{% endif %}_files": [
+    {% for samples in samples_list %}
+        { "class": "File", "path": "{{ data_dir }}/{{ samples['iter'] }}/{{ samples['treatment'] }}{% if 'pe' == wf_conf['rt'] %}.R1{% endif %}.fastq" }{% if loop.index < samples_list|length %},{% endif %}
+    {% endfor %}
+    ],
+{% if 'pe' == wf_conf['rt'] %}
+    "input_fastq_read2_files": [
+    {% for samples in samples_list %}
+        { "class": "File", "path": "{{ data_dir }}/{{ samples['iter'] }}/{{ samples['treatment'] }}.R2.fastq" }{% if loop.index < samples_list|length %},{% endif %}
+    {% endfor %}
+    ],
+{% endif %}
+    "as_narrowPeak_file": { "class": "File", "path": "{{ conf_args.as_narrowPeak}}" },
+    "genome_effective_size": "{{ conf_args.genome_effective_size }}",
+    "default_adapters_file": { "class": "File", "path": "{{ conf_args.default_adapters }}" },
+    "genome_ref_first_index_file": { "class": "File", "path": "{{ conf_args.bowtie_genome_ref_first_index }}"},
+    "genome_sizes_file": { "class": "File", "path": "{{ conf_args.genome_sizes_file }}" },
+{% if conf_args.encode_blacklist_bedfile %}    "ENCODE_blacklist_bedfile": { "class": "File", "path": "{{ conf_args.encode_blacklist_bedfile }}" },{% endif %}
+    "nthreads_qc": {{ nthreads }},
+    "nthreads_trimm": {{ nthreads }},
+    "nthreads_map": {{ nthreads }},
+    "nthreads_peakcall": {{ nthreads }},
+    "nthreads_quant": {{ nthreads }},
+    "trimmomatic_jar_path": "{{ conf_args.trimmomatic_jar }}",
+    "trimmomatic_java_opts": "-Xms{{ (conf_args.mem/2) | round | int }}m -Xmx{{ conf_args.mem }}m",
+    "picard_jar_path": "{{ conf_args.picard_jar }}",
+    "picard_java_opts": "-Xms{{ (conf_args.mem/2) | round | int }}m -Xmx{{ conf_args.mem }}m"
+}

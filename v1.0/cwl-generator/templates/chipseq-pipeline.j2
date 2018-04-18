@@ -1,0 +1,395 @@
+#!/usr/bin/env cwl-runner
+ class: Workflow
+ cwlVersion: v1.0
+ doc: "ChIP-seq pipeline - reads: {{read_type|upper}}, samples: {{ sample_types|join(' and ') }}."
+ requirements:
+  - class: ScatterFeatureRequirement
+  - class: SubworkflowFeatureRequirement
+  - class: StepInputExpressionRequirement
+ inputs:
+{% for sample_type in sample_types %}
+    {% if read_type == "pe" %}
+    input_{{ sample_type }}_fastq_read1_files:
+      doc: Input {{ sample_type }} fastq paired-end read 1 files
+      type: File[]
+    input_{{ sample_type }}_fastq_read2_files:
+      doc: Input {{ sample_type }} fastq paired-end read 2 files
+      type: File[]
+    {% else %}
+    input_{{ sample_type }}_fastq_files:
+      doc: Input {{ sample_type }} fastq files
+      type: File[]
+    {% endif %}
+{%- endfor %}
+    genome_sizes_file:
+      doc: Genome sizes tab-delimited file (used in samtools)
+      type: File
+    genome_effective_size:
+      default: hs
+      doc: Effective genome size used by MACS2. It can be numeric or a shortcuts:'hs' for human (2.7e9), 'mm' for mouse (1.87e9), 'ce' for C. elegans (9e7) and 'dm' for fruitfly (1.2e8), Default:hs
+      type: string
+    default_adapters_file:
+      doc: Adapters file
+      type: File
+    ENCODE_blacklist_bedfile:
+      doc: Bedfile containing ENCODE consensus blacklist regions to be excluded.
+      type: File
+    genome_ref_first_index_file:
+      doc: '"First index file of Bowtie reference genome with extension 1.ebwt. \ (Note: the rest of the index files MUST be in the same folder)" '
+      type: File
+    as_narrowPeak_file:
+      doc: Definition narrowPeak file in AutoSql format (used in bedToBigBed)
+      type: File
+    as_broadPeak_file:
+      doc: Definition broadPeak file in AutoSql format (used in bedToBigBed)
+      type: File
+    trimmomatic_java_opts:
+      doc: JVM arguments should be a quoted, space separated list (e.g. "-Xms128m -Xmx512m")
+      type: string?
+    trimmomatic_jar_path:
+      doc: Trimmomatic Java jar file
+      type: string
+    picard_java_opts:
+      doc: JVM arguments should be a quoted, space separated list (e.g. "-Xms128m -Xmx512m")
+      type: string?
+    picard_jar_path:
+      doc: Picard Java jar file
+      type: string
+    nthreads_qc:
+      doc: Number of threads required for the 01-qc step
+      type: int
+    nthreads_trimm:
+      doc: Number of threads required for the 02-trim step
+      type: int
+    nthreads_map:
+      doc: Number of threads required for the 03-map step
+      type: int
+    nthreads_peakcall:
+      doc: Number of threads required for the 04-peakcall step
+      type: int
+    nthreads_quant:
+      doc: Number of threads required for the 05-quantification step
+      type: int
+ outputs:
+{% for sample_type in sample_types %}
+    {% if read_type == "pe" %}
+    qc_{{ sample_type }}_count_raw_reads_read1:
+      doc: Raw read counts of fastq files for read 1 after QC for {{ sample_type }}
+      type: File[]
+      outputSource: qc_{{ sample_type }}/output_count_raw_reads_read1
+    qc_{{ sample_type }}_count_raw_reads_read2:
+      doc: Raw read counts of fastq files for read 2 after QC for {{ sample_type }}
+      type: File[]
+      outputSource: qc_{{ sample_type }}/output_count_raw_reads_read2
+    qc_{{ sample_type }}_fastqc_data_files_read1:
+      doc: FastQC data files for paired read 1
+      type: File[]
+      outputSource: qc_{{ sample_type }}/output_fastqc_data_files_read1
+    qc_{{ sample_type }}_fastqc_data_files_read2:
+      doc: FastQC data files for paired read 2
+      type: File[]
+      outputSource: qc_{{ sample_type }}/output_fastqc_data_files_read2
+    qc_{{ sample_type }}_diff_counts_read1:
+      doc: Diff file between number of raw reads and number of reads counted by FASTQC, read 1 for {{ sample_type }}
+      type: File[]
+      outputSource: qc_{{ sample_type }}/output_diff_counts_read1
+    qc_{{ sample_type }}_diff_counts_read2:
+      doc: Diff file between number of raw reads and number of reads counted by FASTQC, read 2 for {{ sample_type }}
+      type: File[]
+      outputSource: qc_{{ sample_type }}/output_diff_counts_read2
+    trimm_{{ sample_type }}_fastq_files_read1:
+      doc: FASTQ files after trimming step for {{ sample_type }}
+      type: File[]
+      outputSource: trimm_{{ sample_type }}/output_data_fastq_read1_trimmed_files
+    trimm_{{ sample_type }}_fastq_files_read2:
+      doc: FASTQ files after trimming step for {{ sample_type }}
+      type: File[]
+      outputSource: trimm_{{ sample_type }}/output_data_fastq_read2_trimmed_files
+    trimm_{{ sample_type }}_raw_counts_read1:
+      doc: Raw read counts for R1 of fastq files after trimming for {{ sample_type }}
+      type: File[]
+      outputSource: trimm_{{ sample_type }}/output_trimmed_read2_fastq_read_count
+    trimm_{{ sample_type }}_raw_counts_read2:
+      doc: Raw read counts for R2 of fastq files after trimming for {{ sample_type }}
+      type: File[]
+      outputSource: trimm_{{ sample_type }}/output_trimmed_read2_fastq_read_count
+    {% else %}
+    qc_{{ sample_type }}_count_raw_reads:
+      doc: Raw read counts of fastq files after QC for {{ sample_type }}
+      type: File[]
+      outputSource: qc_{{ sample_type }}/output_count_raw_reads
+    qc_{{ sample_type }}_fastqc_data_files:
+      doc: FastQC data files
+      type: File[]
+      outputSource: qc_{{ sample_type }}/output_fastqc_data_files
+    qc_{{ sample_type }}_diff_counts:
+      doc: Diff file between number of raw reads and number of reads counted by FASTQC, for {{ sample_type }}
+      type: File[]
+      outputSource: qc_{{ sample_type }}/output_diff_counts
+    trimm_{{ sample_type }}_fastq_files:
+      doc: FASTQ files after trimming step for control
+      type: File[]
+      outputSource: trimm_{{ sample_type }}/output_data_fastq_trimmed_files
+    trimm_{{ sample_type }}_raw_counts:
+      doc: Raw read counts for fastq files after trimming for {{ sample_type }}
+      type: File[]
+      outputSource: trimm_{{ sample_type }}/output_trimmed_fastq_read_count
+    {% endif %}
+    map_{{ sample_type }}_mark_duplicates_files:
+      doc: Summary of duplicates removed with Picard tool MarkDuplicates (for multiple reads aligned to the same positions) for {{ sample_type }}
+      type: File[]
+      outputSource: map_{{ sample_type }}/output_picard_mark_duplicates_files
+    map_{{ sample_type }}_dedup_bam_files:
+      doc: Filtered BAM files (post-processing end point) for {{ sample_type }}
+      type: File[]
+      outputSource: map_{{ sample_type }}/output_data_sorted_dedup_bam_files
+    map_{{ sample_type }}_dups_marked_bam_files:
+      doc: Filtered BAM files with duplicates marked (post-processing end point) for {{ sample_type }}
+      type: File[]
+      outputSource: map_{{ sample_type }}/output_data_sorted_dups_marked_bam_files
+    map_{{ sample_type }}_pbc_files:
+      doc: PCR Bottleneck Coefficient files (used to flag samples when pbc<0.5) for control
+      type: File[]
+      outputSource: map_{{ sample_type }}/output_pbc_files
+    map_{{ sample_type }}_preseq_percentage_uniq_reads:
+      doc: Preseq percentage of uniq reads
+      type: File[]
+      outputSource: map_{{ sample_type }}/output_percentage_uniq_reads
+    map_{{ sample_type }}_read_count_mapped:
+      doc: Read counts of the mapped BAM files
+      type: File[]
+      outputSource: map_{{ sample_type }}/output_read_count_mapped
+    map_{{ sample_type }}_bowtie_log_files:
+      doc: Bowtie log file with mapping stats for {{ sample_type }}
+      type: File[]
+      outputSource: map_{{ sample_type }}/output_bowtie_log
+    map_{{ sample_type }}_preseq_c_curve_files:
+      doc: Preseq c_curve output files for {{ sample_type }}
+      type: File[]
+      outputSource: map_{{ sample_type }}/output_preseq_c_curve_files
+    map_{{ sample_type }}_preseq_lc_extrap_files:
+      doc: Preseq lc_extrap output files for {{ sample_type }}
+      type: File[]
+      outputSource: map_{{ sample_type }}/output_preseq_lc_extrap_files
+
+    peak_call_{{ sample_type }}_spp_x_cross_corr:
+      doc: SPP strand cross correlation summary
+      type: File[]
+      outputSource: peak_call_{{ sample_type }}/output_spp_x_cross_corr
+    peak_call_{{ sample_type }}_spp_x_cross_corr_plot:
+      doc: SPP strand cross correlation plot
+      type: File[]
+      outputSource: peak_call_{{ sample_type }}/output_spp_cross_corr_plot
+    peak_call_{{ sample_type }}_filtered_read_count_file:
+      doc: Filtered read count after peak calling
+      type: File[]
+      outputSource: peak_call_{{ sample_type }}/output_filtered_read_count_file
+
+    peak_call_{{ sample_type }}_narrowpeak_peak_xls_file:
+      doc: Peak calling report file
+      type: File[]
+      outputSource: peak_call_{{ sample_type }}/output_narrowpeak_xls_file
+    peak_call_{{ sample_type }}_read_in_narrowpeak_count_within_replicate:
+      doc: Peak counts within replicate
+      type: File[]
+      outputSource: peak_call_{{ sample_type }}/output_read_in_narrowpeak_count_within_replicate
+    peak_call_{{ sample_type }}_narrowpeak_count:
+      doc: Peak counts within replicate
+      type: File[]
+      outputSource: peak_call_{{ sample_type }}/output_narrowpeak_count
+    peak_call_{{ sample_type }}_narrowpeak_file:
+      doc: Peaks in narrowPeak file format
+      type: File[]
+      outputSource: peak_call_{{ sample_type }}/output_narrowpeak_file
+    peak_call_{{ sample_type }}_narrowpeak_summits_file:
+      doc: Peaks summits in bedfile format
+      type:
+        type: array
+        items:
+        - 'null'
+        - items: File
+          type: array
+      outputSource: peak_call_{{ sample_type }}/output_narrowpeak_summits_file
+    peak_call_{{ sample_type }}_narrowpeak_bigbed_file:
+      doc: narrowPeaks in bigBed format
+      type: File[]
+      outputSource: peak_call_{{ sample_type }}/output_narrowpeak_bigbed_file
+
+    peak_call_{{ sample_type }}_broadpeak_peak_xls_file:
+      doc: Peak calling report file
+      type: File[]
+      outputSource: peak_call_{{ sample_type }}/output_broadpeak_xls_file
+    peak_call_{{ sample_type }}_read_in_broadpeak_count_within_replicate:
+      doc: Peak counts within replicate
+      type: File[]
+      outputSource: peak_call_{{ sample_type }}/output_read_in_broadpeak_count_within_replicate
+    peak_call_{{ sample_type }}_broadpeak_count:
+      doc: Peak counts within replicate
+      type: File[]
+      outputSource: peak_call_{{ sample_type }}/output_broadpeak_count
+    peak_call_{{ sample_type }}_broadpeak_file:
+      doc: Peaks in broadPeak file format
+      type: File[]
+      outputSource: peak_call_{{ sample_type }}/output_broadpeak_file
+    peak_call_{{ sample_type }}_broadpeak_summits_file:
+      doc: Peaks summits in bedfile format
+      type:
+        type: array
+        items:
+        - 'null'
+        - items: File
+          type: array
+      outputSource: peak_call_{{ sample_type }}/output_broadpeak_summits_file
+    peak_call_{{ sample_type }}_broadpeak_bigbed_file:
+      doc: broadPeaks in bigBed format
+      type: File[]
+      outputSource: peak_call_{{ sample_type }}/output_broadpeak_bigbed_file
+
+{%- endfor %}
+
+    quant_bigwig_raw_files:
+      doc: Raw reads bigWig (signal) files
+      type: File[]
+      outputSource: quant/bigwig_raw_files
+    quant_bigwig_rpkm_extended_files:
+      doc: Fragment extended reads bigWig (signal) files
+      type: File[]
+      outputSource: quant/bigwig_rpkm_extended_files
+{% if 'control' in sample_types %}
+    quant_bigwig_ctrl_subtracted_rpkm_extended_files:
+      doc: Fragment control subtracted extended reads bigWig (signal) files
+      type: File[]
+      outputSource: quant/bigwig_ctrl_subtracted_rpkm_extended_files
+    quant_ctrl_bigwig_rpkm_extended_files:
+      doc: Fragment extended reads bigWig (signal) control files
+      type: File[]
+      outputSource: quant/bigwig_ctrl_rpkm_extended_files
+{% endif %}
+
+ steps:
+{% for sample_type in sample_types %}
+    qc_{{ sample_type }}:
+      run: 01-qc-{{ read_type }}.cwl
+      in:
+        default_adapters_file: default_adapters_file
+{% if read_type == "pe" %}
+        input_read1_fastq_files: input_{{ sample_type }}_fastq_read1_files
+        input_read2_fastq_files: input_{{ sample_type }}_fastq_read2_files
+{% else %}
+        input_fastq_files: input_{{ sample_type }}_fastq_files
+{% endif %}
+        nthreads: nthreads_qc
+      out:
+{% if read_type == "pe" %}
+      - output_count_raw_reads_read1
+      - output_diff_counts_read1
+      - output_fastqc_report_files_read1
+      - output_fastqc_data_files_read1
+      - output_custom_adapters_read1
+      - output_count_raw_reads_read2
+      - output_diff_counts_read2
+      - output_fastqc_report_files_read2
+      - output_fastqc_data_files_read2
+      - output_custom_adapters_read2
+{% else %}
+      - output_count_raw_reads
+      - output_diff_counts
+      - output_fastqc_report_files
+      - output_fastqc_data_files
+      - output_custom_adapters
+{% endif %}
+    trimm_{{ sample_type }}:
+      run: 02-trim-{{ read_type }}.cwl
+      in:
+{% if read_type == "pe" %}
+        input_read1_fastq_files: input_{{ sample_type }}_fastq_read1_files
+        input_read1_adapters_files: qc_{{ sample_type }}/output_custom_adapters_read1
+        input_read2_fastq_files: input_{{ sample_type }}_fastq_read2_files
+        input_read2_adapters_files: qc_{{ sample_type }}/output_custom_adapters_read2
+{% else %}
+        input_adapters_files: qc_{{ sample_type }}/output_custom_adapters
+        input_read1_fastq_files: input_{{ sample_type }}_fastq_files
+{% endif %}
+        trimmomatic_java_opts: trimmomatic_java_opts
+        trimmomatic_jar_path: trimmomatic_jar_path
+        nthreads: nthreads_trimm
+      out:
+{% if read_type == "pe" %}
+      - output_data_fastq_read1_trimmed_files
+      - output_trimmed_read1_fastq_read_count
+      - output_data_fastq_read2_trimmed_files
+      - output_trimmed_read2_fastq_read_count
+{% else %}
+      - output_data_fastq_trimmed_files
+      - output_trimmed_fastq_read_count
+{% endif %}
+    map_{{ sample_type }}:
+      run: 03-map-{{ read_type }}.cwl
+      in:
+{% if read_type == "pe" %}
+        input_fastq_read1_files: trimm_{{ sample_type }}/output_data_fastq_read1_trimmed_files
+        input_fastq_read2_files: trimm_{{ sample_type }}/output_data_fastq_read2_trimmed_files
+{% else %}
+        input_fastq_files: trimm_{{ sample_type }}/output_data_fastq_trimmed_files
+{% endif %}
+        genome_sizes_file: genome_sizes_file
+        ENCODE_blacklist_bedfile: ENCODE_blacklist_bedfile
+        genome_ref_first_index_file: genome_ref_first_index_file
+        picard_jar_path: picard_jar_path
+        picard_java_opts: picard_java_opts
+        nthreads: nthreads_map
+      out:
+      - output_data_sorted_dedup_bam_files
+      - output_data_sorted_dups_marked_bam_files
+      - output_picard_mark_duplicates_files
+      - output_pbc_files
+      - output_bowtie_log
+      - output_preseq_c_curve_files
+      - output_preseq_lc_extrap_files
+      - output_percentage_uniq_reads
+      - output_read_count_mapped
+    peak_call_{{ sample_type }}:
+      run: 04-peakcall{% if 'control' in sample_types and 'treatment' == sample_type %}-with-control{% endif %}.cwl
+      in:
+        input_bam_files: map_{{ sample_type }}/output_data_sorted_dedup_bam_files
+{% if 'control' in sample_types and 'treatment' == sample_type %}
+        input_control_bam_files: map_control/output_data_sorted_dedup_bam_files
+{% endif %}
+        input_genome_sizes: genome_sizes_file
+        genome_effective_size: genome_effective_size
+        as_narrowPeak_file: as_narrowPeak_file
+        as_broadPeak_file: as_broadPeak_file
+        nthreads: nthreads_peakcall
+      out:
+      - output_spp_x_cross_corr
+      - output_spp_cross_corr_plot
+      - output_filtered_read_count_file
+      - output_read_in_narrowpeak_count_within_replicate
+      - output_narrowpeak_count
+      - output_narrowpeak_file
+      - output_narrowpeak_summits_file
+      - output_narrowpeak_bigbed_file
+      - output_narrowpeak_xls_file
+      - output_read_in_broadpeak_count_within_replicate
+      - output_broadpeak_count
+      - output_broadpeak_file
+      - output_broadpeak_summits_file
+      - output_broadpeak_bigbed_file
+      - output_broadpeak_xls_file
+{%- endfor %}
+    quant:
+      run: 05-quantification{% if 'control' in sample_types %}-with-control{% endif %}.cwl
+      in:
+        nthreads: nthreads_quant
+        input_trt_bam_files: map_treatment/output_data_sorted_dedup_bam_files
+{% if 'control' in sample_types %}
+        input_ctrl_bam_files: map_control/output_data_sorted_dedup_bam_files
+{% endif %}
+        input_genome_sizes: genome_sizes_file
+      out:
+      - bigwig_raw_files
+      - bigwig_rpkm_extended_files
+{% if 'control' in sample_types %}
+      - bigwig_ctrl_rpkm_extended_files
+      - bigwig_ctrl_subtracted_rpkm_extended_files
+{% endif %}

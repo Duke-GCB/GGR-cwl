@@ -1,0 +1,31 @@
+{
+  "alreadysorted": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/rnaseq-test/out/TEST_1.ERR242959.Aligned.out.sorted.bam"
+    }
+  ],
+  "starlog": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/rnaseq-test/out/TEST_1.ERR242959.Log.final.out"
+    }
+  ],
+  "sj": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/rnaseq-test/out/TEST_1.ERR242959.SJ.out.tab"
+    },
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/rnaseq-test/out/TEST_1.ERR242959.SJ.out.tab"
+    }
+  ],
+  "genome_sizes_file":
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/hg38.genome.noheader.sizes"
+    },
+  "sjdbOverhang": 49,
+  "genomeDir": {"class": "File", "path": "../../../data/rnaseq-test/out/STAR_genome_sjdbOverhang_49"}
+}
