@@ -1,0 +1,20 @@
+{
+    "input_fastq_files": [
+        { "class": "File", "path": "/data/reddylab/Alex/GGR/data/atac_seq/processed_reads/iter0/atac_seq_4.fastq" }
+    ],
+    "as_narrowPeak_file": { "class": "File", "path": "/data/reddylab/Reference_Data/ENCODE/kent/src/hg/lib/encode/narrowPeak.as" },
+    "genome_effective_size": "mm",
+    "default_adapters_file": { "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/adapters/default_adapters.fasta" },
+    "genome_ref_first_index_file": { "class": "File", "path": "/data/reddylab/Reference_Data/Genomes/mm10/bowtie/GRCm38.1.ebwt"},
+    "genome_sizes_file": { "class": "File", "path": "/data/reddylab/Reference_Data/Genomes/GRCm38/GRCm38.sizes" },
+    "ENCODE_blacklist_bedfile": { "class": "File", "path": "/data/reddylab/Reference_Data/ENCODE/mm10.blacklist.bed" },
+    "nthreads_qc": 16,
+    "nthreads_trimm": 16,
+    "nthreads_map": 16,
+    "nthreads_peakcall": 16,
+    "nthreads_quant": 16,
+    "trimmomatic_jar_path": "/data/reddylab/software/Trimmomatic-0.32/trimmomatic-0.32.jar",
+    "trimmomatic_java_opts": "-Xms8000m -Xmx16000m",
+    "picard_jar_path": "/data/reddylab/software/picard/dist/picard.jar",
+    "picard_java_opts": "-Xms8000m -Xmx16000m"
+}

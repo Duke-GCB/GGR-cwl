@@ -1,0 +1,12 @@
+-
+  blacklist_removal: yes
+  read_type: pe
+-
+  blacklist_removal: yes
+  read_type: se
+-
+  blacklist_removal: no
+  read_type: pe
+-
+  blacklist_removal: no
+  read_type: se

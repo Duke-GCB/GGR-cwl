@@ -1,0 +1,53 @@
+{
+  "input_fastq_read1_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/TEST.rnaseq.t00_rep1.R1.fastq"
+    }
+
+  ],
+  "input_fastq_read2_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/TEST.rnaseq.t00_rep1.R2.fastq"
+    }
+  ],
+  "genome_sizes_file":
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/hg38.genome.noheader.sizes"
+    },
+  "sjdbOverhang": "49",
+  "genomeDirFiles": [
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/Genome"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/SA"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/SAindex"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/chrLength.txt"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/chrName.txt"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/chrNameLength.txt"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/chrStart.txt"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/exonGeTrInfo.tab"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/exonInfo-240305264.tab"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/exonInfo-483605442.tab"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/exonInfo.tab"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/geneInfo.tab"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/genomeParameters.txt"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/sjdbInfo.txt"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/sjdbList.fromGTF.out.tab"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/sjdbList.out.tab"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out/STAR_genome_sjdbOverhang_49/transcriptInfo.tab"}
+  ],
+  "annotation_file": {"class": "File", "path": "/Users/abarrera/data/gencode.v22.annotation.TEST.gtf"},
+  "genome_fasta_files": [
+    {"class": "File", "path": "/Users/abarrera/data/GCA_000001405.15_GRCh38_no_alt_analysis_set.TEST.fna"}
+  ],
+  "rsem_reference_files": [
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.transcripts.fa"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.ti"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.seq"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.idx.fa"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.grp"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.n2g.idx.fa"},
+    {"class": "File", "path": "/Users/abarrera/data/rnaseq-test/out-rsem5.chrlist"}
+  ]
+}

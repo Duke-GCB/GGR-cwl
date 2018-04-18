@@ -1,0 +1,18 @@
+-
+  read_type: pe
+  sample_types:
+    - treatment
+-
+  read_type: se
+  sample_types:
+    - treatment
+-
+  read_type: pe
+  sample_types:
+    - treatment
+    - control
+-
+  read_type: se
+  sample_types:
+    - treatment
+    - control

@@ -1,0 +1,28 @@
+{
+  "input_bam_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/dnaseseq-test/out_pmap/dnaseq.t12_rep2.0-01.dedup_filtered.filtered.sorted.bam"
+    }
+  ],
+  "input_pileup_bedgraphs": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/dnaseseq-test/out_pmap/dnaseq.t12_rep2.0-01.dedup_filtered.filtered.sorted_treat_pileup.bdg"
+    }
+  ],
+  "input_read_count_dedup_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/dnaseseq-test/out_pmap/dnaseq.t12_rep2.0-01.dedup_filtered.filtered.sorted_read_count.txt"
+    }
+  ],
+  "input_peak_xls_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/dnaseseq-test/out_pmap/dnaseq.t12_rep2.0-01.dedup_filtered.filtered.sorted_peaks.xls"
+    }
+  ],
+  "input_genome_sizes": {"class": "File", "path": "/Users/abarrera/data/hg38.genome.noheader.sizes"},
+  "nthreads": 1
+}

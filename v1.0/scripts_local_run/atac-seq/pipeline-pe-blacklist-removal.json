@@ -1,0 +1,36 @@
+{
+  "input_fastq_read1_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/atacseq_test/leslie_mouse_rep2.0-0001.R1.fastq"
+    }
+  ],
+  "input_fastq_read2_files": [
+    {
+      "class": "File",
+      "path": "/Users/abarrera/data/atacseq_test/leslie_mouse_rep2.0-0001.R2.fastq"
+    }
+  ],
+  "default_adapters_file":
+  {
+    "class": "File",
+    "path": "/Users/abarrera/data/adapters.fa"
+  },
+  "genome_ref_first_index_file": {
+    "class": "File",
+    "path": "/Users/abarrera/data/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.1.ebwt"
+  },
+  "genome_sizes_file": {"class": "File", "path": "/Users/abarrera/data/hg38.genome.noheader.sizes"},
+  "as_narrowPeak_file": {"class": "File", "path": "/Users/abarrera/data/narrowPeak.as"},
+  "ENCODE_blacklist_bedfile": {"class": "File", "path": "/Users/abarrera/data/wgEncodeDacMapabilityConsensusExcludable.hg38.bed"},
+  "nthreads_qc": 1,
+  "nthreads_trimm": 1,
+  "nthreads_map": 1,
+  "nthreads_peakcall": 1,
+  "nthreads_quant": 1,
+  "genome_effective_size": "hs",
+  "trimmomatic_java_opts": "-Xms512m -Xmx512m",
+  "trimmomatic_jar_path": "/usr/share/java/trimmomatic.jar",
+  "picard_java_opts": "-Xms512m -Xmx512m",
+  "picard_jar_path": "/usr/picard/picard.jar"
+}

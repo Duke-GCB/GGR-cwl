@@ -1,0 +1,122 @@
+#!/usr/bin/env cwl-runner
+class: Workflow
+cwlVersion: v1.0
+doc: 'ChIP-seq 01 QC - reads: {{read_type|upper}}'
+requirements:
+ - class: ScatterFeatureRequirement
+ - class: StepInputExpressionRequirement
+ - class: InlineJavascriptRequirement
+inputs:
+{% if read_type == "pe" %}
+   input_read1_fastq_files:
+     doc: Input read1 fastq files
+     type: File[]
+   input_read2_fastq_files:
+     doc: Input read2 fastq files
+     type: File[]
+{% else %}
+   input_fastq_files:
+     doc: Input fastq files
+     type: File[]
+{% endif %}
+   default_adapters_file:
+     doc: Adapters file
+     type: File
+   nthreads:
+     doc: Number of threads.
+     type: int
+{% set read_pairs = ["_read1", "_read2"] if read_type == "pe" else [""] %}
+steps:
+{% for read_pair in read_pairs %}
+   extract_basename{{ read_pair }}:
+     run: ../utils/extract-basename.cwl
+     scatter: input_file
+     in:
+       input_file: input{{ read_pair }}_fastq_files
+     out:
+     - output_basename
+   count_raw_reads{{ read_pair }}:
+     run: ../utils/count-fastq-reads.cwl
+     scatterMethod: dotproduct
+     scatter:
+     - input_fastq_file
+     - input_basename
+     in:
+       input_basename: extract_basename{{ read_pair }}/output_basename
+       input_fastq_file: input{{ read_pair }}_fastq_files
+     out:
+     - output_read_count
+   fastqc{{ read_pair }}:
+     run: ../qc/fastqc.cwl
+     scatter: input_fastq_file
+     in:
+       threads: nthreads
+       input_fastq_file: input{{ read_pair }}_fastq_files
+     out:
+     - output_qc_report_file
+   extract_fastqc_data{{ read_pair }}:
+     run: ../qc/extract_fastqc_data.cwl
+     scatterMethod: dotproduct
+     scatter:
+     - input_qc_report_file
+     - input_basename
+     in:
+       input_basename: extract_basename{{ read_pair }}/output_basename
+       input_qc_report_file: fastqc{{ read_pair }}/output_qc_report_file
+     out:
+     - output_fastqc_data_file
+   overrepresented_sequence_extract{{ read_pair }}:
+     run: ../qc/overrepresented_sequence_extract.cwl
+     scatterMethod: dotproduct
+     scatter:
+     - input_fastqc_data
+     - input_basename
+     in:
+       input_fastqc_data: extract_fastqc_data{{ read_pair }}/output_fastqc_data_file
+       input_basename: extract_basename{{ read_pair }}/output_basename
+       default_adapters_file: default_adapters_file
+     out:
+     - output_custom_adapters
+   count_fastqc_reads{{ read_pair }}:
+     run: ../qc/count-fastqc-reads.cwl
+     scatterMethod: dotproduct
+     scatter:
+     - input_fastqc_data
+     - input_basename
+     in:
+       input_fastqc_data: extract_fastqc_data{{ read_pair }}/output_fastqc_data_file
+       input_basename: extract_basename{{ read_pair }}/output_basename
+     out:
+     - output_fastqc_read_count
+   compare_read_counts{{ read_pair }}:
+     run: ../qc/diff.cwl
+     scatterMethod: dotproduct
+     scatter:
+     - file1
+     - file2
+     in:
+       file2: count_fastqc_reads{{ read_pair }}/output_fastqc_read_count
+       file1: count_raw_reads{{ read_pair }}/output_read_count
+     out:
+     - result
+{%- endfor %}
+outputs:
+{% for read_pair in read_pairs %}
+   output_custom_adapters{{ read_pair }}:
+     outputSource: overrepresented_sequence_extract{{ read_pair }}/output_custom_adapters
+     type: File[]
+   output_fastqc_data_files{{ read_pair }}:
+     doc: FastQC data files for paired read 1
+     type: File[]
+     outputSource: extract_fastqc_data{{ read_pair }}/output_fastqc_data_file
+   output_count_raw_reads{{ read_pair }}:
+     outputSource: count_raw_reads{{ read_pair }}/output_read_count
+     type: File[]
+   output_diff_counts{{ read_pair }}:
+     outputSource: compare_read_counts{{ read_pair }}/result
+     type: File[]
+   output_fastqc_report_files{{ read_pair }}:
+     doc: FastQC reports in zip format for paired read 1
+     type: File[]
+     outputSource: fastqc{{ read_pair }}/output_qc_report_file
+{%- endfor %}

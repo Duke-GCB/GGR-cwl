@@ -1,0 +1,43 @@
+{
+    "input_treatment_fastq_files": [
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/H3K27ac.t00_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/H3K27ac.t05_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/H3K27ac.t10_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/H3K27ac.t12_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/H3K27ac.t1_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/H3K27ac.t2_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/H3K27ac.t3_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/H3K27ac.t4_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/H3K27ac.t5_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/H3K27ac.t6_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/H3K27ac.t7_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/H3K27ac.t8_rep3.fastq" }
+    ],
+    "input_control_fastq_files": [
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/ctrl_003.t00_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/ctrl_003.t05_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/ctrl_003.t10_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/ctrl_003.t12_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/ctrl_003.t1_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/ctrl_003.t2_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/ctrl_003.t3_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/ctrl_003.t4_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/ctrl_003.t5_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/ctrl_003.t6_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/ctrl_003.t7_rep3.fastq" },
+        { "class": "File", "path": "/data/reddylab/projects/GGR/data/chip_seq/processed_raw_reads/iter0/ctrl_003.t8_rep3.fastq" }
+    ],
+    "default_adapters_file": { "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/adapters/default_adapters.fasta" },
+    "genome_ref_first_index_file": { "class": "File", "path": "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.1.ebwt"},
+    "genome_sizes_file": { "class": "File", "path": "/data/reddylab/projects/GGR/auxiliary/hg38.sizes" },
+    "ENCODE_blacklist_bedfile": { "class": "File", "path": "/data/reddylab/Reference_Data/ENCODE/wgEncodeDacMapabilityConsensusExcludable.hg38.bed" },
+    "nthreads_qc": 16,
+    "nthreads_trimm": 16,
+    "nthreads_map": 16,
+    "nthreads_peakcall": 16,
+    "nthreads_quant": 16,
+    "trimmomatic_jar_path": "/data/reddylab/software/Trimmomatic-0.32/trimmomatic-0.32.jar",
+    "trimmomatic_java_opts": "-Xms8000m -Xmx12000m",
+    "picard_jar_path": "/data/reddylab/software/picard/dist/picard.jar",
+    "picard_java_opts": "-Xms8000m -Xmx12000m"
+}

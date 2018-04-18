@@ -1,0 +1,18 @@
+{
+  "input_bam_files": [
+    {
+    "class": "File",
+    "path": "/Users/abarrera/data/chipseq-test/out_map/GR.dedup_filtered.sorted.bam"
+    }
+  ],
+  "as_narrowPeak_file": {
+    "class": "File",
+    "path": "/Users/abarrera/data/narrowPeak.as"
+  },
+  "as_broadPeak_file": {
+    "class": "File",
+    "path": "/Users/abarrera/data/broadPeak.as"
+  },
+  "input_genome_sizes": {"class": "File", "path": "/Users/abarrera/data/hg38.genome.noheader.sizes"},
+
+}
