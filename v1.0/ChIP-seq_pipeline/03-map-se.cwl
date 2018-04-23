@@ -123,6 +123,8 @@ steps:
        output_file_basename: extract_basename_2/output_path
        s:
          valueFrom: ${return 100000}
+       D:
+         valueFrom: ${return true}
      out:
      - output_file
    execute_pcr_bottleneck_coef:

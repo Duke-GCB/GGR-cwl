@@ -130,6 +130,8 @@ steps:
        output_file_basename: extract_basename_2/output_path
        s:
          valueFrom: ${return 100000}
+       D:
+         valueFrom: ${return true}
        pe:
          valueFrom: ${return true}
      out:
