@@ -79,6 +79,14 @@
       doc: FastQC data files for paired read 2
       type: File[]
       outputSource: qc_treatment/output_fastqc_data_files_read2
+    qc_treatment_fastqc_report_files_read1:
+      doc: FastQC report files for paired read 1
+      type: File[]
+      outputSource: qc_treatment/output_fastqc_report_files_read1
+    qc_treatment_fastqc_report_files_read2:
+      doc: FastQC report files for paired read 2
+      type: File[]
+      outputSource: qc_treatment/output_fastqc_report_files_read2
     qc_treatment_diff_counts_read1:
       doc: Diff file between number of raw reads and number of reads counted by FASTQC, read 1 for treatment
       type: File[]

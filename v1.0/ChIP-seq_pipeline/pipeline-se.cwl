@@ -68,6 +68,10 @@
       doc: FastQC data files
       type: File[]
       outputSource: qc_treatment/output_fastqc_data_files
+    qc_treatment_fastqc_report_files:
+      doc: FastQC report files
+      type: File[]
+      outputSource: qc_treatment/output_fastqc_report_files
     qc_treatment_diff_counts:
       doc: Diff file between number of raw reads and number of reads counted by FASTQC, for treatment
       type: File[]
