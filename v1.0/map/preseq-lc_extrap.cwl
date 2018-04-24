@@ -91,6 +91,7 @@ inputs:
      type: boolean?
      inputBinding:
        position: 1
+       prefix: -D
      doc: "-defects     defects mode to extrapolate without testing for defects \n"
 outputs:
    output_file:
