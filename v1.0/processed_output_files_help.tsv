@@ -1,0 +1,62 @@
+experiment	Step	extension	doc	format
+ChIP-seq	qc	fastqc_data.txt	FASTQC results	tsv
+ChIP-seq	qc	read_count.txt	raw read count (from fastq file)	tsv
+ChIP-seq	trim	trimmed.fastq	FASTQ reads after trimming adapters with Trimmomatic 	fastq
+ChIP-seq	trim	trimmed.read_count.txt	number of reads surviving adapters trimming	tsv
+ChIP-seq	map	bowtie.log	output log on bowtie execution	txt
+ChIP-seq	map	bowtie.log.read_count.mapped	number of reads mapped	tsv
+ChIP-seq	map	masked.dedup_metrics.txt	Picard MarkDuplicates metrics file	tsv
+ChIP-seq	map	masked.dedup.sorted_read_count.txt	number of reads mapped surviving de-duplication and blacklist removal	tsv
+ChIP-seq	map	masked.dedup.sorted.bam	mapped reads without duplicates (removed with Picard MarkDuplicates)	bam
+ChIP-seq	map	masked.dedup.sorted.bam.bai	index file of mapped reads without duplicates (removed with Picard MarkDuplicates)	bai
+ChIP-seq	map	masked.dups_marked.bam	mapped reads with duplicates marked	bam
+ChIP-seq	map	masked.dups_marked.bam.bai	Index file of mapped reads with duplicates marked	bai
+ChIP-seq	map	PBC.txt	PCR bottleneck coefficient	tsv
+ChIP-seq	map	preseq_c_curve.percentage_unique_reads.txt	Percentage of unique reads in the first 10M (NA if library has less than 10M reads)	tsv
+ChIP-seq	map	preseq_c_curve.txt	Expected yield of distinct reads for experiments smaller than the input experiment	tsv
+ChIP-seq	map	preseq_lc_extrap.txt	Expected future yield of distinct reads and bounds on the number of total distinct reads in the library	tsv
+ChIP-seq	peakcall	masked.dedup.sorted_peaks.broadPeak	broadPeaks detected with MACS2	broadPeak
+ChIP-seq	peakcall	masked.dedup.sorted_peaks.broadPeak.peak_count.within_replicate.txt	number of broadPeaks detected with MACS2	tsv
+ChIP-seq	peakcall	masked.dedup.sorted_peaks.narrowPeak	narrowPeaks detected with MACS2	narrowPeak
+ChIP-seq	peakcall	masked.dedup.sorted_peaks.narrowPeak.peak_count.within_replicate.txt	number of narrowPeaks detected with MACS2	tsv
+ChIP-seq	peakcall	masked.dedup.sorted_peaks.trunked_scores.broadPeak.bb	broadPeaks detected with MACS2 in bigBed format	bigBed
+ChIP-seq	peakcall	masked.dedup.sorted_peaks.trunked_scores.narrowPeak.bb	narrowPeaks detected with MACS2 in bigBed format	bigBed
+ChIP-seq	peakcall	masked.dedup.sorted_peaks.xls	narrowPeaks detected with MACS2 in XLS format	xls
+ChIP-seq	peakcall	masked.dedup.sorted_summits.bed	summits of narrowPeaks detected with MACS2	bed
+ChIP-seq	peakcall	masked.dedup.sorted.bam.in_peaks.read_count.in_broadpeaks.txt	number of reads in broadPeaks	tsv
+ChIP-seq	peakcall	masked.dedup.sorted.bam.in_peaks.read_count.in_narrowpeaks.txt	number of reads in narrowPeaks	tsv
+ChIP-seq	peakcall	masked.dedup.sorted.spp_cross_corr.pdf	strand cross-correlation plot computed with phantompeakqualtools run_spp.R	pdf
+ChIP-seq	peakcall	masked.dedup.sorted.spp_cross_corr.txt	strand cross-correlation analysis output computed with phantompeakqualtools run_spp.R	tsv
+ChIP-seq	quant	masked.dedup.sorted.raw.bw	raw signal file of the mapped reads in bigwig format	bigWig
+ChIP-seq	quant	masked.dedup.sorted.rpkm.bw	signal file in RPKM units of the mapped reads	bigWig
+ChIP-seq	quant	masked.dedup.sorted.rpkm.ctrl_subtracted.bw	signal file in RPKM units of the mapped reads after subtraction of control signal in RPKM	bigWig
+RNA-seq	qc	_fastqc.zip	FASTQC HTML report (zipped)	zip
+RNA-seq	qc	custom_adapters.fasta	sequence of overrepresented sequences found by FASTQC and adapters 	fasta
+RNA-seq	qc	fastqc_data.txt	FASTQC results	tsv
+RNA-seq	qc	read_count.txt	raw read count (from fastq file)	tsv
+RNA-seq	trim	trimmed.fastq	FASTQ reads after trimming adapters with Trimmomatic 	fastq
+RNA-seq	trim	trimmed.read_count.txt	number of reads surviving adapters trimming	tsv
+RNA-seq	map	star2.Aligned.out.sorted.bam	sorted reads mapped against the genome	ban
+RNA-seq	map	star2.Aligned.out.sorted.bam.bai	index of reads mapped and sorted	bai
+RNA-seq	map	PBC.txt	PCR bottleneck coefficient	tsv
+RNA-seq	map	preseq_c_curve.percentage_unique_reads.txt	percentage of unique reads in the first 10M (NA if library has less than 10M reads)	tsv
+RNA-seq	map	star2.Log.final.out	final log file of STAR 2-pass genome	txt
+RNA-seq	map	star2.Log.final.out.read_count.mapped	number of reads mapped to reference genome	tsv
+RNA-seq	map	star2.Log.out	log file of STAR 2-pass genome	txt
+RNA-seq	map	star2.SJ.out.tab	splice-junction database generated with STAR 2-pass genome	tsv
+RNA-seq	map	transcriptome.star2.Aligned.toTranscriptome.out.bam	sorted reads mapped against the transcriptome	bam
+RNA-seq	map	transcriptome.star2.Log.final.out	final log file of STAR 2-pass genome	txt
+RNA-seq	map	transcriptome.star2.Log.final.out.read_count.mapped	number of reads mapped to reference transcriptome	tsv
+RNA-seq	map	transcriptome.star2.Log.out	log file of STAR 2-pass genome	txt
+RNA-seq	map	transcriptome.star2.SJ.out.tab	splice-junction database generated with STAR 2-pass genome	tsv
+RNA-seq	quant	star2.Aligned.minus.bam	reads mapped to the antisense strand	bam
+RNA-seq	quant	star2.Aligned.minus.bam.bai	index of reads mapped to the antisense strand	bai
+RNA-seq	quant	star2.Aligned.minus.norm.bw	signal file of antisense reads in RPKM units	bigWig
+RNA-seq	quant	star2.Aligned.minus.raw.bw	signal file of antisense reads	bigWig
+RNA-seq	quant	star2.Aligned.plus.bam	reads mapped to the sense strand	bam
+RNA-seq	quant	star2.Aligned.plus.bam.bai	index of reads mapped to the sense strand	bai
+RNA-seq	quant	star2.Aligned.plus.norm.bw	signal file of sense reads in RPKM units	bigWig
+RNA-seq	quant	star2.Aligned.plus.raw.bw	signal file of sense reads	bigWig
+RNA-seq	quant	star2.featurecounts.counts.txt	gene counts computed with featureCounts (subread)	tsv
+RNA-seq	quant	star2.rsem.genes.results	gene quantification results using RSEM	tsv
+RNA-seq	quant	star2.rsem.isoforms.results	transcript quantification results using RSEM	tsv
