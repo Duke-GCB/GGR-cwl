@@ -96,8 +96,8 @@
     bigbed:
       type: File
       outputBinding:
-        glob: $(inputs.bed.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, "") + inputs.output_suffix)
+        glob: $(inputs.bed.path.replace(/^.*[\\\/]/, '')+ inputs.output_suffix)
  baseCommand: bedToBigBed
  arguments:
-  - valueFrom: $(inputs.bed.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, "") + inputs.output_suffix)
+  - valueFrom: $(inputs.bed.path.replace(/^.*[\\\/]/, '') + inputs.output_suffix)
     position: 4

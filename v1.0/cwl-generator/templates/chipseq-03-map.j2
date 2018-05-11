@@ -36,6 +36,12 @@ inputs:
    genome_ref_first_index_file:
      doc: Bowtie first index files for reference genome (e.g. *1.ebwt). The rest of the files should be in the same folder.
      type: File
+     secondaryFiles:
+       - ^^.2.ebwt
+       - ^^.3.ebwt
+       - ^^.4.ebwt
+       - ^^.rev.1.ebwt
+       - ^^.rev.2.ebwt
    nthreads:
      default: 1
      type: int

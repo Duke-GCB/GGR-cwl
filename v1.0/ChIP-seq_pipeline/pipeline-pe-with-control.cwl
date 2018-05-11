@@ -35,6 +35,12 @@
     genome_ref_first_index_file:
       doc: '"First index file of Bowtie reference genome with extension 1.ebwt. \ (Note: the rest of the index files MUST be in the same folder)" '
       type: File
+      secondaryFiles:
+        - ^^.2.ebwt
+        - ^^.3.ebwt
+        - ^^.4.ebwt
+        - ^^.rev.1.ebwt
+        - ^^.rev.2.ebwt
     as_narrowPeak_file:
       doc: Definition narrowPeak file in AutoSql format (used in bedToBigBed)
       type: File
