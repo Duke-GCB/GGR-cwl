@@ -60,3 +60,27 @@ RNA-seq	quant	star2.Aligned.plus.raw.bw	signal file of sense reads	bigWig
 RNA-seq	quant	star2.featurecounts.counts.txt	gene counts computed with featureCounts (subread)	tsv
 RNA-seq	quant	star2.rsem.genes.results	gene quantification results using RSEM	tsv
 RNA-seq	quant	star2.rsem.isoforms.results	transcript quantification results using RSEM	tsv
+ATAC-seq	qc	fastqc_data.txt	FASTQC results	tsv
+ATAC-seq	qc	read_count.txt	raw read count (from fastq file)	tsv
+ATAC-seq	trim	trimmed.fastq	FASTQ reads after trimming adapters with Trimmomatic 	fastq
+ATAC-seq	trim	trimmed.read_count.txt	number of reads surviving adapters trimming	tsv
+ATAC-seq	map	bowtie.log	output log on bowtie execution	txt
+ATAC-seq	map	bowtie.log.read_count.mapped	number of reads mapped	tsv
+ATAC-seq	map	masked.dedup_metrics.txt	Picard MarkDuplicates metrics file	tsv
+ATAC-seq	map	masked.dedup.sorted_read_count.txt	number of reads mapped surviving de-duplication and blacklist removal	tsv
+ATAC-seq	map	masked.dups_marked.bam	mapped reads with duplicates marked	bam
+ATAC-seq	map	masked.dups_marked.bam.bai	Index file of mapped reads with duplicates marked	bai
+ATAC-seq	map	PBC.txt	PCR bottleneck coefficient	tsv
+ATAC-seq	map	preseq_c_curve.percentage_unique_reads.txt	Percentage of unique reads in the first 10M (NA if library has less than 10M reads)	tsv
+ATAC-seq	map	preseq_c_curve.txt	Expected yield of distinct reads for experiments smaller than the input experiment	tsv
+ATAC-seq	map	mitochondrial_percentage.txt	percentage of mitochondrial reads (including duplicates)	tsv
+ATAC-seq	peakcall	masked.dedup.sorted_peaks.narrowPeak	narrowPeaks detected with MACS2	narrowPeak
+ATAC-seq	peakcall	masked.dedup.sorted_peaks.narrowPeak.peak_count.within_replicate.txt	number of narrowPeaks detected with MACS2	tsv
+ATAC-seq	peakcall	masked.dedup.sorted_peaks.trunked_scores.narrowPeak.bb	narrowPeaks detected with MACS2 in bigBed format	bigBed
+ATAC-seq	peakcall	masked.dedup.sorted_peaks.xls	narrowPeaks detected with MACS2 in XLS format	xls
+ATAC-seq	peakcall	masked.dedup.sorted_summits.bed	summits of narrowPeaks detected with MACS2	bed
+ATAC-seq	peakcall	masked.dedup.sorted.bam.in_peaks.read_count.in_narrowpeaks.txt	number of reads in narrowPeaks	tsv
+ATAC-seq	peakcall	masked.dedup.sorted.spp_cross_corr.pdf	strand cross-correlation plot computed with phantompeakqualtools run_spp.R	pdf
+ATAC-seq	peakcall	masked.dedup.sorted.spp_cross_corr.txt	strand cross-correlation analysis output computed with phantompeakqualtools run_spp.R	tsv
+ATAC-seq	quant	masked.dedup.sorted.raw.bw	raw signal file of the mapped reads in bigwig format	bigWig
+ATAC-seq	quant	masked.dedup.sorted.rpkm.bw	signal file in RPKM units of the mapped reads	bigWig
