@@ -149,10 +149,6 @@
       doc: Preseq c_curve output files for treatment
       type: File[]
       outputSource: map_treatment/output_preseq_c_curve_files
-    map_treatment_preseq_lc_extrap_files:
-      doc: Preseq lc_extrap output files for treatment
-      type: File[]
-      outputSource: map_treatment/output_preseq_lc_extrap_files
     peak_call_treatment_spp_x_cross_corr:
       doc: SPP strand cross correlation summary
       type: File[]
@@ -194,10 +190,6 @@
       doc: narrowPeaks in bigBed format
       type: File[]
       outputSource: peak_call_treatment/output_narrowpeak_bigbed_file
-    peak_call_treatment_broadpeak_peak_xls_file:
-      doc: Peak calling report file
-      type: File[]
-      outputSource: peak_call_treatment/output_broadpeak_xls_file
     peak_call_treatment_read_in_broadpeak_count_within_replicate:
       doc: Peak counts within replicate
       type: File[]
@@ -210,15 +202,6 @@
       doc: Peaks in broadPeak file format
       type: File[]
       outputSource: peak_call_treatment/output_broadpeak_file
-    peak_call_treatment_broadpeak_summits_file:
-      doc: Peaks summits in bedfile format
-      type:
-        type: array
-        items:
-        - 'null'
-        - items: File
-          type: array
-      outputSource: peak_call_treatment/output_broadpeak_summits_file
     peak_call_treatment_broadpeak_bigbed_file:
       doc: broadPeaks in bigBed format
       type: File[]
@@ -283,7 +266,6 @@
       - output_pbc_files
       - output_bowtie_log
       - output_preseq_c_curve_files
-      - output_preseq_lc_extrap_files
       - output_percentage_uniq_reads
       - output_read_count_mapped
     peak_call_treatment:
@@ -310,7 +292,6 @@
       - output_broadpeak_file
       - output_broadpeak_summits_file
       - output_broadpeak_bigbed_file
-      - output_broadpeak_xls_file
     quant:
       run: 05-quantification.cwl
       in:

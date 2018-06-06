@@ -125,23 +125,6 @@ steps:
          valueFrom: ${return true}
      out:
      - output_file
-   preseq-lc-extrap:
-     run: ../map/preseq-lc_extrap.cwl
-     scatter:
-     - input_sorted_file
-     - output_file_basename
-     scatterMethod: dotproduct
-     in:
-       input_sorted_file: filtered2sorted/sorted_file
-       output_file_basename: extract_basename_2/output_path
-       s:
-         valueFrom: ${return 100000}
-       D:
-         valueFrom: ${return true}
-       pe:
-         valueFrom: ${return true}
-     out:
-     - output_file
    execute_pcr_bottleneck_coef:
      in:
        input_bam_files: filtered2sorted/sorted_file
@@ -316,7 +299,3 @@ outputs:
      doc: Preseq c_curve output files.
      type: File[]
      outputSource: preseq-c-curve/output_file
-   output_preseq_lc_extrap_files:
-     doc: Preseq lc_extrap output files.
-     type: File[]
-     outputSource: preseq-lc-extrap/output_file
