@@ -1,13 +1,13 @@
 {
     "input_treatment_fastq{% if 'pe' == wf_conf['rt'] %}_read1{% endif %}_files": [
     {% for samples in samples_list %}
-        { "class": "File", "path": "{{ data_dir }}/{{ samples['iter'] }}/{{ samples['treatment'] }}{% if 'pe' == wf_conf['rt'] %}.R1{% endif %}.fastq" }{% if loop.index < samples_list|length %},{% endif %}
+        { "class": "File", "path": "{{ data_dir }}/{{ samples['treatment'] }}{% if 'pe' == wf_conf['rt'] %}.R1{% endif %}.fastq" }{% if loop.index < samples_list|length %},{% endif %}
     {% endfor %}
     ],
 {% if 'pe' == wf_conf['rt'] %}
     "input_treatment_fastq_read2_files": [
     {% for samples in samples_list %}
-        { "class": "File", "path": "{{ data_dir }}/{{ samples['iter'] }}/{{ samples['treatment'] }}.R2.fastq" }{% if loop.index < samples_list|length %},{% endif %}
+        { "class": "File", "path": "{{ data_dir }}/{{ samples['treatment'] }}.R2.fastq" }{% if loop.index < samples_list|length %},{% endif %}
     {% endfor %}
     ],
 {% endif %}
@@ -15,13 +15,13 @@
 
     "input_control_fastq{% if 'pe' == wf_conf['rt'] %}_read1{% endif %}_files": [
     {% for samples in samples_list %}
-        { "class": "File", "path": "{{ data_dir }}/{{ samples['iter'] }}/{{ samples['control'] }}{% if 'pe' == wf_conf['rt'] %}.R1{% endif %}.fastq" }{% if loop.index < samples_list|length %},{% endif %}
+        { "class": "File", "path": "{{ data_dir }}/{{ samples['control'] }}{% if 'pe' == wf_conf['rt'] %}.R1{% endif %}.fastq" }{% if loop.index < samples_list|length %},{% endif %}
     {% endfor %}
     ],
     {% if 'pe' == wf_conf['rt'] %}
     "input_control_fastq_read2_files": [
     {% for samples in samples_list %}
-        { "class": "File", "path": "{{ data_dir }}/{{ samples['iter'] }}/{{ samples['control'] }}.R2.fastq" }{% if loop.index < samples_list|length %},{% endif %}
+        { "class": "File", "path": "{{ data_dir }}/{{ samples['control'] }}.R2.fastq" }{% if loop.index < samples_list|length %},{% endif %}
     {% endfor %}
     ],
     {% endif %}

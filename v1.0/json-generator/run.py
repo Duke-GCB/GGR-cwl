@@ -107,8 +107,7 @@ class MetadataParserChipseq(object):
         wf_conf_dict = {}
         for r in self.records:
             read_type = r['Paired-end or single-end'].lower()
-            sample_info = {'treatment': r['Name'],
-                           'iter': r['Iter num']}
+            sample_info = {'treatment': r['Name']}
             wf_key = '-'.join([read_type])
             if 'Control' in r.keys() and r['Control'] and r['Control'].upper() != 'NA':
                 sample_info['control'] = r['Control']
@@ -163,8 +162,7 @@ class MetadataParserAtacseq(object):
         wf_conf_dict = {}
         for r in self.records:
             read_type = r['Paired-end or single-end'].lower()
-            sample_info = {'treatment': r['Name'],
-                           'iter': r['Iter num']}
+            sample_info = {'treatment': r['Name']}
             wf_key = '-'.join([read_type])
             genome = consts.GENOME  # Default genome
             if 'Genome' in r.keys():
@@ -231,7 +229,7 @@ class MetadataParserRnaseq(object):
             if self.skip_star_2pass:
                 kws.append('with-sjdb')
             wf_key = '-'.join(kws)
-            wf_conf_dict[wf_key] = {'iter': r['Iter num'], 'rt': read_type, 'sn': sample_name}
+            wf_conf_dict[wf_key] = {'rt': read_type, 'sn': sample_name}
             samples_dict[wf_key].append([sample_name, genome])
         for wf_key, samples_gemomes in samples_dict.iteritems():
             if self.obj.separate_jsons:
