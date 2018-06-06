@@ -88,7 +88,8 @@ inputs:
        prefix: -V
      doc: "-vals        input is a text file containing only the observed counts \n"
    D:
-     type: boolean?
+     type: boolean
+     default: false
      inputBinding:
        position: 1
        prefix: -D

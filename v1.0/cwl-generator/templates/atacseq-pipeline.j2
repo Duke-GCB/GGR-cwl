@@ -36,6 +36,12 @@ inputs:
    genome_ref_first_index_file:
      doc: '"First index file of Bowtie reference genome with extension 1.ebwt. \ (Note: the rest of the index files MUST be in the same folder)" '
      type: File
+     secondaryFiles:
+       - ^^.2.ebwt
+       - ^^.3.ebwt
+       - ^^.4.ebwt
+       - ^^.rev.1.ebwt
+       - ^^.rev.2.ebwt
    as_narrowPeak_file:
      doc: Definition narrowPeak file in AutoSql format (used in bedToBigBed)
      type: File
@@ -118,12 +124,14 @@ steps:
        nthreads: nthreads_map
      out:
      - output_data_sorted_dedup_bam_files
+     - output_data_sorted_dups_marked_bam_files
      - output_picard_mark_duplicates_files
      - output_pbc_files
      - output_bowtie_log
      - output_preseq_c_curve_files
      - output_percentage_uniq_reads
      - output_read_count_mapped
+     - output_percent_mitochondrial_reads
    peak_call:
      run: 04-peakcall-{{ read_type|lower }}.cwl
      in:
@@ -158,16 +166,11 @@ steps:
      run: 05-quantification.cwl
      in:
        input_bam_files: map/output_data_sorted_dedup_bam_files
-       input_peak_xls_files: peak_call/output_peak_xls_file
-       input_pileup_bedgraphs: peak_call/output_extended_peak_file
-       input_read_count_dedup_files: peak_call/output_filtered_read_count_file
        input_genome_sizes: genome_sizes_file
        nthreads: nthreads_quant
      out:
      - bigwig_raw_files
      - bigwig_norm_files
-     - bigwig_extended_files
-     - bigwig_extended_norm_files
 outputs:
 {% for read_pair in read_pairs %}
    qc_fastqc_data_files{{ read_pair }}:
@@ -214,7 +217,7 @@ outputs:
    map_dedup_bam_files:
      doc: Filtered BAM files (post-processing end point)
      type: File[]
-     outputSource: map/output_data_sorted_dedup_bam_files
+     outputSource: map/output_data_sorted_dups_marked_bam_files
    map_mark_duplicates_files:
      doc: Summary of duplicates removed with Picard tool MarkDuplicates (for multiple reads aligned to the same positions
      type: File[]
@@ -223,7 +226,10 @@ outputs:
      doc: Preseq c_curve output files
      type: File[]
      outputSource: map/output_preseq_c_curve_files
-
+   map_percent_mitochondrial_reads:
+     doc: Percentage of mitochondrial reads
+     type: File[]
+     outputSource: map/output_percent_mitochondrial_reads
    peakcall_peak_file:
      doc: Peaks in ENCODE Peak file format
      type: File[]
@@ -295,18 +301,10 @@ outputs:
      outputSource: peak_call/output_unpaired_filtered_read_count_file
 {% endif %}
 
-   quant_bigwig_extended_files:
-     doc: Fragment extended reads bigWig (signal) files
-     type: File[]
-     outputSource: quant/bigwig_extended_files
    quant_bigwig_raw_files:
      doc: Raw reads bigWig (signal) files
      type: File[]
      outputSource: quant/bigwig_raw_files
-   quant_bigwig_extended_norm_files:
-     doc: Normalized fragment extended reads bigWig (signal) files
-     type: File[]
-     outputSource: quant/bigwig_extended_norm_files
    quant_bigwig_norm_files:
      doc: Normalized reads bigWig (signal) files
      type: File[]

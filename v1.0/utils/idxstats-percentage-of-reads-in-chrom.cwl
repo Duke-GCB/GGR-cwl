@@ -27,7 +27,7 @@
           })
           .reduce(function(a, b) { return Number(a) + Number(b); });
 
-        var output = (100*chrom_mapped_reads/total_reads).toFixed(4) + "%";
+        var output = (100*chrom_mapped_reads/total_reads).toFixed(4) + "%" + "\n";
 
         if (inputs.output_filename){
           return {

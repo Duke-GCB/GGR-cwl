@@ -27,6 +27,12 @@ inputs:
    genome_ref_first_index_file:
      doc: Bowtie first index files for reference genome (e.g. *1.ebwt). The rest of the files should be in the same folder.
      type: File
+     secondaryFiles:
+       - ^^.2.ebwt
+       - ^^.3.ebwt
+       - ^^.4.ebwt
+       - ^^.rev.1.ebwt
+       - ^^.rev.2.ebwt
    nthreads:
      default: 1
      type: int
@@ -110,21 +116,6 @@ steps:
      in:
        input_sorted_file: filtered2sorted/sorted_file
        output_file_basename: extract_basename_2/output_path
-     out:
-     - output_file
-   preseq-lc-extrap:
-     run: ../map/preseq-lc_extrap.cwl
-     scatter:
-     - input_sorted_file
-     - output_file_basename
-     scatterMethod: dotproduct
-     in:
-       input_sorted_file: filtered2sorted/sorted_file
-       output_file_basename: extract_basename_2/output_path
-       s:
-         valueFrom: ${return 100000}
-       D:
-         valueFrom: ${return true}
      out:
      - output_file
    execute_pcr_bottleneck_coef:
@@ -301,7 +292,3 @@ outputs:
      doc: Preseq c_curve output files.
      type: File[]
      outputSource: preseq-c-curve/output_file
-   output_preseq_lc_extrap_files:
-     doc: Preseq lc_extrap output files.
-     type: File[]
-     outputSource: preseq-lc-extrap/output_file
