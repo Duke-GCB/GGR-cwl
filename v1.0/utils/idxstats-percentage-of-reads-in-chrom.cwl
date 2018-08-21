@@ -20,7 +20,7 @@
       var match = inputs.idxstats.contents.match(regExp);
       if (match){
         var chrom_mapped_reads = match[1];
-        var total_reads = inputs.idxstats.contents.split("\r")
+        var total_reads = inputs.idxstats.contents.split("\n")
           .map(function(x){
             var rr = x.match(/.*\s\d+\s(\d+)\s\d+/);
             return (rr ? rr[1] : 0);
