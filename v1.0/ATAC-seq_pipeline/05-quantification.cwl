@@ -26,6 +26,8 @@ steps:
          valueFrom: ${return 1}
        output_suffix:
          valueFrom: .rpkm.bw
+       extendReads:
+         valueFrom: ${return 200}
      out:
      - output_bam_coverage
    bedtools_genomecov:
