@@ -203,6 +203,16 @@ steps:
      scatter: peaks
      out:
      - trunked_scores_peaks
+   clip-off-chrom:
+     run: ../quant/bedClip.cwl
+     in:
+       bed_file: trunk-peak-score-unpaired/trunked_scores_peaks
+       genome_sizes: input_genome_sizes
+       output_suffix:
+         valueFrom: .narrowPeak
+     scatter: bed_file
+     out:
+     - bed_file_clipped
    peaks-bed-to-bigbed-unpaired:
      run: ../quant/bedToBigBed.cwl
      in:
@@ -210,7 +220,7 @@ steps:
          valueFrom: bed6+4
        as: as_narrowPeak_file
        genome_sizes: input_genome_sizes
-       bed: trunk-peak-score-unpaired/trunked_scores_peaks
+       bed: clip-off-chrom/bed_file_clipped
      scatter: bed
      out:
      - bigbed
