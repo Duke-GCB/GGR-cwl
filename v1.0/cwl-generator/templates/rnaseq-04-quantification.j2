@@ -101,10 +101,12 @@ steps:
        output_filename:
          source: basename/basename
          valueFrom: $(self + ".featurecounts.counts.txt")
+{% if read_type == 'pe' %}
        p:
          valueFrom: ${return true}
+{% endif %}
        s:
-         valueFrom: ${return 2}
+         valueFrom: ${return {% if strandness == "revstranded" %}2{% elif strandness == "stranded" %}1{% else %}0{% endif %}}
        t:
          valueFrom: exon
        annotation_file: annotation_file

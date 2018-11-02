@@ -66,8 +66,6 @@ steps:
        output_filename:
          source: basename/basename
          valueFrom: $(self + ".featurecounts.counts.txt")
-       p:
-         valueFrom: ${return true}
        s:
          valueFrom: ${return 2}
        t:

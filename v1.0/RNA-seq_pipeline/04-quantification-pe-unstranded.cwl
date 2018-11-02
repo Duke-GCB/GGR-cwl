@@ -91,7 +91,7 @@ steps:
        p:
          valueFrom: ${return true}
        s:
-         valueFrom: ${return 2}
+         valueFrom: ${return 0}
        t:
          valueFrom: exon
        annotation_file: annotation_file
