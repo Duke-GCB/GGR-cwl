@@ -1,10 +1,10 @@
 import argparse
-import csv
 import os
 import sys
 import textwrap
 from collections import defaultdict
-
+from xlrd import XLRDError
+import pandas as pd
 from jinja2 import Environment, FileSystemLoader
 
 import consts
@@ -66,12 +66,17 @@ class MetadataParser(object):
         pass
 
     def load_file(self):
-        rows = []
-        with open(self.file_path, 'rb') as f:
-            reader = csv.DictReader(filter(lambda row: row[0] != '#', f), delimiter='\t')
-            for row in reader:
-                rows.append(row)
-        return rows
+        try:
+            rows = pd.read_excel(self.file_path,
+                               true_values=['Yes', 'Y', 'yes', 'y', 1],
+                               false_values=['No', 'N', 'no', 'n', 0])
+        except XLRDError:
+            rows = pd.read_csv(self.file_path,
+                               true_values=['Yes', 'Y', 'yes', 'y', '1'],
+                               false_values=['No', 'N', 'no', 'n', '0'], sep='\t',
+                               encoding = 'utf-8')
+        named_cols = [c for c in rows.columns if not c.startswith('unnamed: ')]
+        return rows.loc[:, named_cols]
 
     def update_paths(self, ref_data_obj):
         options = ref_data_obj.__dict__.iteritems()
@@ -218,36 +223,48 @@ class MetadataParserRnaseq(object):
     def parse_metadata(self, data_dir):
         samples_dict = defaultdict(list)
         wf_conf_dict = {}
-        for r in self.records:
+        for rix, r in self.records.iterrows():
             read_type = r['Paired-end or single-end'].lower()
             sample_name = r['Name']
             strand_specific = r['Strand specificity']
             genome = consts.GENOME  # Default genome
             if 'Genome' in r.keys():
                 genome = r['Genome']
+            ercc_spikein = False
+            if 'With ercc spike-in' in r.keys():
+                ercc_spikein = r['With ercc spike-in']
             kws = [read_type,  strand_specific]
             if self.skip_star_2pass:
                 kws.append('with-sjdb')
             wf_key = '-'.join(kws)
             wf_conf_dict[wf_key] = {'rt': read_type, 'sn': sample_name}
-            samples_dict[wf_key].append([sample_name, genome])
-        for wf_key, samples_gemomes in samples_dict.iteritems():
+            samples_dict[wf_key].append([sample_name, genome, ercc_spikein])
+        for wf_key, samples_genomes in samples_dict.iteritems():
             if self.obj.separate_jsons:
-                for si, s in enumerate(sorted(samples_gemomes)):
-                    sample, genome = s[0], s[1]
-                    ref_dataset = consts.ReferenceDataset(genome, read_length=self.read_length)
+                for si, s in enumerate(sorted(samples_genomes)):
+                    sample, genome, ercc_spikein = s[0], s[1], s[2]
+                    ref_dataset = consts.ReferenceDataset(genome,
+                                                          read_length=self.read_length,
+                                                          with_ercc=ercc_spikein)
                     self.update_paths(ref_dataset)
 
                     yield self.render_json(wf_conf_dict[wf_key], [sample], data_dir), wf_key, si
             else:
                 samples_list = [s[0] for s in samples_genomes]
                 genomes_list = [g[1] for g in samples_genomes]
+                ercc_list = [e[2] for e in samples_genomes]
                 if len(set(genomes_list)) > 1:
                     raise Exception(
                         'More than one genome specified (%s). Please create a different metadata file'
                         ' per genome or provide a sjdb and specify the --separate-jsons argument' %
                         ', '.join(set(genomes_list)))
-                ref_dataset = consts.ReferenceDataset(genomes_list[0], read_length=self.read_length)
+                if len(set(ercc_list)) > 1:
+                    raise Exception(
+                        'With and without ERCC spike-in specified. Please create a different metadata file'
+                        ' per ERCC choice or provide a sjdb and specify the --separate-jsons argument')
+                ref_dataset = consts.ReferenceDataset(genomes_list[0],
+                                                      read_length=self.read_length,
+                                                      with_ercc=ercc_list[0])
                 self.update_paths(ref_dataset)
                 yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir), wf_key, None
 

@@ -15,19 +15,19 @@ CPUS = 16
 READ_LENGTH = 50
 
 class ReferenceDataset(object):
-    def __init__(self, genome=GENOME, read_length=READ_LENGTH):
+    def __init__(self, genome=GENOME, read_length=READ_LENGTH, with_ercc=False):
         self.default_adapters = "/data/reddylab/projects/GGR/auxiliary/adapters/default_adapters.fasta"
         self.read_length = read_length
         _genome = genome.lower()
         if _genome == 'hg38' or _genome == 'grch38':
             self.bowtie_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.1.ebwt"
             self.star_genome_dir = "/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_%d_novelSJDB" % (self.read_length-1)
-            self.genome_sizes_file = "/data/reddylab/projects/GGR/auxiliary/hg38.sizes"
             self.encode_blacklist_bedfile = "/data/reddylab/Reference_Data/ENCODE/hg38.blacklist.bed"
             self.genome_effective_size = "hs"
-            self.annotation_file = "/data/reddylab/Reference_Data/Gencode/v22/gencode.v22.annotation.gtf"
-            self.rsem_dir = "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome"
-            self.genome_fasta_files = ["/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna"]
+            self.annotation_file = "/data/reddylab/Reference_Data/Gencode/v22/gencode.v22.annotation%s.gtf" % (".with_ercc92" if with_ercc else "")
+            self.rsem_dir = "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome%s"% (".with_ercc92" if with_ercc else "")
+            self.genome_sizes_file = "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set%s.sizes" % (".with_ercc92" if with_ercc else "")
+            self.genome_fasta_files = ["/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set%s.fna" % (".with_ercc92" if with_ercc else "")]
         elif _genome == 'hg19' or _genome == 'grch37':
             self.bowtie_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/hg19/hg19.1.ebwt"
             self.star_genome_dir = "/data/reddylab/Reference_Data/Genomes/hg19/STAR_genome_sjdbOverhang_%d" % self.read_length
@@ -40,12 +40,12 @@ class ReferenceDataset(object):
         elif _genome == 'mm10' or _genome == 'grcm38':
             self.bowtie_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/mm10/bowtie/GRCm38.1.ebwt"
             self.star_genome_dir = "/data/reddylab/Reference_Data/Genomes/mm10/STAR_genome_sjdbOverhang_%d_novelSJDB" % (self.read_length-1)
-            self.genome_sizes_file = "/data/reddylab/Reference_Data/Genomes/GRCm38/GRCm38.sizes"
             self.encode_blacklist_bedfile = "/data/reddylab/Reference_Data/ENCODE/mm10.blacklist.bed"
             self.genome_effective_size = "mm"
-            self.annotation_file = "/data/reddylab/Reference_Data/Gencode/vM13/gencode.vM13.annotation.gtf"
-            self.rsem_dir = "/data/reddylab/Reference_Data/Genomes/mm10/RSEM/RSEM_genome"
-            self.genome_fasta_files = ["/data/reddylab/Reference_Data/Genomes/mm10/GRCm38.primary_assembly.genome.fa"]
+            self.annotation_file = "/data/reddylab/Reference_Data/Gencode/vM13/gencode.vM13.annotation%s.gtf" % (".with_ercc92" if with_ercc else "")
+            self.rsem_dir = "/data/reddylab/Reference_Data/Genomes/mm10/RSEM/RSEM_genome%s" % (".with_ercc92" if with_ercc else "")
+            self.genome_sizes_file = "/data/reddylab/Reference_Data/Genomes/GRCm38/GRCm38%s.sizes" % (".with_ercc92" if with_ercc else "")
+            self.genome_fasta_files = ["/data/reddylab/Reference_Data/Genomes/mm10/GRCm38.primary_assembly.genome%s.fa" % (".with_ercc92" if with_ercc else "")]
         elif _genome == 'mm9' or _genome == 'grcm37' or _genome == 'ncbi37':
             self.bowtie_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/mm9/bowtie/mm9.1.ebwt"
             self.star_genome_dir = "/data/reddylab/Reference_Data/Genomes/mm9/STAR_genome_sjdbOverhang_%d_novelSJDB" % self.read_length
