@@ -1,0 +1,10 @@
+{
+  "input_fastq_read1_files": [
+    { "class": "File","path": "/Users/abarrera/data/TEST.rnaseq.t00_rep1.R1.fastq" }
+  ],
+  "input_fastq_read2_files": [
+    { "class": "File","path": "/Users/abarrera/data/TEST.rnaseq.t00_rep1.R2.fastq" }
+  ],
+  "default_adapters_file": { "class": "File", "path": "/Users/abarrera/data/adapters.fa" },
+  "nthreads": 1
+}

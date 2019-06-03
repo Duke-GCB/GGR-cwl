@@ -37,6 +37,13 @@ inputs:
        position: 1
        prefix: -S
      doc: Input format autodetected
+   u:
+     type: boolean
+     default: true
+     inputBinding:
+       position: 1
+       prefix: -u
+     doc: uncompressed BAM output (implies -b)
    nthreads:
      type: int
      default: 1
@@ -44,6 +51,18 @@ inputs:
        position: 1
        prefix: -@
      doc: Number of threads used
+   q:
+     type: int?
+     inputBinding:
+       position: 1
+       prefix: -q
+     doc: only include reads with mapping quality >= INT [0]
+   L:
+     type: File?
+     inputBinding:
+       position: 1
+       prefix: -L
+     doc: FILE  only include reads overlapping this BED FILE [null]
    input_file:
      type: File
      inputBinding:

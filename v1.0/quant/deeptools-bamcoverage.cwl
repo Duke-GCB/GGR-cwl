@@ -203,18 +203,6 @@
         Number of processors to use. Type "max/2" to use half
         the maximum number of processors or "max" to use all
         available processors. (default: max/2)
-    ignoreForNormalization:
-      type: string?
-      inputBinding:
-        position: 1
-        prefix: --ignoreForNormalization
-      doc: |
-        --ignoreForNormalization chrX chrM. (default: None)
-        A list of space-delimited chromosome names containing
-        those chromosomes that should be excluded for
-        computing the normalization. This is useful when
-        considering samples with unequal coverage across
-        chromosomes, like male samples. An usage examples is
     outFileName:
       type: string?
       doc: |

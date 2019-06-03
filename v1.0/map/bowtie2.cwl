@@ -139,11 +139,12 @@ inputs:
        prefix: --no-unal
      doc: '         suppress SAM records for unaligned reads
        '
-   un-gz:
-     type: boolean?
+   ungz:
+     type: string?
      inputBinding:
        position: 1
        prefix: --un-gz
+       shellQuote: false
      doc: |
        <path>, to gzip compress output, or add '-bz2' to bzip2 compress output.)
    rdg:
@@ -169,7 +170,7 @@ inputs:
      doc: |
        --trim3 <int>   trim <int> bases from 3'/right end of reads (0)
    un:
-     type: boolean?
+     type: string?
      inputBinding:
        position: 1
        prefix: --un
@@ -551,6 +552,10 @@ outputs:
      type: File
      outputBinding:
        glob: $(inputs.output_filename + '.bowtie2.log')
+   output_unmapped_reads:
+     type: File?
+     outputBinding:
+       glob: $(inputs.ungz)
 baseCommand:
  - bowtie2
 stdout: $(inputs.output_filename + '.sam')
@@ -656,7 +661,7 @@ doc: |
     --un-conc <path>      write pairs that didn't align concordantly to <path>
     --al-conc <path>      write pairs that aligned concordantly at least once to <path>
     (Note: for --un, --al, --un-conc, or --al-conc, add '-gz' to the option name, e.g.
-    --un-gz <path>, to gzip compress output, or add '-bz2' to bzip2 compress output.)
+    --ungz <path>, to gzip compress output, or add '-bz2' to bzip2 compress output.)
     --quiet            print nothing to stderr except serious errors
     --met-file <path>  send metrics to file at <path> (off)
     --met-stderr       send metrics to stderr (off)

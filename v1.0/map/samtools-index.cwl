@@ -6,7 +6,7 @@
       listing: [ $(inputs.input_file) ]
  hints:
     DockerRequirement:
-      dockerPull: dukegcb/samtools
+      dockerPull: dukegcb/samtools:1.3
  inputs:
     input_file:
       type: File

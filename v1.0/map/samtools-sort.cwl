@@ -4,7 +4,7 @@ requirements:
    InlineJavascriptRequirement: {}
 hints:
    DockerRequirement:
-     dockerPull: dukegcb/samtools
+     dockerPull: dukegcb/samtools:1.3
 inputs:
    n:
      type: boolean

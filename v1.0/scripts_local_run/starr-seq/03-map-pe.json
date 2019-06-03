@@ -1,0 +1,14 @@
+{
+  "input_fastq_read1_files": [
+    { "class": "File","path": "/Users/abarrera/data/TEST.rnaseq.t00_rep1.R1.fastq" }
+  ],
+  "input_fastq_read2_files": [
+    { "class": "File", "path": "/Users/abarrera/data/TEST.rnaseq.t00_rep1.R2.fastq" }
+  ],
+  "genome_ref_first_index_file": {"class": "File", "path": "/Users/abarrera/data/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index.test.1.bt2"},
+  "genome_sizes_file": {"class": "File", "path": "/Users/abarrera/data/hg38.genome.noheader.sizes"},
+  "regions_bed_file": {"class": "File", "path": "/Users/abarrera/data/hg38.genome.noheader.bed"},
+  "ENCODE_blacklist_bedfile": {"class": "File", "path": "/Users/abarrera/data/wgEncodeDacMapabilityConsensusExcludable.hg38.bed"},
+  "picard_java_opts": "-Xms512m -Xmx512m",
+  "picard_jar_path": "/opt/picard/picard.jar"
+}

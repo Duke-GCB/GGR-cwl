@@ -1,0 +1,17 @@
+{
+  "input_fastq_read1_files": [
+    { "class": "File","path": "/Users/abarrera/data/TEST.rnaseq.t00_rep1.R1.fastq" }
+  ],
+  "input_fastq_read2_files": [
+    { "class": "File","path": "/Users/abarrera/data/TEST.rnaseq.t00_rep1.R2.fastq" }
+  ],
+  "input_read1_adapters_files": [
+    { "class": "File","path": "/Users/abarrera/data/output_starrseq/TEST.rnaseq.t00_rep1.R1.custom_adapters.fasta" }
+  ],
+  "input_read2_adapters_files": [
+    { "class": "File","path": "/Users/abarrera/data/output_starrseq/TEST.rnaseq.t00_rep1.R1.custom_adapters.fasta" }
+  ],
+  "default_adapters_file": { "class": "File", "path": "/Users/abarrera/data/adapters.fa" },
+  "trimmomatic_java_opts": "-Xms1000m -Xmx1000m",
+  "trimmomatic_jar_path": "/usr/share/java/trimmomatic.jar"
+}
