@@ -58,9 +58,15 @@ def get_cwl_name(template_name, conf_obj):
         return "%s-%s" % (template_name.replace('atacseq-', ''), conf_obj['read_type'])
 
     if 'starrseq-pipeline' == template_name:
-        return "pipeline-%s" % '-'.join([conf_obj['read_type']])
+        suf_list = [conf_obj['read_type']]
+        if conf_obj['umis']:
+            suf_list.append('umis')
+        return "pipeline-%s" % '-'.join(suf_list)
     if 'starrseq-03-map' == template_name:
-        return "03-map-%s" % '-'.join([conf_obj['read_type']])
+        suf_list = [conf_obj['read_type']]
+        if conf_obj['umis']:
+            suf_list.append('umis')
+        return "03-map-%s" % '-'.join(suf_list)
     if 'starrseq-02-trim' == template_name:
         return "02-trim-%s" % conf_obj['read_type']
     if 'starrseq-01-qc' == template_name:

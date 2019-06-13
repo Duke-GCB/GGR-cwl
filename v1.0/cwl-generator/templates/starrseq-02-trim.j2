@@ -79,28 +79,28 @@ steps:
      - input_adapters_file
      in:
        input_read1_fastq_file: input_fastq_read1_files
-       phred:
-         valueFrom: '33'
-       nthreads: nthreads
-       minlen:
-         valueFrom: ${return 15}
 {% if read_type == 'pe' %}
        input_read2_fastq_file: input_fastq_read2_files
        input_adapters_file: concat_adapters/output_file
 {% else %}
        input_adapters_file: input_read1_adapters_files
 {% endif %}
+       phred:
+         valueFrom: '33'
+       nthreads: nthreads
+       minlen:
+         valueFrom: ${return 15}
        leading:
-         valueFrom: ${return 3}
+         valueFrom: ${return 30}
+       trailing:
+         valueFrom: ${return 30}
        slidingwindow:
          valueFrom: 4:20
        illuminaclip:
-         valueFrom: 2:30:15
+         valueFrom:  {% if read_type == 'pe' %}2:15:10:1:TRUE{% else %}2:15:10{% endif %}
        end_mode:
          valueFrom: {% if read_type == 'pe' %}PE{% else %}SE{% endif %}
        java_opts: trimmomatic_java_opts
-       trailing:
-         valueFrom: ${return 3}
        trimmomatic_jar_path: trimmomatic_jar_path
      out:
      - output_read1_trimmed_file

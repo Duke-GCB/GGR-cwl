@@ -76,7 +76,9 @@ class MetadataParser(object):
                                false_values=['No', 'N', 'no', 'n', '0'], sep='\t',
                                encoding = 'utf-8')
         named_cols = [c for c in rows.columns if not c.startswith('unnamed: ')]
-        return rows.loc[:, named_cols]
+        rows = rows.loc[:, named_cols]
+        rows.columns = [c.lower() for c in rows.columns]
+        return rows
 
     def update_paths(self, ref_data_obj):
         options = ref_data_obj.__dict__.iteritems()
@@ -111,17 +113,17 @@ class MetadataParserChipseq(object):
         samples_dict = defaultdict(list)
         wf_conf_dict = {}
         for r in self.records:
-            read_type = r['Paired-end or single-end'].lower()
-            sample_info = {'treatment': r['Name']}
+            read_type = r['paired-end or single-end'].lower()
+            sample_info = {'treatment': r['name']}
             wf_key = '-'.join([read_type])
-            if 'Control' in r.keys() and r['Control'] and r['Control'].upper() != 'NA':
-                sample_info['control'] = r['Control']
+            if 'control' in r.keys() and r['control'] and r['control'].upper() != 'NA':
+                sample_info['control'] = r['control']
                 wf_key += '-with-control'
             wf_conf_dict[wf_key] = {'rt': read_type,
                                     'st': sample_info.keys()}
             genome = consts.GENOME  # Default genome
-            if 'Genome' in r.keys():
-                genome = r['Genome']
+            if 'genome' in r.keys():
+                genome = r['genome']
 
             samples_dict[wf_key].append([sample_info, genome])
         for wf_key, samples_genomes in samples_dict.iteritems():
@@ -166,13 +168,13 @@ class MetadataParserAtacseq(object):
         samples_dict = defaultdict(list)
         wf_conf_dict = {}
         for r in self.records:
-            read_type = r['Paired-end or single-end'].lower()
-            sample_info = {'treatment': r['Name']}
+            read_type = r['paired-end or single-end'].lower()
+            sample_info = {'treatment': r['name']}
             wf_key = '-'.join([read_type])
             genome = consts.GENOME  # Default genome
-            if 'Genome' in r.keys():
-                genome = r['Genome']
-            if not ('Blacklist removal' in r.keys() and is_false(r['Blacklist removal'])):
+            if 'genome' in r.keys():
+                genome = r['genome']
+            if not ('blacklist removal' in r.keys() and is_false(r['blacklist removal'])):
                 wf_key += '-blacklist-removal'
 
             wf_conf_dict[wf_key] = {'rt': read_type}
@@ -224,15 +226,15 @@ class MetadataParserRnaseq(object):
         samples_dict = defaultdict(list)
         wf_conf_dict = {}
         for rix, r in self.records.iterrows():
-            read_type = r['Paired-end or single-end'].lower()
-            sample_name = r['Name']
-            strand_specific = r['Strand specificity']
+            read_type = r['paired-end or single-end'].lower()
+            sample_name = r['name']
+            strand_specific = r['strand specificity']
             genome = consts.GENOME  # Default genome
-            if 'Genome' in r.keys():
-                genome = r['Genome']
+            if 'genome' in r.keys():
+                genome = r['genome']
             ercc_spikein = False
-            if 'With ercc spike-in' in r.keys():
-                ercc_spikein = r['With ercc spike-in']
+            if 'with ercc spike-in' in r.keys():
+                ercc_spikein = r['with ercc spike-in']
             kws = [read_type,  strand_specific]
             if self.skip_star_2pass:
                 kws.append('with-sjdb')
@@ -291,14 +293,18 @@ class MetadataParserStarrseq(object):
         samples_dict = defaultdict(list)
         wf_conf_dict = {}
         for rix, r in self.records.iterrows():
-            read_type = r['Paired-end or single-end'].lower()
-            sample_name = r['Name']
+            read_type = r['paired-end or single-end'].lower()
+            sample_name = r['name']
             genome = consts.GENOME  # Default genome
-            if 'Genome' in r.keys():
-                genome = r['Genome']
+            if 'genome' in r.keys():
+                genome = r['genome']
             kws = [read_type]
             wf_key = '-'.join(kws)
-            wf_conf_dict[wf_key] = {'rt': read_type, 'sn': sample_name}
+            with_umis = 'umis' in r.keys() and not is_false(r['umis'])
+            if with_umis:
+                wf_key += '-umis'
+
+            wf_conf_dict[wf_key] = {'rt': read_type, 'sn': sample_name, 'umis': with_umis}
             samples_dict[wf_key].append([sample_name, genome])
         for wf_key, samples_genomes in samples_dict.iteritems():
             if self.obj.separate_jsons:

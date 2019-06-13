@@ -9,11 +9,9 @@ inputs:
    input_fastq_read1_files:
      doc: Input read1 fastq files
      type: File[]
-{% if read_type == 'pe' %}
    input_fastq_read2_files:
      doc: Input read2 fastq files
      type: File[]
-    {% if umis %}
    input_fastq_umi_files:
      doc: Input fastq with UMIs files
      type: File[]
@@ -21,8 +19,6 @@ inputs:
      default: /opt/fgbio.jar
      doc: fgbio Java jar file
      type: string
-    {% endif %}
-{% endif %}
    genome_sizes_file:
      doc: Genome sizes tab-delimited file (used in samtools)
      type: File
@@ -94,7 +90,6 @@ outputs:
      doc: Trimmed fastq files for paired read 1
      type: File[]
      outputSource: trim/output_data_fastq_read1_trimmed_files
-{% if read_type == 'pe' %}
    output_fastqc_report_files_read2:
      doc: FastQC reports in zip format for paired read 2
      type: File[]
@@ -120,7 +115,6 @@ outputs:
      doc: Trimmed fastq files for paired read 2
      type: File[]
      outputSource: trim/output_data_fastq_read2_trimmed_files
-{% endif %}
    map_mark_duplicates_files:
      doc: Summary of duplicates removed with Picard tool MarkDuplicates (for multiple reads aligned to the same positions)
      type: File[]
@@ -133,18 +127,6 @@ outputs:
      doc: Gzip compressed FASTQ ummaped and unpaired sequences
      type: File[]
      outputSource: map/output_data_unmapped_fastq_files
-{#    map_pbc_files:#}
-{#      doc: PCR Bottleneck Coefficient files (used to flag samples when pbc<0.5) for control#}
-{#      type: File[]#}
-{#      outputSource: map/output_pbc_files#}
-{#    map_preseq_percentage_uniq_reads:#}
-{#      doc: Preseq percentage of uniq reads#}
-{#      type: File[]#}
-{#      outputSource: map/output_percentage_uniq_reads#}
-{#    map_read_count_mapped:#}
-{#      doc: Read counts of the mapped BAM files#}
-{#      type: File[]#}
-{#      outputSource: map/output_read_count_mapped#}
    map_bowtie_log_files:
      doc: Bowtie log file with mapping stats
      type: File[]
@@ -161,14 +143,6 @@ outputs:
      doc: Preseq c_curve output files.
      type: File[]
      outputSource:  map/output_preseq_lc_extrap_files
-{#   pcr_bottleneck_coef_file:#}
-{#     doc: PCR Bottleneck Coefficient#}
-{#     type: File[]#}
-{#     outputSource: map/pcr_bottleneck_coef_file#}
-{#   read_count_mapped_star2:#}
-{#     doc: Read counts of the mapped BAM files after STAR pass2#}
-{#     type: File[]#}
-{#     outputSource: map/read_count_mapped_star2#}
    quant_bw_dedup_norm_files:
      doc: Signal files with RPKM normalization ignoring duplicates.
      type: File[]
@@ -181,53 +155,41 @@ steps:
    qc:
      in:
        input_fastq_read1_files: input_fastq_read1_files
-{% if read_type == 'pe' %}
        input_fastq_read2_files: input_fastq_read2_files
-{% endif %}
        default_adapters_file: default_adapters_file
        nthreads: nthreads_qc
-     run: 01-qc-{% if read_type == 'pe' %}pe{% else %}se{% endif %}.cwl
+     run: 01-qc-pe.cwl
      out:
      - output_fastqc_report_files_read1
      - output_fastqc_data_files_read1
      - output_custom_adapters_read1
      - output_count_raw_reads_read1
      - output_diff_counts_read1
-{% if read_type == 'pe' %}
      - output_fastqc_report_files_read2
      - output_fastqc_data_files_read2
      - output_custom_adapters_read2
      - output_count_raw_reads_read2
      - output_diff_counts_read2
-{% endif %}
    trim:
      in:
        input_read1_adapters_files: qc/output_custom_adapters_read1
        input_fastq_read1_files: input_fastq_read1_files
-{% if read_type == 'pe' %}
        input_read2_adapters_files: qc/output_custom_adapters_read2
        input_fastq_read2_files: input_fastq_read2_files
-{% endif %}
        nthreads: nthreads_trimm
        trimmomatic_java_opts: trimmomatic_java_opts
        trimmomatic_jar_path: trimmomatic_jar_path
-     run: 02-trim-{% if read_type == 'pe' %}pe{% else %}se{% endif %}.cwl
+     run: 02-trim-pe.cwl
      out:
      - output_data_fastq_read1_trimmed_files
      - output_trimmed_read1_fastq_read_count
-{% if read_type == 'pe' %}
      - output_data_fastq_read2_trimmed_files
      - output_trimmed_read2_fastq_read_count
-{% endif %}
    map:
      in:
        input_fastq_read1_files: trim/output_data_fastq_read1_trimmed_files
-{% if read_type == 'pe' %}
        input_fastq_read2_files: trim/output_data_fastq_read2_trimmed_files
-    {% if umis %}
        input_fastq_umi_files: input_fastq_umi_files
-    {% endif %}
-{% endif %}
        genome_sizes_file: genome_sizes_file
        ENCODE_blacklist_bedfile: ENCODE_blacklist_bedfile
        regions_bed_file: regions_bed_file
@@ -236,7 +198,7 @@ steps:
        picard_java_opts: picard_java_opts
        fgbio_jar_path: fgbio_jar_path
        nthreads: nthreads_map
-     run: 03-map-{% if read_type == 'pe' %}pe{% else %}se{% endif %}.cwl
+     run: 03-map-pe.cwl
      out:
       - output_data_bam_files
       - output_picard_mark_duplicates_files
@@ -245,7 +207,6 @@ steps:
       - output_preseq_c_curve_files
       - output_preseq_lc_extrap_files
       - output_templates_files
-{#      - output_read_count_mapped#}
    quant:
      in:
        input_bam_files: map/output_data_bam_files

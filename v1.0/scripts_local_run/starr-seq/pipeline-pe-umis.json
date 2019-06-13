@@ -1,0 +1,30 @@
+{
+  "input_fastq_read1_files": [
+    { "class": "File","path": "/Users/abarrera/data/SCZPS_SKNSH_Output2_merged.test.R1.fastq" }
+  ],
+  "input_fastq_read2_files": [
+    { "class": "File", "path": "/Users/abarrera/data/SCZPS_SKNSH_Output2_merged.test.R2.fastq" }
+  ],
+  "input_fastq_umi_files": [
+    { "class": "File", "path": "/Users/abarrera/data/SCZPS_SKNSH_Output2_merged.test.UMI.fastq" }
+  ],
+  "default_adapters_file":
+  {
+    "class": "File",
+    "path": "/Users/abarrera/data/adapters.fa"
+  },
+  "fgbio_jar_path": "/opt/fgbio.jar",
+  "genome_ref_first_index_file": {"class": "File", "path": "/Users/abarrera/data/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index.test.1.bt2"},
+  "genome_sizes_file": {"class": "File", "path": "/Users/abarrera/data/hg38.genome.noheader.sizes"},
+  "regions_bed_file": {"class": "File", "path": "/Users/abarrera/data/hg38.genome.noheader.bed"},
+  "ENCODE_blacklist_bedfile": {"class": "File", "path": "/Users/abarrera/data/wgEncodeDacMapabilityConsensusExcludable.hg38.short.bed"},
+  "picard_java_opts": "-Xms64m",
+  "picard_jar_path": "/opt/picard/picard.jar",
+  "nthreads_qc": 1,
+  "nthreads_trimm": 1,
+  "nthreads_map": 1,
+  "nthreads_quant": 1,
+
+  "trimmomatic_java_opts": "-Xms1000m -Xmx1000m",
+  "trimmomatic_jar_path": "/usr/share/java/trimmomatic.jar"
+}

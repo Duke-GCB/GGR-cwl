@@ -10,6 +10,13 @@
         { "class": "File", "path": "{{ data_dir }}/{{ samples }}.R2.fastq" }{% if loop.index < samples_list|length %},{% endif %}
     {% endfor %}
     ],
+    {% if wf_conf['umis'] %}
+    "input_fastq_umi_files": [
+    {% for samples in samples_list %}
+        { "class": "File", "path": "{{ data_dir }}/{{ samples }}.UMI.fastq" }{% if loop.index < samples_list|length %},{% endif %}
+    {% endfor %}
+    ],
+    {% endif %}
 {% endif %}
     "default_adapters_file": { "class": "File", "path": "{{ conf_args.default_adapters }}" },
     "genome_sizes_file": { "class": "File", "path": "{{ conf_args.genome_sizes_file }}" },
