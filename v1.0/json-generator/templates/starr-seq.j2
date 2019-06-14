@@ -27,8 +27,11 @@
     "nthreads_trimm": {{ nthreads }},
     "nthreads_map": {{ nthreads }},
     "nthreads_quant": {{ nthreads }},
+{% if wf_conf['umis'] %}
+    "fgbio_jar_path": "/data/reddylab/software/fgbio/0.8.1/fgbio.jar",
+{% endif %}
     "trimmomatic_jar_path": "/data/reddylab/software/Trimmomatic-0.32/trimmomatic-0.32.jar",
-    "trimmomatic_java_opts": "-Xms{{ (conf_args.mem/2) | round | int }}m -Xmx{{ conf_args.mem }}m"
+    "trimmomatic_java_opts": "-Xms{{ (conf_args.mem/2) | round | int }}m -Xmx{{ conf_args.mem }}m",
     "picard_jar_path": "{{ conf_args.picard_jar }}",
     "picard_java_opts": "-Xms{{ (conf_args.mem/2) | round | int }}m -Xmx{{ conf_args.mem }}m"
 }
