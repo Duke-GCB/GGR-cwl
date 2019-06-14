@@ -15,8 +15,11 @@ CPUS = 16
 READ_LENGTH = 50
 
 class ReferenceDataset(object):
-    def __init__(self, genome=GENOME, read_length=READ_LENGTH, with_ercc=False):
-        self.default_adapters = "/data/reddylab/projects/GGR/auxiliary/adapters/default_adapters.fasta"
+    def __init__(self, genome=GENOME, read_length=READ_LENGTH, with_ercc=False, umis=False):
+        if umis:
+            self.default_adapters = "/data/reddylab/Reference_Data/Adapters/trimmomatic_UMI.fa"
+        else:
+            self.default_adapters = "/data/reddylab/Reference_Data/Adapters/default_adapters.fasta"
         self.read_length = read_length
         _genome = genome.lower()
         if _genome == 'hg38' or _genome == 'grch38':
