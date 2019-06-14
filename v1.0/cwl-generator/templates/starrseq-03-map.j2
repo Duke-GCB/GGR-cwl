@@ -15,6 +15,15 @@ inputs:
    input_fastq_read2_files:
      doc: Input fastq paired-end read 2 files
      type: File[]
+{% if umis %}
+   input_fastq_umi_files:
+     doc: Input fastq with UMIs files
+     type: File[]
+   fgbio_jar_path:
+     default: /opt/fgbio.jar
+     doc: fgbio Java jar file
+     type: string
+{% endif %}
 {% else %}
    input_fastq_files:
      doc: Input fastq files
@@ -98,6 +107,23 @@ steps:
      - outfile
      - output_bowtie_log
      - output_unmapped_reads
+   sort_bams:
+     run: ../map/samtools-sort.cwl
+     scatter:
+     - input_file
+     in:
+       nthreads: nthreads
+       input_file: bowtie2/outfile
+     out:
+     - sorted_file
+   index_bams:
+     run: ../map/samtools-index.cwl
+     scatter:
+     - input_file
+     in:
+       input_file: sort_bams/sorted_file
+     out:
+     - indexed_file
 {#   chrom_sizes_to_bed:#}
 {#     run: ../utils/chrom-sizes-to-bed.cwl#}
 {#     in:#}
@@ -214,7 +240,21 @@ steps:
 {#       bowtie_log: bowtie-{{ read_type }}/output_bowtie_log#}
 {#     out:#}
 {#     - output#}
-
+{%  if umis %}
+   annotate_bams_with_umis:
+     run: ../map/fgbio-AnnotateBamWithUmis.cwl
+     scatterMethod: dotproduct
+     scatter:
+     - input
+     - fastq
+     in:
+       java_opts: picard_java_opts
+       fgbio_jar_path: fgbio_jar_path
+       input: index_masked_bams/indexed_file
+       fastq: input_fastq_umi_files
+     out:
+     - output
+{% endif %}
    mark_duplicates:
      run: ../map/picard-MarkDuplicates.cwl
      scatterMethod: dotproduct
@@ -223,7 +263,11 @@ steps:
      in:
        java_opts: picard_java_opts
        picard_jar_path: picard_jar_path
-       input_file: index_masked_bams/indexed_file
+       input_file: {% if umis %}annotate_bams_with_umis/output{% else %}index_masked_bams/indexed_file{% endif %}
+{% if umis %}
+       barcode_tag:
+         valueFrom: RX
+{% endif %}
        output_filename:
          valueFrom: $(inputs.input_file.nameroot + ".dups_marked")
        output_suffix:
@@ -271,7 +315,7 @@ steps:
      - input_sorted_file
      scatterMethod: dotproduct
      in:
-       input_sorted_file: index_masked_bams/indexed_file
+       input_sorted_file: index_bams/indexed_file
        output_file_basename:
          valueFrom: $(inputs.input_sorted_file.nameroot)
        s:

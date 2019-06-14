@@ -21,6 +21,7 @@ class ReferenceDataset(object):
         _genome = genome.lower()
         if _genome == 'hg38' or _genome == 'grch38':
             self.bowtie_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.1.ebwt"
+            self.bowtie2_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index.1.bt2" #TODO: Add ERCC92 Bowtie2 option
             self.star_genome_dir = "/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_%d_novelSJDB" % (self.read_length-1)
             self.encode_blacklist_bedfile = "/data/reddylab/Reference_Data/ENCODE/hg38.blacklist.bed"
             self.genome_effective_size = "hs"
@@ -28,8 +29,10 @@ class ReferenceDataset(object):
             self.rsem_dir = "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome%s"% (".with_ercc92" if with_ercc else "")
             self.genome_sizes_file = "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set%s.sizes" % (".with_ercc92" if with_ercc else "")
             self.genome_fasta_files = ["/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set%s.fna" % (".with_ercc92" if with_ercc else "")]
+            self.regions_bed_file = "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set%s.bed" % (".with_ercc92" if with_ercc else "")
         elif _genome == 'hg19' or _genome == 'grch37':
             self.bowtie_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/hg19/hg19.1.ebwt"
+            self.bowtie2_genome_ref_first_index = "/data/reddylab/Reference_Data/Bowtie2/hg19/hg19.1.bt2"
             self.star_genome_dir = "/data/reddylab/Reference_Data/Genomes/hg19/STAR_genome_sjdbOverhang_%d" % self.read_length
             self.genome_sizes_file = "/data/reddylab/Reference_Data/Genomes/hg19/hg19.chrom.sizes"
             self.encode_blacklist_bedfile = "/data/reddylab/Reference_Data/ENCODE/wgEncodeDacMapabilityConsensusExcludable.hg19.bed"
@@ -37,8 +40,10 @@ class ReferenceDataset(object):
             self.annotation_file = "/data/reddylab/Reference_Data/Gencode/v19/gencode.v19.annotation.gtf"
             self.rsem_dir = "/data/reddylab/Reference_Data/Genomes/hg19/RSEM_genome"
             self.genome_fasta_files = ["/data/reddylab/Reference_Data/Genomes/hg19/hg19.fa"]
+            self.regions_bed_file = "/data/reddylab/Reference_Data/Genomes/hg19/hg19.chrom.bed"
         elif _genome == 'mm10' or _genome == 'grcm38':
             self.bowtie_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/mm10/bowtie/GRCm38.1.ebwt"
+            self.bowtie2_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/mm10/bowtie2/GRCm38.1.bt2"
             self.star_genome_dir = "/data/reddylab/Reference_Data/Genomes/mm10/STAR_genome_sjdbOverhang_%d_novelSJDB" % (self.read_length-1)
             self.encode_blacklist_bedfile = "/data/reddylab/Reference_Data/ENCODE/mm10.blacklist.bed"
             self.genome_effective_size = "mm"
@@ -46,8 +51,10 @@ class ReferenceDataset(object):
             self.rsem_dir = "/data/reddylab/Reference_Data/Genomes/mm10/RSEM/RSEM_genome%s" % (".with_ercc92" if with_ercc else "")
             self.genome_sizes_file = "/data/reddylab/Reference_Data/Genomes/GRCm38/GRCm38%s.sizes" % (".with_ercc92" if with_ercc else "")
             self.genome_fasta_files = ["/data/reddylab/Reference_Data/Genomes/mm10/GRCm38.primary_assembly.genome%s.fa" % (".with_ercc92" if with_ercc else "")]
+            self.regions_bed_file = "/data/reddylab/Reference_Data/Genomes/GRCm38/GRCm38%s.bed" % (".with_ercc92" if with_ercc else "")
         elif _genome == 'mm9' or _genome == 'grcm37' or _genome == 'ncbi37':
             self.bowtie_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/mm9/bowtie/mm9.1.ebwt"
+            self.bowtie2_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/mm9/bowtie2/mm9.1.bt2"
             self.star_genome_dir = "/data/reddylab/Reference_Data/Genomes/mm9/STAR_genome_sjdbOverhang_%d_novelSJDB" % self.read_length
             self.genome_sizes_file = "/data/reddylab/Reference_Data/Genomes/mm9/mm9.chrom.sizes"
             self.encode_blacklist_bedfile = "/data/reddylab/Reference_Data/ENCODE/mm9.blacklist.bed"
@@ -55,6 +62,7 @@ class ReferenceDataset(object):
             self.annotation_file = "/data/reddylab/Reference_Data/Gencode/vM1/gencode.vM1.annotation.gtf"
             self.rsem_dir = "/data/reddylab/Reference_Data/Genomes/mm9/RSEM/RSEM_genome"
             self.genome_fasta_files = ["/data/reddylab/Reference_Data/Genomes/mm9/mm9.fa"]
+            self.regions_bed_file = "/data/reddylab/Reference_Data/Genomes/mm9/mm9.chrom.bed"
         elif _genome == 'danrer10' or _genome == 'grcz10':
             self.bowtie_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/danRer10/bowtie/danRer10.1.ebwt"
             self.star_genome_dir = "/data/reddylab/Reference_Data/Genomes/danRer10/STAR_genome_sjdbOverhang_%d_novelSJDB" % self.read_length

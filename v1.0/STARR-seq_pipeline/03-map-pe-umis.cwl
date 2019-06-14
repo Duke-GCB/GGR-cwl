@@ -14,6 +14,13 @@ inputs:
    input_fastq_read2_files:
      doc: Input fastq paired-end read 2 files
      type: File[]
+   input_fastq_umi_files:
+     doc: Input fastq with UMIs files
+     type: File[]
+   fgbio_jar_path:
+     default: /opt/fgbio.jar
+     doc: fgbio Java jar file
+     type: string
    genome_sizes_file:
      doc: Genome sizes tab-delimited file (used in samtools)
      type: File
@@ -202,6 +209,19 @@ steps:
          valueFrom: $(["1,1", "2,2g"])
      out:
      - outfile
+   annotate_bams_with_umis:
+     run: ../map/fgbio-AnnotateBamWithUmis.cwl
+     scatterMethod: dotproduct
+     scatter:
+     - input
+     - fastq
+     in:
+       java_opts: picard_java_opts
+       fgbio_jar_path: fgbio_jar_path
+       input: index_masked_bams/indexed_file
+       fastq: input_fastq_umi_files
+     out:
+     - output
    mark_duplicates:
      run: ../map/picard-MarkDuplicates.cwl
      scatterMethod: dotproduct
@@ -210,7 +230,9 @@ steps:
      in:
        java_opts: picard_java_opts
        picard_jar_path: picard_jar_path
-       input_file: index_masked_bams/indexed_file
+       input_file: annotate_bams_with_umis/output
+       barcode_tag:
+         valueFrom: RX
        output_filename:
          valueFrom: $(inputs.input_file.nameroot + ".dups_marked")
        output_suffix:

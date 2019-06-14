@@ -76,7 +76,9 @@ class MetadataParser(object):
                                false_values=['No', 'N', 'no', 'n', '0'], sep='\t',
                                encoding = 'utf-8')
         named_cols = [c for c in rows.columns if not c.startswith('unnamed: ')]
-        return rows.loc[:, named_cols]
+        rows = rows.loc[:, named_cols]
+        rows.columns = [c.lower() for c in rows.columns]
+        return rows
 
     def update_paths(self, ref_data_obj):
         options = ref_data_obj.__dict__.iteritems()
@@ -111,17 +113,17 @@ class MetadataParserChipseq(object):
         samples_dict = defaultdict(list)
         wf_conf_dict = {}
         for r in self.records:
-            read_type = r['Paired-end or single-end'].lower()
-            sample_info = {'treatment': r['Name']}
+            read_type = r['paired-end or single-end'].lower()
+            sample_info = {'treatment': r['name']}
             wf_key = '-'.join([read_type])
-            if 'Control' in r.keys() and r['Control'] and r['Control'].upper() != 'NA':
-                sample_info['control'] = r['Control']
+            if 'control' in r.keys() and r['control'] and r['control'].upper() != 'NA':
+                sample_info['control'] = r['control']
                 wf_key += '-with-control'
             wf_conf_dict[wf_key] = {'rt': read_type,
                                     'st': sample_info.keys()}
             genome = consts.GENOME  # Default genome
-            if 'Genome' in r.keys():
-                genome = r['Genome']
+            if 'genome' in r.keys():
+                genome = r['genome']
 
             samples_dict[wf_key].append([sample_info, genome])
         for wf_key, samples_genomes in samples_dict.iteritems():
@@ -166,13 +168,13 @@ class MetadataParserAtacseq(object):
         samples_dict = defaultdict(list)
         wf_conf_dict = {}
         for r in self.records:
-            read_type = r['Paired-end or single-end'].lower()
-            sample_info = {'treatment': r['Name']}
+            read_type = r['paired-end or single-end'].lower()
+            sample_info = {'treatment': r['name']}
             wf_key = '-'.join([read_type])
             genome = consts.GENOME  # Default genome
-            if 'Genome' in r.keys():
-                genome = r['Genome']
-            if not ('Blacklist removal' in r.keys() and is_false(r['Blacklist removal'])):
+            if 'genome' in r.keys():
+                genome = r['genome']
+            if not ('blacklist removal' in r.keys() and is_false(r['blacklist removal'])):
                 wf_key += '-blacklist-removal'
 
             wf_conf_dict[wf_key] = {'rt': read_type}
@@ -224,27 +226,30 @@ class MetadataParserRnaseq(object):
         samples_dict = defaultdict(list)
         wf_conf_dict = {}
         for rix, r in self.records.iterrows():
-            read_type = r['Paired-end or single-end'].lower()
-            sample_name = r['Name']
-            strand_specific = r['Strand specificity']
+            read_type = r['paired-end or single-end'].lower()
+            sample_name = r['name']
+            strand_specific = r['strand specificity']
             genome = consts.GENOME  # Default genome
-            if 'Genome' in r.keys():
-                genome = r['Genome']
+            if 'genome' in r.keys():
+                genome = r['genome']
             ercc_spikein = False
-            if 'With ercc spike-in' in r.keys():
-                ercc_spikein = r['With ercc spike-in']
+            if 'with ercc spike-in' in r.keys():
+                ercc_spikein = r['with ercc spike-in']
             kws = [read_type,  strand_specific]
             if self.skip_star_2pass:
                 kws.append('with-sjdb')
             wf_key = '-'.join(kws)
             wf_conf_dict[wf_key] = {'rt': read_type, 'sn': sample_name}
-            samples_dict[wf_key].append([sample_name, genome, ercc_spikein])
+            read_length = self.read_length
+            if 'read length' in r.keys():
+                read_length = int(r['read length'])
+            samples_dict[wf_key].append([sample_name, genome, ercc_spikein, read_length])
         for wf_key, samples_genomes in samples_dict.iteritems():
             if self.obj.separate_jsons:
                 for si, s in enumerate(sorted(samples_genomes)):
-                    sample, genome, ercc_spikein = s[0], s[1], s[2]
+                    sample, genome, ercc_spikein, read_length = s
                     ref_dataset = consts.ReferenceDataset(genome,
-                                                          read_length=self.read_length,
+                                                          read_length=read_length,
                                                           with_ercc=ercc_spikein)
                     self.update_paths(ref_dataset)
 
@@ -253,6 +258,7 @@ class MetadataParserRnaseq(object):
                 samples_list = [s[0] for s in samples_genomes]
                 genomes_list = [g[1] for g in samples_genomes]
                 ercc_list = [e[2] for e in samples_genomes]
+                read_length_list = [l[3] for l in samples_genomes]
                 if len(set(genomes_list)) > 1:
                     raise Exception(
                         'More than one genome specified (%s). Please create a different metadata file'
@@ -262,9 +268,71 @@ class MetadataParserRnaseq(object):
                     raise Exception(
                         'With and without ERCC spike-in specified. Please create a different metadata file'
                         ' per ERCC choice or provide a sjdb and specify the --separate-jsons argument')
+                if len(set(read_length_list)) > 1:
+                    raise Exception(
+                        'More than one read length specified. Please create a different metadata file'
+                        ' per read length choice or provide a sjdb and specify the --separate-jsons argument')
                 ref_dataset = consts.ReferenceDataset(genomes_list[0],
-                                                      read_length=self.read_length,
+                                                      read_length=read_length_list[0],
                                                       with_ercc=ercc_list[0])
+                self.update_paths(ref_dataset)
+                yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir), wf_key, None
+
+class MetadataParserStarrseq(object):
+    def __init__(self, **kwargs):
+        self.obj = generateMetadataParser(kwargs['args_obj'])
+
+    def __getattr__(self, attr):
+        return getattr(self.obj, attr)
+
+    def render_json(self, wf_conf, samples_list, data_dir):
+        env = Environment(extensions=["jinja2.ext.do"], loader=FileSystemLoader(os.path.join(EXEC_DIR, "templates")))
+        template = env.get_template(self.experiment_type + '.j2')
+        json_str = template.render({'wf_conf': wf_conf,
+                                    'samples_list': samples_list,
+                                    'data_dir': data_dir,
+                                    'nthreads': self.nthreads,
+                                    'conf_args': self
+                                    })
+        json_str = '\n'.join([l for l in json_str.split('\n') if l.strip() != ''])  # Remove empty lines
+        return json_str
+
+    def parse_metadata(self, data_dir):
+        samples_dict = defaultdict(list)
+        wf_conf_dict = {}
+        for rix, r in self.records.iterrows():
+            read_type = r['paired-end or single-end'].lower()
+            sample_name = r['name']
+            genome = consts.GENOME  # Default genome
+            if 'genome' in r.keys():
+                genome = r['genome']
+            kws = [read_type]
+            wf_key = '-'.join(kws)
+            with_umis = 'umis' in r.keys() and not is_false(r['umis'])
+            if with_umis:
+                wf_key += '-umis'
+
+            wf_conf_dict[wf_key] = {'rt': read_type, 'sn': sample_name, 'umis': with_umis}
+            samples_dict[wf_key].append([sample_name, genome])
+        for wf_key, samples_genomes in samples_dict.iteritems():
+            if self.obj.separate_jsons:
+                for si, s in enumerate(sorted(samples_genomes)):
+                    sample, genome = s[0], s[1]
+                    ref_dataset = consts.ReferenceDataset(genome,
+                                                          read_length=self.read_length)
+                    self.update_paths(ref_dataset)
+
+                    yield self.render_json(wf_conf_dict[wf_key], [sample], data_dir), wf_key, si
+            else:
+                samples_list = [s[0] for s in samples_genomes]
+                genomes_list = [g[1] for g in samples_genomes]
+                if len(set(genomes_list)) > 1:
+                    raise Exception(
+                        'More than one genome specified (%s). Please create a different metadata file'
+                        ' per genome or provide a sjdb and specify the --separate-jsons argument' %
+                        ', '.join(set(genomes_list)))
+                ref_dataset = consts.ReferenceDataset(genomes_list[0],
+                                                      read_length=self.read_length)
                 self.update_paths(ref_dataset)
                 yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir), wf_key, None
 
@@ -286,7 +354,7 @@ def main():
                              'Internally, this name is used identify the target template.')
     parser.add_argument('-d', '--data-dir', dest='data_dir', required=True,
                         help='Project directory containing the fastq data files.')
-    parser.add_argument('-t', '--metadata-type', dest='data_type', choices=['chip-seq', 'rna-seq', 'atac-seq'],
+    parser.add_argument('-t', '--metadata-type', dest='data_type', choices=['chip-seq', 'rna-seq', 'atac-seq', 'starr-seq'],
                         default='chip-seq', help='Experiment type for the metadata.')
     parser.add_argument('--nthreads', type=int, dest='nthreads', default=consts.CPUS, help='Number of threads.')
     parser.add_argument('--mem', type=int, dest='mem', default=consts.MEM, help='Memory for Java based CLT.')
@@ -343,6 +411,8 @@ def main():
         meta_parser = MetadataParserRnaseq(args_obj=args)
     elif args.data_type == 'atac-seq':
         meta_parser = MetadataParserAtacseq(args_obj=args)
+    elif args.data_type == 'starr-seq':
+        meta_parser = MetadataParserStarrseq(args_obj=args)
     else:
         raise Exception('Unrecognized Experiment Type: %s' % args.data_type)
 

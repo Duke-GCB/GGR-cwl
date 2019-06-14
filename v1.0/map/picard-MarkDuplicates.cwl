@@ -37,6 +37,13 @@
       type: string
       default: dedup_metrics.txt
       doc: 'Suffix used to create the metrics output file (Default: dedup_metrics.txt)'
+    barcode_tag:
+      type: string?
+      inputBinding:
+        prefix: BARCODE_TAG=
+        separate: false
+        position: 5
+      doc: If true do not write duplicates to the output file instead of writing them with appropriate flags set.  (Default false).
     output_filename:
       type: string
       doc: Output filename used as basename

@@ -1,2 +1,6 @@
 -
   read_type: pe
+  umis: yes
+-
+  read_type: pe
+  umis: no

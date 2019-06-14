@@ -71,24 +71,24 @@ steps:
      - input_adapters_file
      in:
        input_read1_fastq_file: input_fastq_read1_files
+       input_read2_fastq_file: input_fastq_read2_files
+       input_adapters_file: concat_adapters/output_file
        phred:
          valueFrom: '33'
        nthreads: nthreads
        minlen:
          valueFrom: ${return 15}
-       input_read2_fastq_file: input_fastq_read2_files
-       input_adapters_file: concat_adapters/output_file
        leading:
-         valueFrom: ${return 3}
+         valueFrom: ${return 30}
+       trailing:
+         valueFrom: ${return 30}
        slidingwindow:
          valueFrom: 4:20
        illuminaclip:
-         valueFrom: 2:30:15
+         valueFrom:  2:15:10:1:TRUE
        end_mode:
          valueFrom: PE
        java_opts: trimmomatic_java_opts
-       trailing:
-         valueFrom: ${return 3}
        trimmomatic_jar_path: trimmomatic_jar_path
      out:
      - output_read1_trimmed_file
