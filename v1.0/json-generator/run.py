@@ -240,13 +240,16 @@ class MetadataParserRnaseq(object):
                 kws.append('with-sjdb')
             wf_key = '-'.join(kws)
             wf_conf_dict[wf_key] = {'rt': read_type, 'sn': sample_name}
-            samples_dict[wf_key].append([sample_name, genome, ercc_spikein])
+            read_length = self.read_length
+            if 'read length' in r.keys():
+                read_length = int(r['read length'])
+            samples_dict[wf_key].append([sample_name, genome, ercc_spikein, read_length])
         for wf_key, samples_genomes in samples_dict.iteritems():
             if self.obj.separate_jsons:
                 for si, s in enumerate(sorted(samples_genomes)):
-                    sample, genome, ercc_spikein = s[0], s[1], s[2]
+                    sample, genome, ercc_spikein, read_length = s
                     ref_dataset = consts.ReferenceDataset(genome,
-                                                          read_length=self.read_length,
+                                                          read_length=read_length,
                                                           with_ercc=ercc_spikein)
                     self.update_paths(ref_dataset)
 
@@ -255,6 +258,7 @@ class MetadataParserRnaseq(object):
                 samples_list = [s[0] for s in samples_genomes]
                 genomes_list = [g[1] for g in samples_genomes]
                 ercc_list = [e[2] for e in samples_genomes]
+                read_length_list = [l[3] for l in samples_genomes]
                 if len(set(genomes_list)) > 1:
                     raise Exception(
                         'More than one genome specified (%s). Please create a different metadata file'
@@ -264,8 +268,12 @@ class MetadataParserRnaseq(object):
                     raise Exception(
                         'With and without ERCC spike-in specified. Please create a different metadata file'
                         ' per ERCC choice or provide a sjdb and specify the --separate-jsons argument')
+                if len(set(read_length_list)) > 1:
+                    raise Exception(
+                        'More than one read length specified. Please create a different metadata file'
+                        ' per read length choice or provide a sjdb and specify the --separate-jsons argument')
                 ref_dataset = consts.ReferenceDataset(genomes_list[0],
-                                                      read_length=self.read_length,
+                                                      read_length=read_length_list[0],
                                                       with_ercc=ercc_list[0])
                 self.update_paths(ref_dataset)
                 yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir), wf_key, None
