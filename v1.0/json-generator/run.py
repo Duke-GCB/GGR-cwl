@@ -319,7 +319,8 @@ class MetadataParserStarrseq(object):
                 for si, s in enumerate(sorted(samples_genomes)):
                     sample, genome = s[0], s[1]
                     ref_dataset = consts.ReferenceDataset(genome,
-                                                          read_length=self.read_length)
+                                                          read_length=self.read_length,
+                                                          umis='umis' in wf_key)
                     self.update_paths(ref_dataset)
 
                     yield self.render_json(wf_conf_dict[wf_key], [sample], data_dir), wf_key, si
@@ -332,7 +333,8 @@ class MetadataParserStarrseq(object):
                         ' per genome or provide a sjdb and specify the --separate-jsons argument' %
                         ', '.join(set(genomes_list)))
                 ref_dataset = consts.ReferenceDataset(genomes_list[0],
-                                                      read_length=self.read_length)
+                                                      read_length=self.read_length,
+                                                      umis='umis' in wf_key)
                 self.update_paths(ref_dataset)
                 yield self.render_json(wf_conf_dict[wf_key], sorted(samples_list), data_dir), wf_key, None
 
