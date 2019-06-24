@@ -112,11 +112,11 @@ class MetadataParserChipseq(object):
     def parse_metadata(self, data_dir):
         samples_dict = defaultdict(list)
         wf_conf_dict = {}
-        for r in self.records:
+        for r_ix, r in self.records.iterrows():
             read_type = r['paired-end or single-end'].lower()
             sample_info = {'treatment': r['name']}
             wf_key = '-'.join([read_type])
-            if 'control' in r.keys() and r['control'] and r['control'].upper() != 'NA':
+            if 'control' in r.keys() and r['control'] and type(r['control']) != float:  # After reading this metadata info, this will contain a nan (float) if undetermined
                 sample_info['control'] = r['control']
                 wf_key += '-with-control'
             wf_conf_dict[wf_key] = {'rt': read_type,
@@ -167,7 +167,7 @@ class MetadataParserAtacseq(object):
     def parse_metadata(self, data_dir):
         samples_dict = defaultdict(list)
         wf_conf_dict = {}
-        for r in self.records:
+        for r_ix, r in self.records.iterrows():
             read_type = r['paired-end or single-end'].lower()
             sample_info = {'treatment': r['name']}
             wf_key = '-'.join([read_type])
