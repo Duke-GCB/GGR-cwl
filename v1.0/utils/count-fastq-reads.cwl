@@ -1,6 +1,8 @@
  class: CommandLineTool
  cwlVersion: v1.0
  doc: Counts reads in a fastq file
+ requirements:
+    InlineJavascriptRequirement: {}
  hints:
     DockerRequirement:
       dockerPull: reddylab/workflow-utils:ggr

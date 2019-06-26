@@ -5,6 +5,7 @@
   - class: ScatterFeatureRequirement
   - class: SubworkflowFeatureRequirement
   - class: StepInputExpressionRequirement
+  - class: InlineJavascriptRequirement
  inputs:
     genome_sizes_file:
       doc: Genome sizes tab-delimited file (used in samtools)
@@ -71,7 +72,7 @@
       out:
       - output_spp_x_cross_corr
       - output_spp_cross_corr_plot
-      - output_peak_file
+      - output_narrowpeak_file
       - output_extended_narrowpeak_file
       - output_peak_xls_file
       - output_filtered_read_count_file
