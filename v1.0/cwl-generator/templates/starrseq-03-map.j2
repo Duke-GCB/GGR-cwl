@@ -275,12 +275,46 @@ steps:
      out:
      - output_metrics_file
      - output_dedup_bam_file
-   index_dedup_bams:
+   index_dups_marked_bams:
      run: ../map/samtools-index.cwl
      scatter:
      - input_file
      in:
        input_file: mark_duplicates/output_dedup_bam_file
+     out:
+     - indexed_file
+
+   remove_duplicates:
+     run: ../map/samtools-view.cwl
+     scatter:
+     - input_file
+     in:
+       input_file: index_dups_marked_bams/indexed_file
+       F:
+         valueFrom: ${return 1024}
+       suffix:
+         valueFrom: .dedup.bam
+       b:
+         valueFrom: ${return true}
+       outfile_name:
+         valueFrom: ${return inputs.input_file.basename.replace('dups_marked', 'dedup')}
+     out:
+     - outfile
+   sort_dedup_bams:
+     run: ../map/samtools-sort.cwl
+     scatter:
+     - input_file
+     in:
+       nthreads: nthreads
+       input_file: remove_duplicates/outfile
+     out:
+     - sorted_file
+   index_dedup_bams:
+     run: ../map/samtools-index.cwl
+     scatter:
+     - input_file
+     in:
+       input_file: sort_dedup_bams/sorted_file
      out:
      - indexed_file
 
@@ -506,6 +540,10 @@ outputs:
      outputSource: bowtie2/output_bowtie_log
    output_data_bam_files:
      doc: BAM files with aligned reads.
+     type: File[]
+     outputSource:   index_dups_marked_bams/indexed_file
+   output_data_dedup_bam_files:
+     doc: Dedup BAM files with aligned reads.
      type: File[]
      outputSource: index_dedup_bams/indexed_file
 {#     outputSource: index_masked_bams/indexed_file#}

@@ -193,6 +193,7 @@ steps:
      run: 03-map-pe.cwl
      out:
       - output_data_bam_files
+      - output_data_dedup_bam_files
       - output_picard_mark_duplicates_files
       - output_data_unmapped_fastq_files
       - output_bowtie_log
@@ -202,6 +203,7 @@ steps:
    quant:
      in:
        input_bam_files: map/output_data_bam_files
+       input_dedup_bam_files: map/output_data_dedup_bam_files
        ENCODE_blacklist_bedfile: ENCODE_blacklist_bedfile
        nthreads: nthreads_quant
      run: 04-quantification.cwl

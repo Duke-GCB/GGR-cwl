@@ -12,6 +12,10 @@ inputs:
      type: File[]
      secondaryFiles:
        - .bai
+   input_dedup_bam_files:
+     type: File[]
+     secondaryFiles:
+       - .bai
    ENCODE_blacklist_bedfile:
      doc: Bedfile containing ENCODE consensus blacklist regions to be excluded.
      type: File
@@ -32,17 +36,15 @@ steps:
      run: ../quant/deeptools-bamcoverage.cwl
      scatter: bam
      in:
-       bam: input_bam_files
+       bam: input_dedup_bam_files
        blackListFileName: ENCODE_blacklist_bedfile
        extendReads:
-         valueFrom: $(true)
-       ignoreDuplicates:
          valueFrom: $(true)
        binSize:
          valueFrom: ${return 1}
        numberOfProcessors: nthreads
        outFileName:
-         valueFrom: $(inputs.bam.nameroot.replace(/\.[^/.]+$/, '.dedup.rpkm.bw'))
+         valueFrom: $(inputs.bam.nameroot.replace(/\.[^/.]+$/, '.rpkm.bw'))
        normalizeUsing:
          valueFrom: RPKM
      out:
