@@ -1,6 +1,6 @@
 # Programs
 trimmomatic_jar = "/data/reddylab/software/Trimmomatic-0.32/trimmomatic-0.32.jar"
-picard_jar = "/data/reddylab/software/picard/dist/picard.jar"
+picard_jar = "/data/reddylab/software/picard-2.14.0/bin/picard.jar"
 
 # Auxiliary reference files (species agnostic)
 as_narrowPeak = '/data/reddylab/Reference_Data/ENCODE/kent/src/hg/lib/encode/narrowPeak.as'
