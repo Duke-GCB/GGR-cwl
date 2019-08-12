@@ -198,7 +198,7 @@ steps:
        picard_java_opts: picard_java_opts
        fgbio_jar_path: fgbio_jar_path
        nthreads: nthreads_map
-     run: 03-map-pe.cwl
+     run: 03-map-pe-umis.cwl
      out:
       - output_data_bam_files
       - output_picard_mark_duplicates_files
