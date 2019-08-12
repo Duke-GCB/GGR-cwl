@@ -18,6 +18,7 @@ doc: |
   to be run with memory proportional the size of the (uncompressed) fastq.
 requirements:
    InlineJavascriptRequirement: {}
+   ShellCommandRequirement: {}
 hints:
    DockerRequirement:
      dockerPull: reddylab/fgbio:0.8.1
@@ -49,7 +50,7 @@ inputs:
        prefix: --fail-fast
      doc: |
        If set, fail on the first missing UMI. [Default: false].
-   output:
+   outfile:
      type: string?
      doc: Output BAM file to write.
    java_opts:
@@ -84,6 +85,6 @@ arguments:
  - valueFrom: AnnotateBamWithUmis
    position: 4
  - valueFrom: |
-    ${ return runtime.outdir + "/" + (inputs.output || inputs.input.nameroot + ".with_umis" + inputs.input.nameext) }
+    ${ return runtime.outdir + "/" + (inputs.outfile || inputs.input.nameroot + ".with_umis" + inputs.input.nameext) }
    position: 5
    prefix: --output
