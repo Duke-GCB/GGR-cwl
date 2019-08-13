@@ -31,6 +31,10 @@ outputs:
      doc: Normalized by RPKM bigWig files.
      type: File[]
      outputSource: bamcoverage-with-dups/output_bam_coverage
+   bw_dedup_raw_files:
+     doc: Raw 1bp bigWig files.
+     type: File[]
+     outputSource: bamcoverage-dedup-raw/output_bam_coverage
 steps:
    bamcoverage-dedup:
      run: ../quant/deeptools-bamcoverage.cwl
@@ -64,5 +68,20 @@ steps:
          valueFrom: $(inputs.bam.nameroot.replace(/\.[^/.]+$/, '.rpkm.bw'))
        normalizeUsing:
          valueFrom: RPKM
+     out:
+     - output_bam_coverage
+   bamcoverage-dedup-raw:
+     run: ../quant/deeptools-bamcoverage.cwl
+     scatter: bam
+     in:
+       bam: input_dedup_bam_files
+       blackListFileName: ENCODE_blacklist_bedfile
+       extendReads:
+         valueFrom: $(true)
+       binSize:
+         valueFrom: ${return 1}
+       numberOfProcessors: nthreads
+       outFileName:
+         valueFrom: $(inputs.bam.nameroot.replace(/\.[^/.]+$/, '.raw.bw'))
      out:
      - output_bam_coverage

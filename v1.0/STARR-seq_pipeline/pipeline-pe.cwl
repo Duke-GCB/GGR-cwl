@@ -140,6 +140,10 @@ outputs:
      doc: Signal files with RPKM normalization ignoring duplicates.
      type: File[]
      outputSource: quant/bw_dedup_norm_files
+   quant_bw_dedup_raw_files:
+     doc: Signal files with 1bp raw read pileup ignoring duplicates.
+     type: File[]
+     outputSource: quant/bw_dedup_raw_files
    quant_bw_with_dups_norm_files:
      doc: Signal files with RPKM normalization including duplicates.
      type: File[]
@@ -210,3 +214,4 @@ steps:
      out:
      - bw_dedup_norm_files
      - bw_with_dups_norm_files
+     - bw_dedup_raw_files
