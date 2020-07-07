@@ -5,7 +5,7 @@
     InlineJavascriptRequirement: {}
  hints:
     DockerRequirement:
-      dockerPull: dukegcb/bedgraphtobigwig
+      dockerPull: reddylab/ucsc-kentutils:1.0
  inputs:
     output_suffix:
       type: string

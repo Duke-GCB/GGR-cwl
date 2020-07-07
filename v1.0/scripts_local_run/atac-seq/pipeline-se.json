@@ -25,5 +25,5 @@
   "trimmomatic_java_opts": "-Xms512m -Xmx512m",
   "trimmomatic_jar_path": "/usr/share/java/trimmomatic.jar",
   "picard_java_opts": "-Xms512m -Xmx512m",
-  "picard_jar_path": "/usr/picard/picard.jar"
+  "picard_jar_path": "/opt/picard/picard.jar"
 }

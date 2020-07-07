@@ -2,13 +2,13 @@
   "input_control_fastq_files": [
     {
       "class": "File",
-      "path": "/Users/abarrera/data/chipseq-test/ctrl_001.t00_rep1.0-001.fastq"
+      "path": "/Users/abarrera/data/chipseq-test/ctrl_001.t00_rep1.dedup_filtered.chr11.fastq.gz"
     }
   ],
   "input_treatment_fastq_files": [
     {
       "class": "File",
-      "path": "/Users/abarrera/data/chipseq-test/GR.t00_rep1.0-001.fastq"
+      "path": "/Users/abarrera/data/chipseq-test/GR.t00_rep1.dedup_filtered.chr11.fastq.gz"
     }
   ],
   "default_adapters_file":
@@ -39,5 +39,5 @@
   "trimmomatic_java_opts": "-Xms1000m -Xmx1000m",
   "trimmomatic_jar_path": "/usr/share/java/trimmomatic.jar",
   "picard_java_opts": "-Xms1000m -Xmx1000m",
-  "picard_jar_path": "/usr/picard/picard.jar"
+  "picard_jar_path": "/opt/picard/picard.jar"
 }

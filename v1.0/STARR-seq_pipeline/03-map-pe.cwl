@@ -43,6 +43,19 @@ inputs:
      default: 1
      type: int
 steps:
+   basename:
+     run: ../utils/basename.cwl
+     scatter: file_path
+     in:
+       file_path:
+         source: input_fastq_read1_files
+         valueFrom: $(self.basename)
+       sep:
+         valueFrom: '[\._]R1'
+       do_not_escape_sep:
+         valueFrom: ${return true}
+     out:
+     - basename
    extract_basename_1:
      run: ../utils/extract-basename.cwl
      in:
@@ -69,9 +82,9 @@ steps:
        input_fastq_read1_file: input_fastq_read1_files
        input_fastq_read2_file: input_fastq_read2_files
        ungz:
-         source: extract_basename_2/output_path
+         source: basename/basename
          valueFrom: ${return self + ".unmmaped.fastq.gz"}
-       output_filename: extract_basename_2/output_path
+       output_filename: basename/basename
        sensitive:
          valueFrom: ${return true}
        v:
@@ -272,23 +285,6 @@ steps:
          valueFrom: ${return true}
      out:
      - output_file
-   preseq-lc-extrap:
-     run: ../map/preseq-lc_extrap.cwl
-     scatter:
-     - input_sorted_file
-     scatterMethod: dotproduct
-     in:
-       input_sorted_file: index_bams/indexed_file
-       output_file_basename:
-         valueFrom: $(inputs.input_sorted_file.nameroot)
-       s:
-         valueFrom: ${return 100000}
-       D:
-         valueFrom: ${return true}
-       pe:
-         valueFrom: ${return true}
-     out:
-     - output_file
 outputs:
    output_picard_mark_duplicates_files:
      doc: Picard MarkDuplicates metrics files.
@@ -318,7 +314,3 @@ outputs:
      doc: Preseq c_curve output files.
      type: File[]
      outputSource: preseq-c-curve/output_file
-   output_preseq_lc_extrap_files:
-     doc: Preseq lc_extrap output files.
-     type: File[]
-     outputSource: preseq-lc-extrap/output_file

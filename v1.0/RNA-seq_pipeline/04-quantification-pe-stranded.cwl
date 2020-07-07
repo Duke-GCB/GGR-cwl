@@ -74,7 +74,7 @@ steps:
          source: input_bam_files
          valueFrom: $(self.basename)
        sep:
-         valueFrom: \.Aligned\.out\.sorted
+         valueFrom: .Aligned.out.sorted
      scatter: file_path
      out:
      - basename
@@ -193,6 +193,13 @@ steps:
        bed_graph: negate_minus_bdg/negated_minus_bdg
      out:
      - output_bigwig
+   bedsort-norm-minus:
+     run: ../quant/bedSort.cwl
+     scatter: bed_file
+     in:
+       bed_file: negate_minus_bdg_norm/negated_minus_bdg
+     out:
+     - bed_file_sorted
    bdg2bw-norm-minus:
      run: ../quant/bedGraphToBigWig.cwl
      scatter: bed_graph
@@ -200,7 +207,7 @@ steps:
        output_suffix:
          valueFrom: .Aligned.minus.norm.bw
        genome_sizes: input_genome_sizes
-       bed_graph: negate_minus_bdg_norm/negated_minus_bdg
+       bed_graph: bedsort-norm-minus/bed_file_sorted
      out:
      - output_bigwig
    bedtools_genomecov_minus:

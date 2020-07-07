@@ -2,13 +2,13 @@
   "input_fastq_read1_files": [
     {
       "class": "File",
-      "path": "/Users/abarrera/data/atacseq_test/leslie_mouse_rep2.0-0001.R1.fastq"
+      "path": "/Users/abarrera/data/TEST_1.ERR242959.40000.R1.fastq.gz"
     }
   ],
   "input_fastq_read2_files": [
     {
       "class": "File",
-      "path": "/Users/abarrera/data/atacseq_test/leslie_mouse_rep2.0-0001.R2.fastq"
+      "path": "/Users/abarrera/data/TEST_1.ERR242959.40000.R2.fastq.gz"
     }
   ],
   "default_adapters_file":
@@ -18,7 +18,7 @@
   },
   "genome_ref_first_index_file": {
     "class": "File",
-    "path": "/Users/abarrera/data/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.1.ebwt"
+    "path": "/Users/abarrera/data/GRCh38/GCA_000001405.15_GRCh38_no_alt_analysis_set.chr10.1.ebwt"
   },
   "genome_sizes_file": {"class": "File", "path": "/Users/abarrera/data/hg38.genome.noheader.sizes"},
   "as_narrowPeak_file": {"class": "File", "path": "/Users/abarrera/data/narrowPeak.as"},
@@ -32,5 +32,5 @@
   "trimmomatic_java_opts": "-Xms512m -Xmx512m",
   "trimmomatic_jar_path": "/usr/share/java/trimmomatic.jar",
   "picard_java_opts": "-Xms512m -Xmx512m",
-  "picard_jar_path": "/usr/picard/picard.jar"
+  "picard_jar_path": "/opt/picard/picard.jar"
 }

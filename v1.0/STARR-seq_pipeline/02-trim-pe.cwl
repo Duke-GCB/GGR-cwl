@@ -94,12 +94,18 @@ steps:
      - output_read1_trimmed_file
      - output_read2_trimmed_paired_file
    extract_basename_read1:
-     run: ../utils/extract-basename.cwl
-     scatter: input_file
+     run: ../utils/basename.cwl
+     scatter: file_path
      in:
-       input_file: trimmomatic/output_read1_trimmed_file
+       file_path:
+         source: trimmomatic/output_read1_trimmed_file
+         valueFrom: $(self.basename)
+       sep:
+         valueFrom: '(\.fastq.gz|\.fastq)'
+       do_not_escape_sep:
+         valueFrom: ${return true}
      out:
-     - output_basename
+     - basename
    count_fastq_reads_read1:
      run: ../utils/count-fastq-reads.cwl
      scatterMethod: dotproduct
@@ -107,7 +113,7 @@ steps:
      - input_fastq_file
      - input_basename
      in:
-       input_basename: extract_basename_read1/output_basename
+       input_basename: extract_basename_read1/basename
        input_fastq_file: trimmomatic/output_read1_trimmed_file
      out:
      - output_read_count

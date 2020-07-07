@@ -218,7 +218,7 @@
     output_read1_trimmed_file:
       type: File
       outputBinding:
-        glob: $(inputs.input_read1_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.trimmed.fastq')
+        glob: $(inputs.input_read1_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/(\.fq.gz|\.fastq.gz|\.[^/.]+)$/, '.trimmed.fastq.gz'))
     output_log_file:
       type: File?
       outputBinding:
@@ -230,7 +230,7 @@
         glob: |
           ${
             if (inputs.end_mode == "PE")
-              return inputs.input_read1_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.unpaired.trimmed.fastq';
+              return inputs.input_read1_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/(\.fq.gz|\.fastq.gz|\.[^/.]+)$/, '.unpaired.trimmed.fastq.gz');
             return null;
           }
     output_read2_trimmed_paired_file:
@@ -239,7 +239,7 @@
         glob: |
           ${
             if (inputs.end_mode == "PE" && inputs.input_read2_fastq_file)
-              return inputs.input_read2_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.trimmed.fastq';
+              return inputs.input_read2_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/(\.fq.gz|\.fastq.gz|\.[^/.]+)$/, '.trimmed.fastq.gz');
             return null;
           }
     output_read2_trimmed_unpaired_file:
@@ -248,7 +248,7 @@
         glob: |
           ${
             if (inputs.end_mode == "PE" && inputs.input_read2_fastq_file)
-              return inputs.input_read2_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.unpaired.trimmed.fastq';
+              return inputs.input_read2_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/(\.fq.gz|\.fastq.gz|\.[^/.]+)$/, '.unpaired.trimmed.fastq.gz');
             return null;
           }
  baseCommand: java
@@ -256,26 +256,26 @@
   - valueFrom: $("-Djava.io.tmpdir="+runtime.tmpdir)
     shellQuote: false
     position: 1
-  - valueFrom: $(inputs.input_read1_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.trimmed.fastq')
+  - valueFrom: $(inputs.input_read1_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/(\.fq.gz|\.fastq.gz|\.[^/.]+)$/, '.trimmed.fastq.gz'))
     position: 7
   - valueFrom: |
       ${
         if (inputs.end_mode == "PE" && inputs.input_read2_fastq_file)
-          return inputs.input_read1_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.trimmed.unpaired.fastq';
+          return inputs.input_read1_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.trimmed.unpaired.fastq.gz';
         return null;
       }
     position: 8
   - valueFrom: |
       ${
         if (inputs.end_mode == "PE" && inputs.input_read2_fastq_file)
-          return inputs.input_read2_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.trimmed.fastq';
+          return inputs.input_read2_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/(\.fq.gz|\.fastq.gz|\.[^/.]+)$/, '.trimmed.fastq.gz');
         return null;
       }
     position: 9
   - valueFrom: |
       ${
         if (inputs.end_mode == "PE" && inputs.input_read2_fastq_file)
-          return inputs.input_read2_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + '.trimmed.unpaired.fastq';
+          return inputs.input_read2_fastq_file.path.replace(/^.*[\\\/]/, '').replace(/(\.fq.gz|\.fastq.gz|\.[^/.]+)$/, '.unpaired.trimmed.fastq.gz');
         return null;
       }
     position: 10

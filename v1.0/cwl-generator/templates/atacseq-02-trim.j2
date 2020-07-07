@@ -46,16 +46,24 @@ steps:
 {% endif %}
 {% for read_pair in read_pairs %}
    extract_basename{{ read_pair }}:
-     run: ../utils/extract-basename.cwl
-     scatter: input_file
+     run: ../utils/basename.cwl
+     scatter: file_path
      in:
 {% if read_type == "pe" and read_pair == "_read2" %}
-       input_file: trimmomatic/output_read2_trimmed_paired_file
+       file_path:
+         source: trimmomatic/output_read2_trimmed_paired_file
+         valueFrom: $(self.basename)
 {% else %}
-       input_file: trimmomatic/output{% if read_type == "se" %}_read1{% else %}{{ read_pair }}{% endif %}_trimmed_file
+       file_path:
+         source: trimmomatic/output{% if read_type == "se" %}_read1{% else %}{{ read_pair }}{% endif %}_trimmed_file
+         valueFrom: $(self.basename)
 {% endif %}
+       sep:
+         valueFrom: '(\.fastq.gz|\.fastq)'
+       do_not_escape_sep:
+         valueFrom: ${return true}
      out:
-     - output_basename
+     - basename
 {% endfor %}
    trimmomatic:
      run: ../trimmomatic/trimmomatic.cwl
@@ -105,7 +113,7 @@ steps:
      - input_fastq_file
      - input_basename
      in:
-       input_basename: extract_basename{{ read_pair }}/output_basename
+       input_basename: extract_basename{{ read_pair }}/basename
 {% if read_type == "pe" and read_pair == "_read2" %}
        input_fastq_file: trimmomatic/output_read2_trimmed_paired_file
 {% else %}

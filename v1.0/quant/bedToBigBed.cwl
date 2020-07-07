@@ -16,7 +16,7 @@
     InlineJavascriptRequirement: {}
  hints:
     DockerRequirement:
-      dockerPull: dleehr/docker-hubutils
+      dockerPull: reddylab/ucsc-kentutils:1.0
  inputs:
     genome_sizes:
       type: File
