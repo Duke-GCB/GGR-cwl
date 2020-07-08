@@ -6,7 +6,7 @@
     ShellCommandRequirement: {}
  hints:
     DockerRequirement:
-      dockerPull: dukegcb/samtools
+      dockerPull: dukegcb/samtools:1.3
  inputs:
     output_suffix:
       type: string

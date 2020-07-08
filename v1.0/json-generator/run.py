@@ -51,6 +51,7 @@ class MetadataParser(object):
         self.bamtools_reverse_filter = args.bamtools_reverse_filter
         self.preserve_arguments = args.preserve_arguments
         self.read_length = args.read_length
+        self.fastq_gzipped = args.fastq_gzipped
 
         # To allow certain configuration files to be overriden, this is needed
         self.purge_undef_args()
@@ -396,6 +397,8 @@ def main():
                         help='Trimmomatic JAVA jar file')
     parser.add_argument('--picard-jar', default=consts.picard_jar,
                         help='Picard JAVA jar file')
+    parser.add_argument('--fastq-gzipped', action='store_true', default=False,
+                        help='FASTQ files are gzipped, with .fastq.gz extensions')
 
     # Parse input
     args = parser.parse_args()

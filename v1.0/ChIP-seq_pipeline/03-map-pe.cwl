@@ -41,16 +41,22 @@ inputs:
      type: int
 steps:
    extract_basename_1:
-     run: ../utils/extract-basename.cwl
+     run: ../utils/basename.cwl
+     scatter: file_path
      in:
-       input_file: input_fastq_read1_files
-     scatter: input_file
+       file_path:
+         source: input_fastq_read1_files
+         valueFrom: $(self.basename)
+       sep:
+         valueFrom: '[\._]R1'
+       do_not_escape_sep:
+         valueFrom: ${return true}
      out:
-     - output_basename
+     - basename
    extract_basename_2:
      run: ../utils/remove-extension.cwl
      in:
-       file_path: extract_basename_1/output_basename
+       file_path: extract_basename_1/basename
      scatter: file_path
      out:
      - output_path

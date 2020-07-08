@@ -38,19 +38,18 @@ inputs:
      type: int
 steps:
    extract_basename_1:
-     run: ../utils/extract-basename.cwl
-     scatter: input_file
-     in:
-       input_file: input_fastq_read1_files
-     out:
-     - output_basename
-   extract_basename_2:
-     run: ../utils/remove-extension.cwl
+     run: ../utils/basename.cwl
      scatter: file_path
      in:
-       file_path: extract_basename_1/output_basename
+       file_path:
+         source: input_fastq_read1_files
+         valueFrom: $(self.basename)
+       sep:
+         valueFrom: '[\._]R1'
+       do_not_escape_sep:
+         valueFrom: ${return true}
      out:
-     - output_path
+     - basename
    bowtie-pe:
      run: ../map/bowtie-pe.cwl
      scatterMethod: dotproduct
@@ -61,7 +60,7 @@ steps:
      in:
        input_fastq_read1_file: input_fastq_read1_files
        input_fastq_read2_file: input_fastq_read2_files
-       output_filename: extract_basename_2/output_path
+       output_filename: extract_basename_1/basename
        v:
          valueFrom: ${return 2}
        X:
@@ -101,7 +100,7 @@ steps:
      - input_file
      - output_filename
      in:
-       output_filename: extract_basename_2/output_path
+       output_filename: extract_basename_1/basename
        input_file: sort_bams/sorted_file
      out:
      - filtered_file
@@ -129,7 +128,7 @@ steps:
      - output_file_basename
      in:
        input_sorted_file: filtered2sorted/sorted_file
-       output_file_basename: extract_basename_2/output_path
+       output_file_basename: extract_basename_1/basename
        pe:
          valueFrom: ${return true}
      out:
@@ -138,7 +137,7 @@ steps:
      in:
        input_bam_files: filtered2sorted/sorted_file
        genome_sizes: genome_sizes_file
-       input_output_filenames: extract_basename_2/output_path
+       input_output_filenames: extract_basename_1/basename
      run: ../map/pcr-bottleneck-coef.cwl
      out:
      - pbc_file
@@ -152,7 +151,7 @@ steps:
        input_file: index_filtered_bam/indexed_file
        java_opts: picard_java_opts
        picard_jar_path: picard_jar_path
-       output_filename: extract_basename_2/output_path
+       output_filename: extract_basename_1/basename
        output_suffix:
          valueFrom: bam
      out:

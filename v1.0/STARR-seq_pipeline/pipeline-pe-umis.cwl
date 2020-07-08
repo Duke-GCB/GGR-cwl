@@ -139,10 +139,6 @@ outputs:
      doc: Preseq c_curve output files
      type: File[]
      outputSource: map/output_preseq_c_curve_files
-   map_preseq_lc_extrap_curve_files:
-     doc: Preseq c_curve output files.
-     type: File[]
-     outputSource:  map/output_preseq_lc_extrap_files
    quant_bw_dedup_norm_files:
      doc: Signal files with RPKM normalization ignoring duplicates.
      type: File[]
@@ -210,7 +206,6 @@ steps:
       - output_data_unmapped_fastq_files
       - output_bowtie_log
       - output_preseq_c_curve_files
-      - output_preseq_lc_extrap_files
       - output_templates_files
    quant:
      in:

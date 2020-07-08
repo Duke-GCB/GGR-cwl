@@ -16,7 +16,7 @@
     InlineJavascriptRequirement: {}
  hints:
     DockerRequirement:
-      dockerPull: dleehr/docker-hubutils
+      dockerPull: reddylab/ucsc-kentutils:1.0
  inputs:
     output_suffix:
       type: string

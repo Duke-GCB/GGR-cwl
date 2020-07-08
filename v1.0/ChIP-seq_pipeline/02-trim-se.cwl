@@ -28,6 +28,19 @@ inputs:
      doc: Trimmomatic Java jar file
      type: string
 steps:
+   extract_basename:
+     run: ../utils/basename.cwl
+     scatter: file_path
+     in:
+       file_path:
+         source: trimmomatic/output_read1_trimmed_file
+         valueFrom: $(self.basename)
+       sep:
+         valueFrom: '(\.fastq.gz|\.fastq)'
+       do_not_escape_sep:
+         valueFrom: ${return true}
+     out:
+     - basename
    count_fastq_reads:
      run: ../utils/count-fastq-reads.cwl
      scatterMethod: dotproduct
@@ -35,17 +48,10 @@ steps:
      - input_fastq_file
      - input_basename
      in:
-       input_basename: extract_basename/output_basename
+       input_basename: extract_basename/basename
        input_fastq_file: trimmomatic/output_read1_trimmed_file
      out:
      - output_read_count
-   extract_basename:
-     run: ../utils/extract-basename.cwl
-     scatter: input_file
-     in:
-       input_file: trimmomatic/output_read1_trimmed_file
-     out:
-     - output_basename
    trimmomatic:
      run: ../trimmomatic/trimmomatic.cwl
      scatterMethod: dotproduct

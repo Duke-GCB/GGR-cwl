@@ -52,7 +52,7 @@ steps:
          source: input_bam_files
          valueFrom: $(self.basename)
        sep:
-         valueFrom: \.Aligned\.out\.sorted
+         valueFrom: .Aligned.out.sorted
      scatter: file_path
      out:
      - basename

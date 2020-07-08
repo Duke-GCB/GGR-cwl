@@ -18,12 +18,18 @@ inputs:
      type: int
 steps:
    extract_basename:
-     run: ../utils/extract-basename.cwl
-     scatter: input_file
+     run: ../utils/basename.cwl
+     scatter: file_path
      in:
-       input_file: input_fastq_files
+       file_path:
+         source: input_fastq_files
+         valueFrom: $(self.basename)
+       sep:
+         valueFrom: '(\.fastq.gz|\.fastq)'
+       do_not_escape_sep:
+         valueFrom: ${return true}
      out:
-     - output_basename
+     - basename
    count_raw_reads:
      run: ../utils/count-fastq-reads.cwl
      scatterMethod: dotproduct
@@ -31,7 +37,7 @@ steps:
      - input_fastq_file
      - input_basename
      in:
-       input_basename: extract_basename/output_basename
+       input_basename: extract_basename/basename
        input_fastq_file: input_fastq_files
      out:
      - output_read_count
@@ -50,7 +56,7 @@ steps:
      - input_qc_report_file
      - input_basename
      in:
-       input_basename: extract_basename/output_basename
+       input_basename: extract_basename/basename
        input_qc_report_file: fastqc/output_qc_report_file
      out:
      - output_fastqc_data_file
@@ -62,7 +68,7 @@ steps:
      - input_basename
      in:
        input_fastqc_data: extract_fastqc_data/output_fastqc_data_file
-       input_basename: extract_basename/output_basename
+       input_basename: extract_basename/basename
        default_adapters_file: default_adapters_file
      out:
      - output_custom_adapters
@@ -85,7 +91,7 @@ steps:
      - input_basename
      in:
        input_fastqc_data: extract_fastqc_data/output_fastqc_data_file
-       input_basename: extract_basename/output_basename
+       input_basename: extract_basename/basename
      out:
      - output_fastqc_read_count
 outputs:

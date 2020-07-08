@@ -5,7 +5,7 @@ requirements:
    ShellCommandRequirement: {}
 hints:
    DockerRequirement:
-     dockerPull: dukegcb/bowtie
+     dockerPull: reddylab/bowtie:1.2.3
 inputs:
    nthreads:
      type: int

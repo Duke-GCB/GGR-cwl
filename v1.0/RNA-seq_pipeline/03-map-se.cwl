@@ -117,8 +117,9 @@ steps:
          source: input_fastq_read1_files
          valueFrom: $(self.basename)
        sep:
-         valueFrom: .fastq
-         valueFrom: '.fastq'
+         valueFrom: '(\.fastq.gz|\.fastq)'
+       do_not_escape_sep:
+         valueFrom: ${return true}
      out:
      - basename
    star_pass1:
@@ -143,6 +144,9 @@ steps:
        sjdbOverhang:
          source: sjdbOverhang
          valueFrom: $(parseInt(self))
+       readFilesCommand:
+         valueFrom: |
+            ${return inputs.readFilesIn[0].basename.endsWith(".gz") ? "zcat" : (inputs.readFilesIn[0].basename.endsWith(".bz2") ? "bz2" : "cat") }
      out:
      - aligned
      - mappingstats
@@ -223,6 +227,9 @@ steps:
        sjdbOverhang:
          source: sjdbOverhang
          valueFrom: $(parseInt(self))
+       readFilesCommand:
+         valueFrom: |
+            ${return inputs.readFilesIn[0].basename.endsWith(".gz") ? "zcat" : (inputs.readFilesIn[0].basename.endsWith(".bz2") ? "bz2" : "cat") }
      out:
      - aligned
      - mappingstats
@@ -266,13 +273,16 @@ steps:
        sjdbScore:
          valueFrom: ${return 1}
        outFileNamePrefix:
-         source: input_fastq_read1_files
-         valueFrom: $(self.basename + ".transcriptome.star2.")
+         source: basename/basename
+         valueFrom: $(self + ".transcriptome.star2.")
        quantMode:
          valueFrom: TranscriptomeSAM
        sjdbOverhang:
          source: sjdbOverhang
          valueFrom: $(parseInt(self))
+       readFilesCommand:
+         valueFrom: |
+            ${return inputs.readFilesIn[0].basename.endsWith(".gz") ? "zcat" : (inputs.readFilesIn[0].basename.endsWith(".bz2") ? "bz2" : "cat") }
      out:
      - transcriptomesam
      - mappingstats

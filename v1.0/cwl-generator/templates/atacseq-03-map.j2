@@ -43,19 +43,22 @@ inputs:
      type: int
 steps:
    extract_basename_1:
-     run: ../utils/extract-basename.cwl
-     scatter: input_file
-     in:
-       input_file: input_fastq{% if read_type == 'pe' %}_read1{% endif %}_files
-     out:
-     - output_basename
-   extract_basename_2:
-     run: ../utils/remove-extension.cwl
+     run: ../utils/basename.cwl
      scatter: file_path
      in:
-       file_path: extract_basename_1/output_basename
+       file_path:
+         source: input_fastq{% if read_type == 'pe' %}_read1{% endif %}_files
+         valueFrom: $(self.basename)
+       sep:
+{% if read_type == 'pe' %}
+         valueFrom: '[\._]R1'
+{% else %}
+         valueFrom: '(\.fastq.gz|\.fastq)'
+{% endif %}
+       do_not_escape_sep:
+         valueFrom: ${return true}
      out:
-     - output_path
+     - basename
    bowtie-{{ read_type }}:
      run: ../map/bowtie-{{ read_type }}.cwl
      scatterMethod: dotproduct
@@ -68,7 +71,7 @@ steps:
 {% for read_pair in read_pairs %}
        input_fastq{{ read_pair }}_file: input_fastq{{ read_pair }}_files
 {% endfor %}
-       output_filename: extract_basename_2/output_path
+       output_filename: extract_basename_1/basename
        v:
          valueFrom: ${return 2}
        X:
@@ -108,7 +111,7 @@ steps:
      - input_file
      - output_filename
      in:
-       output_filename: extract_basename_2/output_path
+       output_filename: extract_basename_1/basename
        input_file: sort_bams/sorted_file
      out:
      - filtered_file
@@ -136,7 +139,7 @@ steps:
      - output_file_basename
      in:
        input_sorted_file: filtered2sorted/sorted_file
-       output_file_basename: extract_basename_2/output_path
+       output_file_basename: extract_basename_1/basename
 {% if read_type == 'pe' %}
        pe:
          valueFrom: ${return true}
@@ -147,7 +150,7 @@ steps:
      in:
        input_bam_files: filtered2sorted/sorted_file
        genome_sizes: genome_sizes_file
-       input_output_filenames: extract_basename_2/output_path
+       input_output_filenames: extract_basename_1/basename
      run: ../map/pcr-bottleneck-coef.cwl
      out:
      - pbc_file
@@ -161,7 +164,7 @@ steps:
      in:
        a: filtered2sorted/sorted_file
        b: ENCODE_blacklist_bedfile
-       output_basename_file: extract_basename_2/output_path
+       output_basename_file: extract_basename_1/basename
        v:
          valueFrom: ${return true}
      out:
@@ -202,7 +205,7 @@ steps:
        input_file: {% if blacklist_removal %}index_masked_bams/indexed_file{% else %}index_filtered_bam/indexed_file{% endif %}
        java_opts: picard_java_opts
        picard_jar_path: picard_jar_path
-       output_filename: {% if blacklist_removal %}masked_file_basename/output_basename{% else %}extract_basename_2/output_path{% endif %}
+       output_filename: {% if blacklist_removal %}masked_file_basename/output_basename{% else %}extract_basename_1/basename{% endif %}
        output_suffix:
          valueFrom: bam
      out:
