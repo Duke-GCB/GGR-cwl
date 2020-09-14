@@ -146,7 +146,7 @@ steps:
          valueFrom: $(parseInt(self))
        readFilesCommand:
          valueFrom: |
-            ${return inputs.readFilesIn[0].basename.endsWith(".gz") ? "zcat" : (inputs.readFilesIn[0].basename.endsWith(".bz2") ? "bz2" : "cat") }
+            ${return inputs.readFilesIn.basename.endsWith(".gz") ? "zcat" : (inputs.readFilesIn.basename.endsWith(".bz2") ? "bz2" : "cat") }
      out:
      - aligned
      - mappingstats
@@ -229,7 +229,7 @@ steps:
          valueFrom: $(parseInt(self))
        readFilesCommand:
          valueFrom: |
-            ${return inputs.readFilesIn[0].basename.endsWith(".gz") ? "zcat" : (inputs.readFilesIn[0].basename.endsWith(".bz2") ? "bz2" : "cat") }
+            ${return inputs.readFilesIn.basename.endsWith(".gz") ? "zcat" : (inputs.readFilesIn.basename.endsWith(".bz2") ? "bz2" : "cat") }
      out:
      - aligned
      - mappingstats
@@ -282,7 +282,7 @@ steps:
          valueFrom: $(parseInt(self))
        readFilesCommand:
          valueFrom: |
-            ${return inputs.readFilesIn[0].basename.endsWith(".gz") ? "zcat" : (inputs.readFilesIn[0].basename.endsWith(".bz2") ? "bz2" : "cat") }
+            ${return inputs.readFilesIn.basename.endsWith(".gz") ? "zcat" : (inputs.readFilesIn.basename.endsWith(".bz2") ? "bz2" : "cat") }
      out:
      - transcriptomesam
      - mappingstats
