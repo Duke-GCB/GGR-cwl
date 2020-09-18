@@ -26,7 +26,7 @@ class ReferenceDataset(object):
             self.bowtie_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.1.ebwt"
             self.bowtie2_genome_ref_first_index = "/data/reddylab/Reference_Data/Genomes/hg38/GCA_000001405.15_GRCh38_no_alt_analysis_set.fna.bowtie_index.1.bt2" #TODO: Add ERCC92 Bowtie2 option
             self.star_genome_dir = "/data/reddylab/Reference_Data/Genomes/hg38/STAR_genome_sjdbOverhang_%d_novelSJDB" % (self.read_length-1)
-            self.encode_blacklist_bedfile = "/data/reddylab/Reference_Data/ENCODE/hg38.blacklist.merged.bed"
+            self.encode_blacklist_bedfile = "/data/reddylab/Reference_Data/ENCODE/hg38.blacklist.v3.bed"
             self.genome_effective_size = "hs"
             self.annotation_file = "/data/reddylab/Reference_Data/Gencode/v22/gencode.v22.annotation%s.gtf" % (".with_ercc92" if with_ercc else "")
             self.rsem_dir = "/data/reddylab/Reference_Data/Genomes/hg38/RSEM_genome%s"% (".with_ercc92" if with_ercc else "")
