@@ -53,13 +53,6 @@ steps:
          valueFrom: ${return true}
      out:
      - basename
-   extract_basename_2:
-     run: ../utils/remove-extension.cwl
-     in:
-       file_path: extract_basename_1/basename
-     scatter: file_path
-     out:
-     - output_path
    bowtie-pe:
      run: ../map/bowtie-pe.cwl
      scatterMethod: dotproduct
@@ -70,7 +63,7 @@ steps:
      in:
        input_fastq_read1_file: input_fastq_read1_files
        input_fastq_read2_file: input_fastq_read2_files
-       output_filename: extract_basename_2/output_path
+       output_filename: extract_basename_1/basename
        v:
          valueFrom: ${return 2}
        X:
@@ -105,7 +98,7 @@ steps:
      - input_file
      - output_filename
      in:
-       output_filename: extract_basename_2/output_path
+       output_filename: extract_basename_1/basename
        input_file: sort_bams/sorted_file
      out:
      - filtered_file
@@ -126,7 +119,7 @@ steps:
      - output_file_basename
      in:
        input_sorted_file: filtered2sorted/sorted_file
-       output_file_basename: extract_basename_2/output_path
+       output_file_basename: extract_basename_1/basename
        pe:
          valueFrom: ${return true}
      out:
@@ -135,7 +128,7 @@ steps:
      in:
        input_bam_files: filtered2sorted/sorted_file
        genome_sizes: genome_sizes_file
-       input_output_filenames: extract_basename_2/output_path
+       input_output_filenames: extract_basename_1/basename
      run: ../map/pcr-bottleneck-coef.cwl
      out:
      - pbc_file
@@ -148,7 +141,7 @@ steps:
      in:
        a: filtered2sorted/sorted_file
        b: ENCODE_blacklist_bedfile
-       output_basename_file: extract_basename_2/output_path
+       output_basename_file: extract_basename_1/basename
        v:
          valueFrom: ${return true}
      out:
