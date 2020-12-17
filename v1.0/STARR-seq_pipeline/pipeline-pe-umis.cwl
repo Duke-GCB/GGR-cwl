@@ -196,8 +196,8 @@ steps:
        genome_ref_first_index_file: genome_ref_first_index_file
        picard_jar_path: picard_jar_path
        picard_java_opts: picard_java_opts
-       fgbio_jar_path: fgbio_jar_path
        nthreads: nthreads_map
+       fgbio_jar_path: fgbio_jar_path
      run: 03-map-pe-umis.cwl
      out:
       - output_data_bam_files

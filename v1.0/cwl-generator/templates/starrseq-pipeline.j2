@@ -238,8 +238,10 @@ steps:
        genome_ref_first_index_file: genome_ref_first_index_file
        picard_jar_path: picard_jar_path
        picard_java_opts: picard_java_opts
-       fgbio_jar_path: fgbio_jar_path
        nthreads: nthreads_map
+{% if umis %}
+       fgbio_jar_path: fgbio_jar_path
+{% endif %}
      run: 03-map-{% if read_type == 'pe' %}pe{% else %}se{% endif %}{% if umis %}-umis{% endif %}.cwl
      out:
       - output_data_bam_files
