@@ -73,3 +73,9 @@
   - valueFrom: $('TMP_DIR='+runtime.tmpdir)
     position: 5
     shellQuote: false
+  - valueFrom: $('USE_JDK_DEFLATER=true')
+    position: 5
+    shellQuote: false
+  - valueFrom: $('USE_JDK_INFLATER=true')
+    position: 5
+    shellQuote: false
