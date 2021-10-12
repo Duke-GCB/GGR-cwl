@@ -38,3 +38,7 @@ outputs:
      doc: Sorted aligned file
 baseCommand: [samtools, sort]
 stdout: $(inputs.input_file.path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, '') + inputs.suffix)
+arguments:
+   - valueFrom: $(runtime.tmpdir)
+     position: 3
+     prefix: '-T'
